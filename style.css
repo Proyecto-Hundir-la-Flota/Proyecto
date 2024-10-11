@@ -1,0 +1,20 @@
+body {
+    background-image: url('ruta/a/tu/imagen/de/fondo.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    font-family: 'Fuente espacial', sans-serif;
+  }
+
+  h1 {
+    color: rgb(0, 0, 255);
+    text-shadow: 2px 2px 4px rgba(0, 0, 255, 0.5);
+  }
+
+  button {
+    background-color: rgb(255, 255, 255);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
+  }
