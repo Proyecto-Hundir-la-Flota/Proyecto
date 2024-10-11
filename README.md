@@ -1,44 +1,41 @@
-# 🚢 Hundir la Flota
+# 🦴 Excavació Juràssica
 
-Bienvenido a **Hundir la Flota**, un clásico juego de estrategia donde tu objetivo es encontrar y destruir todos los barcos ocultos en el tablero.
+**Benvingut a Excavació Juràssica**, un emocionant joc d'estratègia on hauràs de trobar i desenterrar tots els ossos ocults sota els sediments mil·lenaris. Converteix-te en el millor arqueòleg i fes història!
 
 ## 🖼️ Wireframes
 
-El juego está estructurado en **3 páginas principales**:
+El joc es divideix en **3 pàgines principals**, cadascuna amb un paper fonamental per guiar-te en aquesta aventura arqueològica:
 
-### 1. Landing Page
-La página de bienvenida te introduce al juego. Aquí podrás:
-- Leer una breve descripción del juego.
-- Consultar el **Hall of Fame**, donde encontrarás el ranking de los mejores jugadores.
-- Iniciar una nueva partida con el botón de "Comenzar Juego".
+### 1. Pàgina d'inici
+La primera parada en aquesta aventura! A la **Pàgina d'inici**, podràs:
+- Llegir una breu descripció sobre el joc.
+- Accedir al **Rànquing d'Arqueòlegs** per veure qui són els més prestigiosos.
+- Iniciar una nova excavació fent clic al botó de **"Començar Joc"**.
 
-![Imagen 1: Pantalla de Inicio](#) <!-- Aquí puedes agregar el enlace a la imagen -->
+![Imatge 1: Pantalla d'Inici](./images/Main_page.png) <!-- Aquí pots afegir l'enllaç a la imatge -->
 
-### 2. Game Page
-En la página de juego podrás:
-- Disfrutar de **Hundir la Flota** en su totalidad, interactuando con el tablero.
-- Ver cómo tus **puntos** aumentan según las acciones que realizas.
-- Monitorear el **tiempo de juego**, que se incrementa a medida que juegas.
-- Observar el resultado de tu **última acción**.
-- Consultar los **barcos que aún están ocultos** en el tablero.
-- Una **descripción** detallada te explicará cómo obtener puntos y mejorar tu puntuación.
+### 2. Pàgina de Joc
+Aquí és on comença la veritable acció! En la **Pàgina de Joc** podràs:
+- Endinsar-te en l'experiència completa d'**Excavació Juràssica**, interactuant amb el tauler.
+- Veure com la teva **fama arqueològica** augmenta amb cada troballa i excavació que realitzes.
+- Controlar el **temps d'excavació**, que es comptabilitza a mesura que progresses.
+- Observar el resultat de la teva **última excavació**: què has trobat o si has de seguir excavant.
+- Consultar quins **ossos segueixen ocults** sota terra i planificar la teva pròxima jugada.
+- Seguir una **descripció detallada** que et guiarà per obtenir el màxim de **fama** i optimitzar les teves accions.
 
-![Imagen 2: Pantalla de Juego](#)
+![Imatge 2: Pantalla de Joc](./images/Game_screen.png)
 
-### 3. Hall of Fame
-En esta página encontrarás el **ranking de los jugadores** con las mejores puntuaciones. 
-- ¡Consulta si tu nombre aparece en la lista de los mejores!
-  
-![Imagen 3: Hall of Fame](#)
+### 3. Rànquing d'Arqueòlegs
+Aquesta és la pàgina dels campions! En el **Rànquing d'Arqueòlegs** podràs:
+- Veure el **rànquing** amb els arqueòlegs més famosos i amb més fama acumulada.
+- Comprovar si el teu nom ha arribat a la llista dels **Millors Arqueòlegs del Món**!
+
+![Imatge 3: Rànquing d'Arqueòlegs](./images/Hall_of_fame.png)
 
 ---
 
-## 🎮 Características principales
-- **Tablero interactivo**: Coloca tus disparos y descubre los barcos ocultos.
-- **Puntuación dinámica**: Cada acción te hará ganar puntos, según su impacto.
-- **Historial de jugadas**: Verás el resultado de tu último disparo, para ajustar tu estrategia.
-- **Ranking global**: Compite por obtener el mejor puntaje en el Hall of Fame.
+## 🌐 Diagrama General del Wireframe
 
-## 🚀 Próximamente
-- 🏆 **Logros**: ¡Desbloquea logros especiales por tus habilidades!
-- 🌐 **Multijugador online**: Juega contra tus amigos en tiempo real.
+A continuació, es mostra un **diagrama general** del wireframe del joc, incloent les relacions entre les diferents pàgines i els botons:
+
+![Diagrama General del Wireframe](./images/wireframe.png.png) <!-- Aquí afegeix l'enllaç de la imatge del wireframe -->
