@@ -12,7 +12,7 @@ La primera parada en aquesta aventura! A la **Pàgina d'inici**, podràs:
 - Accedir al **Rànquing d'Arqueòlegs** per veure qui són els més prestigiosos.
 - Iniciar una nova excavació fent clic al botó de **"Començar Joc"**.
 
-![Imatge 1: Pantalla d'Inici](./images/Main_page.png) <!-- Aquí pots afegir l'enllaç a la imatge -->
+![Imatge 1: Pantalla d'Inici](./images/Mainpage.png) <!-- Aquí pots afegir l'enllaç a la imatge -->
 
 ### 2. Pàgina de Joc
 Aquí és on comença la veritable acció! En la **Pàgina de Joc** podràs:
@@ -28,14 +28,14 @@ Aquí és on comença la veritable acció! En la **Pàgina de Joc** podràs:
 ### 3. Rànquing d'Arqueòlegs
 Aquesta és la pàgina dels campions! En el **Rànquing d'Arqueòlegs** podràs:
 - Veure el **rànquing** amb els arqueòlegs més famosos i amb més fama acumulada.
-- Comprovar si el teu nom ha arribat a la llista dels **Millors Arqueòlegs del Món**!
+- Comprovar si el teu nom ha arribat a les primeres posicions!
 
 ![Imatge 3: Rànquing d'Arqueòlegs](./images/Hall_of_fame.png)
 
 ---
 
-## 🌐 Diagrama General del Wireframe
+### 🌐 Diagrama General del Wireframe
 
 A continuació, es mostra un **diagrama general** del wireframe del joc, incloent les relacions entre les diferents pàgines i els botons:
 
-![Diagrama General del Wireframe](./images/wireframe.png.png) <!-- Aquí afegeix l'enllaç de la imatge del wireframe -->
+![Diagrama General del Wireframe](./images/wireframe.png)
