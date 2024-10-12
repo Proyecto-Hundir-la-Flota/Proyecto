@@ -12,9 +12,9 @@ La primera parada en aquesta aventura! A la **Pàgina d'inici**, podràs:
 - Accedir al **Rànquing de Paleontòlegs** 🏆 per veure qui són els més prestigiosos.
 - Iniciar una nova excavació fent clic al botó de **"Començar Joc"** 🕹️.
 
-<div style="text-align: center;">
+<p align="center">
   <img src="./images/main_page.png" alt="Imatge 1: Pantalla d'Inici" width="600"/>
-</div>
+</p>
 
 ### 2. Pàgina de Joc
 Aquí és on comença la veritable acció! En la **Pàgina de Joc** podràs:
@@ -25,18 +25,18 @@ Aquí és on comença la veritable acció! En la **Pàgina de Joc** podràs:
 - Consultar quins **ossos segueixen ocults** sota terra i planificar la teva pròxima jugada.
 - Seguir una **descripció detallada** 🧐 que et guiarà per obtenir el màxim de **fama** i optimitzar les teves accions.
 
-<div style="text-align: center;">
+<p align="center">
   <img src="./images/Game_screen.png" alt="Imatge 2: Pantalla de Joc" width="600"/>
-</div>
+</p>
 
 ### 3. Rànquing de Paleontòlegs
 Aquesta és la pàgina dels campions! En el **Rànquing de Paleontòlegs** podràs:
 - Veure el **rànquing** amb els paleontòlegs més famosos 🥇 i amb més fama acumulada.
 - Comprovar si el teu nom ha arribat a les primeres posicions! 🦕🎉
 
-<div style="text-align: center;">
+<p align="center">
   <img src="./images/hall_of_fame.png" alt="Imatge 3: Rànquing de Paleontòlegs" width="600"/>
-</div>
+</p>
 
 ---
 
@@ -44,6 +44,6 @@ Aquesta és la pàgina dels campions! En el **Rànquing de Paleontòlegs** podr�
 
 A continuació, es mostra un **diagrama general** del wireframe del joc, incloent les relacions entre les diferents pàgines i els botons:
 
-<div style="text-align: center;">
-  <img src="./images/wireframe.png" alt="Diagrama General del Wireframe"/>
-</div>
+<p align="center">
+  <img src="./images/wireframe.png" alt="Diagrama General del Wireframe" width="600"/>
+</p>
