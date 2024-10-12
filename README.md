@@ -45,5 +45,5 @@ Aquesta és la pàgina dels campions! En el **Rànquing de Paleontòlegs** podr�
 A continuació, es mostra un **diagrama general** del wireframe del joc, incloent les relacions entre les diferents pàgines i els botons:
 
 <p align="center">
-  <img src="./images/wireframe_general.png" alt="Diagrama General del Wireframe" width="600"/>
+  <img src="./images/wireframe_general.png" alt="Diagrama General del Wireframe"/>
 </p>
