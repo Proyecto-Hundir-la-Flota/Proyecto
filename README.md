@@ -35,7 +35,7 @@ Aquesta és la pàgina dels campions! En el **Rànquing de Paleontòlegs** podr�
 - Comprovar si el teu nom ha arribat a les primeres posicions! 🦕🎉
 
 <p align="center">
-  <img src="./images/hall_of_fame.png" alt="Imatge 3: Rànquing de Paleontòlegs" width="600"/>
+  <img src="./images/Ranquing.png" alt="Imatge 3: Rànquing de Paleontòlegs" width="600"/>
 </p>
 
 ---
@@ -45,5 +45,5 @@ Aquesta és la pàgina dels campions! En el **Rànquing de Paleontòlegs** podr�
 A continuació, es mostra un **diagrama general** del wireframe del joc, incloent les relacions entre les diferents pàgines i els botons:
 
 <p align="center">
-  <img src="./images/wireframe.png" alt="Diagrama General del Wireframe" width="600"/>
+  <img src="./images/wireframe_general.png" alt="Diagrama General del Wireframe" width="600"/>
 </p>
