@@ -49,11 +49,14 @@ td {
     flex-basis: 50%;
 }
 
-.ship {
-    background-color: red;
+.bone {
+    background-color: #fffffd;
 }
 
-.water,
-.hidden {
-    background-color: blue;
+.ground {
+    background-color: #864D31;
+}
+
+.covered {
+    background-color: #9c6644;
 }
