@@ -1,27 +1,27 @@
 <!DOCTYPE html>
 <html lang="ca">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="style.css">
-    <title>Batalla Naval</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="style.css">
+<title>Batalla Naval</title>
 </head>
 
 <body>
-<?php
+    <?php
 
     // Función para generar el tablero HTML
     function generateBoard(&$board_array)
     {
-    
-            ob_start();//comando para no imprimir todo los echos hasta llamar a la funcion posteriormente; lo almacena y despues lo debuelve
 
-                // Definimos el tamaño del tablero
-                $column_board = 10; 
-                $row_board=10 ;
-                // declaramos los identificadores
-                $letter_id=65;
-                $number_id=1;
-            
+        ob_start(); //comando para no imprimir todo los echos hasta llamar a la funcion posteriormente; lo almacena y despues lo debuelve
+
+        // Definimos el tamaño del tablero
+        $column_board = 10;
+        $row_board = 10;
+        // declaramos los identificadores
+        $letter_id = 65;
+        $number_id = 1;
+
 
         echo "<table border='1' cellpadding='10'>";
 
@@ -38,9 +38,12 @@
                     echo "<td>" . $number_id . "</td>"; // Primera columna con números
                     $number_id++;
                 } else {
-                    $cell_id =  $j - 1 . "_" . ($i-1); // Generamos el ID de la celda
-                    $color = isset($board_array[$i - 1][$j - 1]) ? $board_array[$i - 1][$j - 1] : ''; // Si la celda tiene un barco, le ponemos un id a la celda
-                    echo "<td id='$cell_id' style='background-color:$color'>  </td>";
+                    $cell_id =  $i - 1 . "_" . ($j - 1); // Generamos el ID de la celda
+                    if (isset($board_array[$i - 1][$j - 1])) {
+                        echo "<td id='cell_$cell_id' class= 'bone covered'></td>";
+                    } else {
+                        echo "<td id='cell_$cell_id' class= 'ground covered'></td>";
+                    }
                 }
             }
 
@@ -60,7 +63,8 @@
     ];
 
     // Función para colocar un barco
-    function placeShip(&$board, &$ship) {
+    function placeShip(&$board, &$ship, &$shipList)
+    {
         $n = count($board);
         $ship_length = $ship[1];
         $ship_positions = [];
@@ -68,7 +72,7 @@
 
         while ($attempts < 100) {
             $orientation = rand(0, 1); // 0 = horizontal, 1 = vertical
-            
+
             if ($orientation == 0) { // Horizontal
                 $start_row = rand(0, $n - 1);
                 $start_col = rand(0, $n - $ship_length);
@@ -111,6 +115,12 @@
                     $board[$row][$col] = $ship[2];
                     $ship_positions[] = [$row, $col];
                 }
+
+                $shipPositions = [];
+                foreach ($ship_positions as $position) {
+                    array_push($shipPositions, [[$position[0], $position[1]], false]);
+                }
+                array_push($shipList, $shipPositions);
                 $ship[0] = $ship_positions;
                 return true;
             }
@@ -122,14 +132,13 @@
     }
 
     // Iniciar el tablero vacío
-    $board = array_fill(0, 10, array_fill(0, 10, ''));
-
-
+    $board = array_fill(0, 10, array_fill(0, 10, null));
 
     // Colocar los barcos en el tablero
+    $shipList = [];
     foreach ($ships as &$ship) {
         for ($i = 0; $i < $ship[3]; $i++) {
-            if (!placeShip($board, $ship)) {
+            if (!placeShip($board, $ship, $shipList)) {
                 echo "<p>Error al colocar el barco: {$ship[2]}</p>";
             }
         }
@@ -143,6 +152,15 @@
 
     ?>
 
-    <script type="text/javascript" src="script.js"></script>
+    <div id="winner" id="winner_result">
+        <button onclick="location.href='index.php'">Inici</button>
+        <button onclick="location.href='ranking.php'">Ranking</button>
+    </div>
+
+    <script type="text/javascript">
+        const ships = <?php echo json_encode($shipList); ?>;
+    </script>
+    <script type="text/javascript" src="game.js"></script>
 </body>
+
 </html>
