@@ -34,13 +34,13 @@ function checkStatus(event) {
                 } else {
                     if (discoveredFossil[1]) {
                         hitAndSink = true;
-                        discoveredFossils[index][1] = false;
                     }
                 }
+                discoveredFossils[index][1] = false;
             }
             if (victory) {
                 alert("Has guanyat!");
-                
+                document.getElementById("winner").style.display = "block";
             } else {
                 if (hitAndSink) {
                     alert("Descobert fossil senser!");
@@ -65,6 +65,8 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         }
     }
+
+    document.getElementById("winner").style.display = "none";
 
     ships.forEach(ship => {
         discoveredFossils.push([true, false]);

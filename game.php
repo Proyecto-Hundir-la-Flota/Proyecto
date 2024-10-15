@@ -152,6 +152,11 @@
 
     ?>
 
+    <div id="winner" id="winner_result">
+        <button onclick="location.href='index.php'">Inici</button>
+        <button onclick="location.href='ranking.php'">Ranking</button>
+    </div>
+
     <script type="text/javascript">
         const ships = <?php echo json_encode($shipList); ?>;
     </script>
