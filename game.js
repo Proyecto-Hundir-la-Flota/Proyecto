@@ -4,9 +4,9 @@
 const audios=[];
 audios['arena']=new Audio("./sonidos/desenterrar_arena.mp3");
 audios['hueso']=new Audio("./sonidos/desenterrar_huesos.mp3");
-audios['exit']=new Audio("./sonidos/ayuda.mp3");
-audios['dino']=new Audio("./sonidos/game_over.mp3");
-
+audios['exit']=new Audio("./sonidos/game_over.mp3");
+audios['dino']=new Audio("./sonidos/dino.mp3");
+audios['win']=new Audio("./sonidos/win.mp3");
 
 const discoveredFossils = [];
 
@@ -108,26 +108,31 @@ function checkStatus(event) {
                 discoveredFossils[index][1] = false;
             }
             if (victory) {
-                alert("Has guanyat!");
-                document.getElementById("winner").style.display = "block";
-                audios['arena'].play();
+                createAlerts('win');
+                audios['win'].play();
             } else {
                 if (hitAndSink) {
                     // fosil descubierto
                     
                     createAlerts('foundAll');
+                    audios['dino'].play();
 
                 } else {
                     // huesso encontrado
-                    audios['hueso'].play();
+                   
                     createAlerts('found');
+                    audios['hueso'].play();
                 }
 
             }
         } else {
             // fallo al buscar
+            if (!audios['arena'].paused) {
+                audios['arena'].pause(); // Si está reproduciéndose, lo pausamos
+                audios['arena'].currentTime = 0; // Reiniciamos el audio
+            } 
+            createAlerts('miss');
             audios['arena'].play(); 
-          createAlerts('miss');
         }
 
     }
