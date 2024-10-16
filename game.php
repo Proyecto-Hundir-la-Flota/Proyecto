@@ -40,7 +40,7 @@
                 } else {
                     $cell_id =  $j - 1 . "_" . ($i-1); // Generamos el ID de la celda
                     $color = isset($board_array[$i - 1][$j - 1]) ? $board_array[$i - 1][$j - 1] : ''; // Si la celda tiene un barco, le ponemos un id a la celda
-                    echo "<td id='$cell_id' style='background-color:$color'>  </td>";
+                    echo "<td id='cell_$cell_id' style='background-color:$color'>  </td>";
                 }
             }
 
@@ -122,7 +122,7 @@
     }
 
     // Iniciar el tablero vacío
-    $board = array_fill(0, 10, array_fill(0, 10, ''));
+    $board = array_fill(0, 10, array_fill(0, 10, null));
 
 
 
@@ -143,6 +143,6 @@
 
     ?>
 
-    <script type="text/javascript" src="script.js"></script>
+    <script type="text/javascript" src="game.js"></script>
 </body>
 </html>
