@@ -9,12 +9,6 @@
 
 <body id="game_page">
 
-    <noscript>
-        <div id="noScriptAlert">
-            <p>Atenció! El navegador no té habilitat el JavaScript. Cal habilitar-lo per jugar.</p>
-        </div>
-    </noscript>
-
     <div class="tape">
         <div class="dinosaurs-left">
             <svg width="10px" height="10px" version="1.1" viewBox="0 0 1200 1200" preserveAspectRatio="none"
@@ -83,7 +77,7 @@
         $number_id = 1;
 
 
-        echo "<div class='container'><div class='container-table'><div class='timer-fame'><div class='timer'>Temps: </div></div><table>";
+        echo "<div class='container'><div class='container-table'><div class='timer-fame'><div class='fame'>Fama: <span id='score'>-</span></div><div class='timer'>Temps: <span id='gameClock'>00:00</span></div></div><table>";
 
         for ($i = 0; $i <= $column_board; $i++) {
             echo "<tr>";
@@ -113,8 +107,6 @@
 
         echo "</table></div><div class='container-info'>
         
-        <div class='info-item'><h3>Fama total</h3>
-            <div class='secondary-info'></div></div>
         <div class='info-item'><h3>Evidencies fòssils</h3>
             <div class='secondary-info'></div></div>
        <div class='info-item'> <h3>Com aconseguir fama</h3>

@@ -15,6 +15,7 @@ let timerId;
 let points = 0;
 let accumulatedErrors = 0;
 let consecutiveAccumulatedHits = 0;
+let pointsFrozen = false;
 
 // Mostrar el tiempo formateado en mm:ss
 function displayTime() {
@@ -28,7 +29,7 @@ function displayTime() {
 function startClock() {
     timerId = setInterval(function () {
         elapsedTime++;
-        //  displayTime();
+        displayTime();
     }, 1000); // Incrementar cada segundo
 }
 
@@ -95,7 +96,16 @@ function createAlerts(alert_type) {
 
 }
 
+// Función para actualizar el contador de puntos en pantalla
+function updatePointsCounter() {
+    if (!pointsFrozen) { 
+        document.getElementById("score").innerText = points;
+    }
+}
 
+function stopUpdatePoints() {
+    pointsFrozen = true;
+}
 
 function checkStatus(event) {
     const cell = event.target;
@@ -143,8 +153,10 @@ function checkStatus(event) {
                 discoveredFossils[index][1] = false;
             }
             if (victory) {
-                points += 15;
 
+                stopClock();
+                points += 15;
+                
                 if (elapsedTime < 60) {
                     points += 20;
                 } else if (elapsedTime <= 120) {
@@ -152,6 +164,9 @@ function checkStatus(event) {
                 } else if (elapsedTime > 180) {
                     points -= 10;
                 }
+
+                updatePointsCounter();
+                stopUpdatePoints();
 
                 createAlerts('win');
                 audios['win'].play();
@@ -191,7 +206,7 @@ function checkStatus(event) {
             createAlerts('miss');
             audios['arena'].play();
         }
-
+        updatePointsCounter();
     }
 }
 
