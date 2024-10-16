@@ -1,5 +1,64 @@
 const discoveredFossils = [];
 
+
+// creamos la fincion para definir las alertas
+function createAlerts(alert_type) {
+
+    // forzamos a limpiar la alerta para no repetir una alarma exstente
+    document.querySelectorAll('.alert').forEach(alert => alert.remove());
+    let alert;
+
+    // Crear la alerta de "encontrado"
+    if (alert_type === 'found') {
+        alert = document.createElement('div');
+        alert.id = 'foundAlert';
+        alert.className = 'alert';
+        alert.textContent = 'You found a bone!';
+        document.body.appendChild(alert);
+        alert.style.display = 'block';
+    }
+
+    // Crear la alerta de "fallo"
+    if (alert_type === 'miss') {
+        alert = document.createElement('div');
+        alert.id = 'missAlert';
+        alert.className = 'alert';
+        alert.textContent = 'Has miss in your search!';
+        document.body.appendChild(alert);
+        alert.style.display = 'block';
+    }
+
+    // Crear la alerta de "fosil entero descubierto"
+    if (alert_type === 'foundAll') {
+        alert = document.createElement('div');
+        alert.id = 'foundAlertAll';
+        alert.className = 'alert';
+        alert.textContent = 'You found a fossil!';
+        document.body.appendChild(alert);
+        alert.style.display = 'block';
+    }
+
+    // Crear la alerta de "victoria"
+    if (alert_type === 'win') {
+        alert = document.createElement('div');
+        alert.id = 'winAlert';
+        alert.className = 'alert';
+        alert.textContent = 'You win the game!';
+        document.body.appendChild(alert);
+        alert.style.display = 'block';
+    }
+
+    // Remover las alertas después de 3 segundos (opcional)
+    setTimeout(() => {
+        if (alert) alert.remove(); 
+    }, 2000);
+
+
+
+}
+
+
+
 function checkStatus(event) {
     const cell = event.target;
     if (cell.classList.contains("covered")) {
@@ -43,14 +102,19 @@ function checkStatus(event) {
                 document.getElementById("winner").style.display = "block";
             } else {
                 if (hitAndSink) {
-                    alert("Descobert fossil senser!");
+                    // fosil descubierto
+                    createAlerts('foundAll');
+
                 } else {
-                    alert("Descobert os!");
+                    // huesso encontrado
+                    createAlerts('found');
                 }
 
             }
         } else {
-            alert("No hi ha res!");
+            // fallo al buscar
+
+          createAlerts('miss');
         }
 
     }
