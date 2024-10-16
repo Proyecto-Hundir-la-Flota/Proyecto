@@ -4,7 +4,7 @@
 const audios=[];
 audios['arena']=new Audio("./sonidos/desenterrar_arena.mp3");
 audios['hueso']=new Audio("./sonidos/desenterrar_huesos.mp3");
-audios['exit']=new Audio("./sonidos/game_over.mp3");
+// audios['easter_egg']=new Audio("./sonidos/game_over.mp3");
 audios['dino']=new Audio("./sonidos/dino.mp3");
 audios['win']=new Audio("./sonidos/win.mp3");
 
