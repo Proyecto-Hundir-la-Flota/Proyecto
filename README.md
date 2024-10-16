@@ -1,44 +1,22 @@
-# 🚢 Hundir la Flota
+# 🦴 Excavació Juràssica
 
-Bienvenido a **Hundir la Flota**, un clásico juego de estrategia donde tu objetivo es encontrar y destruir todos los barcos ocultos en el tablero.
+**Benvingut a Excavació Juràssica**, un emocionant joc d'estratègia on hauràs de trobar i desenterrar tots els ossos ocults sota els sediments mil·lenaris. Converteix-te en el millor **paleontòleg** 🦕 i fes història!
 
-## 🖼️ Wireframes
+## 💾 Intruccions per a la instal·lació i posada en marxa del joc
 
-El juego está estructurado en **3 páginas principales**:
+Si vols que aquest joc funcioni necessitessis les coses següents:
+- Servidor Apache o PHP instal·lat (si saps com fer servir ordres en terminal per aixecar un servidor amb ell sense fer servir Apache).
+- Descarregar la darrera versió del joc.
 
-### 1. Landing Page
-La página de bienvenida te introduce al juego. Aquí podrás:
-- Leer una breve descripción del juego.
-- Consultar el **Hall of Fame**, donde encontrarás el ranking de los mejores jugadores.
-- Iniciar una nueva partida con el botón de "Comenzar Juego".
+Si heu triat utilitzar un servidor d'Apache, només haureu de moure els fitxers del joc a l'adreça on es guarden els fitxers de la pàgina web. Per defecte aquesta adreça sol ser **/var/www/html/**.
 
-![Imagen 1: Pantalla de Inicio](#) <!-- Aquí puedes agregar el enlace a la imagen -->
+Si heu triat instal·lar el PHP, podeu aixecar el joc a través d'una terminal, a Linux seria:
+1. Fes servir la termina per moure't al directori on s'ubiquin els arxius descats del joc (**cd "adreça completa"**).
+2. Aixecar el servidor amb l'ordre de PHP (**php -S 0.0.0.0:8080** - El port (8080) pot ser diferent).
 
-### 2. Game Page
-En la página de juego podrás:
-- Disfrutar de **Hundir la Flota** en su totalidad, interactuando con el tablero.
-- Ver cómo tus **puntos** aumentan según las acciones que realizas.
-- Monitorear el **tiempo de juego**, que se incrementa a medida que juegas.
-- Observar el resultado de tu **última acción**.
-- Consultar los **barcos que aún están ocultos** en el tablero.
-- Una **descripción** detallada te explicará cómo obtener puntos y mejorar tu puntuación.
+Un cop fets aquests passos, podràs provar el joc posant l'adreça d'accés al servidor local (a Apache és "localhost" ia PHP seria "localhost:8080" (el port corresponent al que hagis triat)).
 
-![Imagen 2: Pantalla de Juego](#)
+## 🎮 Inici de job
 
-### 3. Hall of Fame
-En esta página encontrarás el **ranking de los jugadores** con las mejores puntuaciones. 
-- ¡Consulta si tu nombre aparece en la lista de los mejores!
-  
-![Imagen 3: Hall of Fame](#)
-
----
-
-## 🎮 Características principales
-- **Tablero interactivo**: Coloca tus disparos y descubre los barcos ocultos.
-- **Puntuación dinámica**: Cada acción te hará ganar puntos, según su impacto.
-- **Historial de jugadas**: Verás el resultado de tu último disparo, para ajustar tu estrategia.
-- **Ranking global**: Compite por obtener el mejor puntaje en el Hall of Fame.
-
-## 🚀 Próximamente
-- 🏆 **Logros**: ¡Desbloquea logros especiales por tus habilidades!
-- 🌐 **Multijugador online**: Juega contra tus amigos en tiempo real.
+Amb els passos anteriors finalitzats, només falta accedir a la pàgina web per començar a joc.
+La primera pàgina us donarà entre diverses opcions que seran per començar el joc o per accedir a la seva pàgina de rànquing.
