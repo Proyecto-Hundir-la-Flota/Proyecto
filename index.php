@@ -13,8 +13,8 @@
         <h3>Desenterra ossos de fa milions d'anys!</h3>
         <p>Explora i excava per trobar ossos de dinosaures ocults sota terra. Tria les coordenades correctes i descobreix tresors prehistòrics. Seràs capaç de desenterrar-los tots?</p>
             <div class="button_container">    
-            <button><i class="fa-solid fa-gamepad"></i>Començar Joc</button>
-            <button><i class="fa-solid fa-ranking-star"></i>Rànquing Paleontòlegs</button>
+            <a href="game.php"><i class="fa-solid fa-gamepad"></i>Començar Joc</a>
+            <a href="ranking.php"><i class="fa-solid fa-ranking-star"></i>Rànquing Paleontòlegs</a>
         </div>
     </div>
 </body>

@@ -25,7 +25,6 @@ html {
     margin: 0;
     cursor: default;
 }
-
 #landing_page {
     background: url(./images/landing_page_bg.png);
     background-size: cover;
@@ -34,78 +33,255 @@ html {
     height: 100vh;
     align-items: center;
     justify-content: center;
-
-    .hero {
-        background-color: #ffffff6e;
-        width: 1000px;
-        height: auto;
-        padding: 50px 0 50px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        box-shadow: 0 4px 30px rgb(0, 0, 0);
-        backdrop-filter: blur(17px);
-        -webkit-backdrop-filter: blur(6.8px);
-        border-radius: 16px;
-    }
-
-    .button_container {
-        display: flex;
-        gap: 20px;
-    }
-
-    h1 {
-        color: var(--text_color);
-        font-family: var(--primary_title_font);
-        text-shadow: 3px 3px 0 #ffffff;
-        font-size: 6em;
-    }
-
-    h3 {
-        color: var(--text_color);
-        font-family: var(--secondary_title_font);
-        font-size: 2em;
-    }
-    
-    p {
-        color: var(--text_color);
-        font-family: var(--text_font);
-        padding: 30px 10% 30px;
-        font-size: 1.2em;
-        font-weight: 600;
-    }
-
-    button {
-        height: 80px;
-        width: 300px;
-        padding: 0 20px; 
-        display: flex; 
-        align-items: center; 
-        justify-content: center; 
-        font-family: var(--text_font);
-        background: #00000000; 
-        font-size: 1.2em;
-        font-weight: 600;   
-        color: var(--button); 
-        border: 3px solid var(--button);
-        border-radius: 30px;
-        gap: 10px;
-        box-shadow: 0px 0px 10px #00000038;
-        cursor: pointer;
-    }
-    
-    button:hover {
-        color: #fff;
-        background-color: var(--button);
-        transition-duration: .5s;
-    }
 }
 
-.nav-button {
-    position: absolute; 
-    top: 840px; 
+#landing_page .hero {
+    background-color: #ffffff6e;
+    width: 1000px;
+    height: auto;
+    padding: 50px 0 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    box-shadow: rgba(0, 0, 0, 0.33) 0px 5px 20px;
+    backdrop-filter: blur(17px);
+    -webkit-backdrop-filter: blur(6.8px);
+    border-radius: 16px;
+}
+
+#landing_page .button_container {
+    display: flex;
+    gap: 20px;
+}
+
+#landing_page h1 {
+    color: var(--text_color);
+    font-family: var(--primary_title_font);
+    text-shadow: 3px 3px 0 #ffffff;
+    font-size: 6em;
+}
+
+#landing_page h3 {
+    color: var(--text_color);
+    font-family: var(--secondary_title_font);
+    font-size: 2em;
+    font-weight: 400;
+}
+
+#landing_page p {
+    color: var(--text_color);
+    font-family: var(--text_font);
+    padding: 30px 10% 30px;
+    font-size: 1.2em;
+    font-weight: 400;
+}
+
+#landing_page a {
+    height: 80px;
+    width: 300px;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--text_font);
+    background: #00000000;
+    font-size: 1.2em;
+    font-weight: 600;
+    color: var(--button);
+    border: 3px solid var(--button);
+    border-radius: 30px;
+    gap: 10px;
+    box-shadow: rgba(0, 0, 0, 0.33) 0px 1px 4px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+#landing_page a:hover {
+    color: #fff;
+    background-color: var(--button);
+    transition-duration: .33s;
+}
+
+/* RANKING_PAGE */
+
+#ranking_page {
+    background: var(--background);
+    margin: 0;
+    color: var(--text_color);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+#ranking_page .tape {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--title-tape);
+    color: var(--title_color);
+    font-family: var(--primary_title_font);
+    margin: 15px 0 15px;
+    padding: 10px
+}
+
+#ranking_page h1 {
+    font-size: 2.5em;
+    text-align: center;
+    width: 100%;
+}
+
+#ranking_page .dinosaurs-right {
+    justify-content: space-around;
+    display: flex;
+    width: 100%;
+}
+
+#ranking_page .dinosaurs-left {
+    transform: scaleX(-1);
+    justify-content: space-around;
+    display: flex;
+    width: 100%;
+}
+
+#ranking_page svg {
+    height: 3.6em;
+    width: 3.6em;
+    fill: var(--background);
+}
+
+#ranking_page table {
+    border-collapse: collapse;
+    margin: 0 auto auto auto;
+    box-shadow: rgba(0, 0, 0, 0.33) 0px 2px 8px;
+    width: 50%;
+}
+
+#ranking_page th, td {
+    border: 1px solid var(--board_borders);
+    height: 40px;
+    text-align: center;
+    font-family: var(--text_font);
+    font-size: 1em;
+    background-color: var(--secondary_div);
+}
+
+#ranking_page th{
+    background-color: #fffffd;
+    font-family: var(--secondary_title_font);
+    font-size: 1.5em;
+    font-weight: 400;
+}
+
+#ranking_page .empty-txt{
+    font-family: var(--secondary_title_font);
+    font-size: 1.5em;
+    font-weight: 400;
+    text-align: center;
+}
+
+#ranking_page td:first-child {
+    background-color: #fffffd;
+    width: 6%;
+}
+
+#ranking_page td:nth-child(2) {
+    width: 31%;
+}
+
+#ranking_page td:nth-child(3) {
+    width: 26%;
+}
+
+#ranking_page td:nth-child(4) {
+    width: 37%;
+}
+
+
+#ranking_page .podium:nth-child(2) td {
+    background-color: #fdd216;
+    font-weight: 600;
+}
+
+#ranking_page .podium:nth-child(3) td {
+    background-color: #e2d3d5;
+    font-weight: 600;
+}
+
+#ranking_page .podium:nth-child(4) td {
+    background-color: #df9b33;
+    font-weight: 600;
+}
+
+#ranking_page .podium:nth-child(2) td:first-child {
+    background-image: radial-gradient(circle at 120.71% 50%, #ffe81e 0, #fdd015 25%, #efb80f 50%, #dfa00c 75%, #d08b0c 100%);
+}
+
+#ranking_page .podium:nth-child(3) td:first-child {
+    background-image: radial-gradient(circle at 120.71% 50%, #f8dfe1 0, #e6d5d7 16.67%, #d3cacb 33.33%, #bebebe 50%, #aab2b0 66.67%, #99a7a2 83.33%, #899e95 100%);
+}
+
+#ranking_page .podium:nth-child(4) td:first-child {
+    background-image: radial-gradient(circle at 120.71% 50%, #e7ab34 0, #e19d33 16.67%, #d88e33 33.33%, #cd7f32 50%, #c17031 66.67%, #b56330 83.33%, #aa5830 100%);
+}
+
+#ranking_page .navigation-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100px;
+    position: relative;
+}
+
+#ranking_page .pagination {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+#ranking_page .pagination a, #ranking_page .pagination span  {
+    margin: 0 5px;
+    display: flex;
+    height: 35px;
+    width: 35px;
+    align-items: center; 
+    justify-content: center;
+    color: var(--button); 
+    background: #00000000;
+    border: 2px solid var(--button);
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 16px;
+    cursor: pointer;
+    gap: 6px;
+    box-shadow: rgba(0, 0, 0, 0.33) 0px 1px 4px;
+}
+
+#ranking_page .pagination .page, #ranking_page .pagination .current-page {
+    font-family: var(--text_font); 
+    font-weight: 500; 
+    font-size: 1em;
+}
+
+#ranking_page .pagination a:hover, #ranking_page .pagination span:hover  {
+    background-color: var(--button); 
+    color: #fff;    
+    transition-duration: .33s;
+}
+
+#ranking_page .pagination .current-page {
+    background-color: var(--button); 
+    color: #fff;
+    font-size: 1em;   
+}
+
+
+/************
+/ NAV BUTTONS 
+/************/
+
+#ranking_page .navigation-container .nav-button {
     height: 36px; 
     padding: 0 20px; 
     display: flex; 
@@ -118,18 +294,21 @@ html {
     background: #00000000;
     border: 2px solid var(--button);
     border-radius: 18px;
-    gap: 6px; 
-  }
+    gap: 6px;
+    text-decoration: none;
+    cursor: pointer;
+    position: absolute;
+    left: 30px;
+    top: auto;
+    box-shadow: rgba(0, 0, 0, 0.33) 0px 1px 4px;
+}
 
-.nav-button:hover {
+#ranking_page .navigation-container .nav-button i {
+    cursor: pointer;
+}
+
+#ranking_page .navigation-container .nav-button:hover{
     background-color: var(--button); 
     color: #fff;
-}
-
-.home-button {
-    left: 71px;
-}
-
-.rank-button {
-    right: 71px; 
+    transition-duration: .33s;
 }
