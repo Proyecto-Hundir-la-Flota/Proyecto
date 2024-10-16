@@ -104,6 +104,130 @@ html {
     transition-duration: .33s;
 }
 
+/* GAME PAGE*/
+
+#game_page {
+    background: var(--background);
+    margin: 0;
+    color: var(--text_color);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+#game_page table {
+    border-collapse: collapse;
+}
+
+#game_page .tape {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--title-tape);
+    color: var(--title_color);
+    font-family: var(--primary_title_font);
+    margin: 15px 0 15px;
+    padding: 10px
+}
+
+#game_page h1 {
+    font-size: 2.5em;
+    text-align: center;
+    width: 100%;
+}
+
+#game_page .dinosaurs-right {
+    justify-content: space-around;
+    display: flex;
+    width: 100%;
+}
+
+#game_page .dinosaurs-left {
+    transform: scaleX(-1);
+    justify-content: space-around;
+    display: flex;
+    width: 100%;
+}
+
+#game_page h1 {
+    font-size: 2.5em;
+    text-align: center;
+    width: 100%;
+}
+
+#game_page svg {
+    height: 3.6em;
+    width: 3.6em;
+    fill: var(--background);
+}
+
+#game_page table td {
+    width: 55px;
+    height: 55px;
+}
+
+#game_page .container {
+    display: flex;
+    justify-content: center;
+    gap: 100px;
+}
+
+#game_page .container-table {
+    display: flex;
+    flex-direction: column;
+}
+
+#game_page .container-table .timer-fame {
+    display: flex;
+    justify-content: end;
+}
+
+#game_page .container-table .timer-fame .timer {
+    background-color: var(--primary_div);
+    font-family: var(--text_font);
+    font-size: 1em;
+    padding: 5px;
+    margin-bottom: 5px;
+    border-radius: 6px;
+}
+
+
+#game_page .container-info {
+    background-color: var(--primary_div);
+    width: 450px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 15px;
+    border-radius: 18px;
+}
+
+
+#game_page .container-info .info-item {
+    height: 33%;
+    display: flex;
+    flex-direction: column;
+}
+
+#game_page .container-info .info-item h3{
+    color: var(--text_color);
+    font-family: var(--secondary_title_font);
+    font-size: 2em;
+    font-weight: 400;
+    margin: 0 0 3px;
+}
+
+#game_page .container-info .info-item .secondary-info{
+    color: var(--text_color);
+    font-family: var(--text_font);
+    font-size: 1.2em;
+    font-weight: 400;
+    height: 100%;
+    background-color: var(--secondary_div);
+    border-radius: 5px;
+    padding: 5px;
+}
+
 /* RANKING_PAGE */
 
 #ranking_page {
@@ -148,10 +272,6 @@ html {
 #ranking_page h1 {
     font-size: 2.5em;
     text-align: center;
-    width: 100%;
-}
-
-img {
     width: 100%;
 }
 

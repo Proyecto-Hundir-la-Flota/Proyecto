@@ -110,6 +110,7 @@ function checkStatus(event) {
             if (victory) {
                 createAlerts('win');
                 audios['win'].play();
+                document.getElementById("winner").style.display = "block";
             } else {
                 if (hitAndSink) {
                     // fosil descubierto
