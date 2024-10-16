@@ -142,13 +142,7 @@ html {
     transform: scaleX(-1);
     justify-content: space-around;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: var(--title-tape);
-    color: var(--title_color);
-    font-family: var(--primary_title_font);
-    margin: 15px 0 15px;
-    padding: 10px
+    width: 100%;
 }
 
 #ranking_page h1 {
@@ -368,4 +362,5 @@ img {
 }
 
 #winAlert {
-    background-color: gold; 
+    background-color: gold;
+}
