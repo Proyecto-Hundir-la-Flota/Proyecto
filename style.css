@@ -142,6 +142,22 @@ html {
     transform: scaleX(-1);
     justify-content: space-around;
     display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--title-tape);
+    color: var(--title_color);
+    font-family: var(--primary_title_font);
+    margin: 15px 0 15px;
+    padding: 10px
+}
+
+#ranking_page h1 {
+    font-size: 2.5em;
+    text-align: center;
+    width: 100%;
+}
+
+img {
     width: 100%;
 }
 
@@ -312,3 +328,44 @@ html {
     color: #fff;
     transition-duration: .33s;
 }
+
+.bone {
+    background-color: #fffffd;
+}
+
+.ground {
+    background-color: #864D31;
+}
+
+.covered {
+    background-color: #9c6644;
+}
+
+.alert {
+    position: fixed;
+    top: 20px;  
+    right: 20px; 
+    padding: 15px; 
+    margin: 10px; 
+    border-radius: 5px; 
+    color: white;
+    font-size: 16px; 
+    z-index: 1000; 
+    display: none;
+    opacity: 0.58;
+}
+
+#foundAlert {
+    background-color: green; 
+}
+
+#missAlert {
+    background-color: red; 
+}
+
+#foundAlertAll {
+    background-color: blue; 
+}
+
+#winAlert {
+    background-color: gold; 
