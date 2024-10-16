@@ -7,6 +7,11 @@
 </head>
 
 <body>
+    <noscript>
+        <div id="noScriptAlert">
+            <p>Atenció! El navegador no té habilitat el JavaScript. Cal habilitar-lo per jugar.</p>
+        </div>
+    </noscript>
     <?php
 
     // Función para generar el tablero HTML
@@ -153,8 +158,14 @@
 
     ?>
 
+    <form id="rankingInfo" action="ranking.php" method="post">
+        <label for="nom">Entra el teu nom:</label>
+        <input type="text" id="nom" name="nom" required minlength="3">
+        <input type="number" id="score" name="score" value="0" hidden>
+        <input type="submit" value="Guardar">
+    </form>
 
-    <div id="winner" id="winner_result">
+    <div id="winner">
         <button onclick="location.href='index.php'">Inici</button>
         <button onclick="location.href='ranking.php'">Ranking</button>
     </div>
