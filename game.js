@@ -2,11 +2,11 @@
 
 // crear un array, donde usando cada nombre guarda un archivo de audio
 const audios=[];
-audios['arena']=new Audio("./sonidos/desenterrar_arena.mp3");
-audios['hueso']=new Audio("./sonidos/desenterrar_huesos.mp3");
-// audios['easter_egg']=new Audio("./sonidos/game_over.mp3");
-audios['dino']=new Audio("./sonidos/dino.mp3");
-audios['win']=new Audio("./sonidos/win.mp3");
+audios['arena']=new Audio("./sounds/desenterrar_arena.mp3");
+audios['hueso']=new Audio("./sounds/desenterrar_huesos.mp3");
+// audios['easter_egg']=new Audio("./sounds/game_over.mp3");
+audios['dino']=new Audio("./sounds/dino.mp3");
+audios['win']=new Audio("./sounds/win.mp3");
 
 const discoveredFossils = [];
 
@@ -17,14 +17,26 @@ function createAlerts(alert_type) {
     // forzamos a limpiar la alerta para no repetir una alarma exstente
     document.querySelectorAll('.alert').forEach(alert => alert.remove());
     let alert;
+    let elementI;
+
+    const emojis=[];
+    emojis['correct']= "fa-solid fa-thumbs-up";
+    emojis['incorrect']="fa-solid fa-circle-xmark";
+    emojis['win']="fa-solid fa-crown";
+    emojis['complet']="fa-solid fa-bone";
+
 
     // Crear la alerta de "encontrado"
     if (alert_type === 'found') {
         alert = document.createElement('div');
         alert.id = 'foundAlert';
         alert.className = 'alert';
-        alert.textContent = 'You found a bone!';
         document.body.appendChild(alert);
+        elementI = document.createElement('i'); 
+        elementI.className = emojis['correct']; // Agregamos el icono usando la clase
+        alert.appendChild(elementI); //añadimos element i como hijo de alert para agregar el emoji
+        const textCode = document.createTextNode(' You found a bone!');
+        alert.appendChild(textCode); //añadimos element textNode como hijo de alert para agregar el texto
         alert.style.display = 'block';
     }
 
@@ -33,8 +45,12 @@ function createAlerts(alert_type) {
         alert = document.createElement('div');
         alert.id = 'missAlert';
         alert.className = 'alert';
-        alert.textContent = 'Has miss in your search!';
         document.body.appendChild(alert);
+        elementI = document.createElement('i');
+        elementI.className = emojis['incorrect']; // Agregamos el icono usando la clase
+        alert.appendChild(elementI);  //añadimos element i como hijo de alert para agregar el emoji
+        const textNode = document.createTextNode(' Has miss in your search!');
+        alert.appendChild(textNode); //añadimos element textNode como hijo de alert para agregar el texto
         alert.style.display = 'block';
     }
 
@@ -43,8 +59,12 @@ function createAlerts(alert_type) {
         alert = document.createElement('div');
         alert.id = 'foundAlertAll';
         alert.className = 'alert';
-        alert.textContent = 'You found a fossil!';
         document.body.appendChild(alert);
+        elementI = document.createElement('i');
+        elementI.className = emojis['complet']; // Agregamos el icono usando la clase
+        alert.appendChild(elementI);  //añadimos element i como hijo de alert para agregar el emoji
+        const textNode = document.createTextNode(' You found a fossil!');
+        alert.appendChild(textNode); //añadimos element textNode como hijo de alert para agregar el texto
         alert.style.display = 'block';
     }
 
@@ -53,19 +73,23 @@ function createAlerts(alert_type) {
         alert = document.createElement('div');
         alert.id = 'winAlert';
         alert.className = 'alert';
-        alert.textContent = 'You win the game!';
         document.body.appendChild(alert);
+        elementI = document.createElement('i');
+        elementI.className = emojis['win']; // Agregamos el icono usando la clase
+        alert.appendChild(elementI); //añadimos element i como hijo de alert para agregar el emoji
+        const textNode = document.createTextNode(' You win the game!');
+        alert.appendChild(textNode); //añadimos element textNode como hijo de alert para agregar el texto
         alert.style.display = 'block';
     }
 
     // Remover las alertas después de 3 segundos (opcional)
     setTimeout(() => {
-        if (alert) alert.remove(); 
+        if (alert) alert.remove();
     }, 2000);
-
-
-
 }
+
+
+
 
 
 
@@ -113,13 +137,19 @@ function checkStatus(event) {
             } else {
                 if (hitAndSink) {
                     // fosil descubierto
-                    
+                    if (!audios['dino'].paused) {
+                        audios['dino'].pause(); // Si está reproduciéndose, lo pausamos
+                        audios['dino'].currentTime = 0; // Reiniciamos el audio
+                    }
                     createAlerts('foundAll');
                     audios['dino'].play();
 
                 } else {
                     // huesso encontrado
-                   
+                    if (!audios['hueso'].paused) {
+                        audios['hueso'].pause(); // Si está reproduciéndose, lo pausamos
+                        audios['hueso'].currentTime = 0; // Reiniciamos el audio
+                    }
                     createAlerts('found');
                     audios['hueso'].play();
                 }
