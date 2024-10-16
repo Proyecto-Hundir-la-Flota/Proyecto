@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="ca">
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" type="text/css" href="style.css">
-<title>Batalla Naval</title>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>Batalla Naval</title>
 </head>
 
 <body>
@@ -166,8 +168,8 @@
     </form>
 
     <div id="winner">
-        <button onclick="location.href='index.php'">Inici</button>
-        <button onclick="location.href='ranking.php'">Ranking</button>
+        <a href="index.php"><i class="fa-solid fa-gamepad"></i>Inici</a>
+        <a href="ranking.php"><i class="fa-solid fa-ranking-star"></i>Rànquing</a>
     </div>
 
     <script type="text/javascript">
