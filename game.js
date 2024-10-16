@@ -1,15 +1,44 @@
 
 
 // crear un array, donde usando cada nombre guarda un archivo de audio
-const audios=[];
-audios['arena']=new Audio("./sounds/desenterrar_arena.mp3");
-audios['hueso']=new Audio("./sounds/desenterrar_huesos.mp3");
+
+const audios = [];
+audios['arena'] = new Audio("./sounds/desenterrar_arena.mp3");
+audios['hueso'] = new Audio("./sounds/desenterrar_huesos.mp3");
 // audios['easter_egg']=new Audio("./sounds/game_over.mp3");
-audios['dino']=new Audio("./sounds/dino.mp3");
-audios['win']=new Audio("./sounds/win.mp3");
+audios['dino'] = new Audio("./sounds/dino.mp3");
+audios['win'] = new Audio("./sounds/win.mp3");
+
 
 const discoveredFossils = [];
 
+let elapsedTime = 0; //Tiempo que transcurrido
+let timerId;
+let points = 0;
+let accumulatedErrors = 0;
+let consecutiveAccumulatedHits = 0;
+
+// Mostrar el tiempo formateado en mm:ss
+function displayTime() {
+    const minutes = Math.floor(elapsedTime / 60);
+    const seconds = elapsedTime % 60;
+    const formattedTime = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+    document.getElementById("gameClock").innerText = formattedTime;
+}
+
+// Iniciar el reloj
+function startClock() {
+    timerId = setInterval(function () {
+        elapsedTime++;
+        //  displayTime();
+    }, 1000); // Incrementar cada segundo
+}
+
+// Detener el reloj
+function stopClock() {
+    clearInterval(timerId); // Detener el temporizador
+    console.log("Timer stopped at " + elapsedTime + " seconds.");
+}
 
 // creamos la fincion para definir las alertas
 function createAlerts(alert_type) {
@@ -26,6 +55,7 @@ function createAlerts(alert_type) {
     emojis['complet']="fa-solid fa-bone";
 
 
+
     // Crear la alerta de "encontrado"
     if (alert_type === 'found') {
         alert = document.createElement('div');
@@ -35,7 +65,7 @@ function createAlerts(alert_type) {
         elementI = document.createElement('i'); 
         elementI.className = emojis['correct']; // Agregamos el icono usando la clase
         alert.appendChild(elementI); //añadimos element i como hijo de alert para agregar el emoji
-        const textCode = document.createTextNode(' You found a bone!');
+        const textCode = document.createTextNode(" Has trobat un ós!");
         alert.appendChild(textCode); //añadimos element textNode como hijo de alert para agregar el texto
         alert.style.display = 'block';
     }
@@ -49,7 +79,7 @@ function createAlerts(alert_type) {
         elementI = document.createElement('i');
         elementI.className = emojis['incorrect']; // Agregamos el icono usando la clase
         alert.appendChild(elementI);  //añadimos element i como hijo de alert para agregar el emoji
-        const textNode = document.createTextNode(' Has miss in your search!');
+        const textNode = document.createTextNode("No s'ha trobat res en la cerca");
         alert.appendChild(textNode); //añadimos element textNode como hijo de alert para agregar el texto
         alert.style.display = 'block';
     }
@@ -63,7 +93,7 @@ function createAlerts(alert_type) {
         elementI = document.createElement('i');
         elementI.className = emojis['complet']; // Agregamos el icono usando la clase
         alert.appendChild(elementI);  //añadimos element i como hijo de alert para agregar el emoji
-        const textNode = document.createTextNode(' You found a fossil!');
+        const textNode = document.createTextNode("Has trobat un fòssil!");
         alert.appendChild(textNode); //añadimos element textNode como hijo de alert para agregar el texto
         alert.style.display = 'block';
     }
@@ -77,7 +107,7 @@ function createAlerts(alert_type) {
         elementI = document.createElement('i');
         elementI.className = emojis['win']; // Agregamos el icono usando la clase
         alert.appendChild(elementI); //añadimos element i como hijo de alert para agregar el emoji
-        const textNode = document.createTextNode(' You win the game!');
+        const textNode = document.createTextNode("Has guanyat el joc!");
         alert.appendChild(textNode); //añadimos element textNode como hijo de alert para agregar el texto
         alert.style.display = 'block';
     }
@@ -98,6 +128,13 @@ function checkStatus(event) {
     if (cell.classList.contains("covered")) {
         cell.classList.remove("covered");
         if (cell.classList.contains("bone")) {
+            accumulatedErrors = 0;
+            consecutiveAccumulatedHits++;
+
+            if (consecutiveAccumulatedHits > 1) {
+                points += 2;
+            }
+
             let hitAndSink = false;
             let victory = true;
 
@@ -132,10 +169,24 @@ function checkStatus(event) {
                 discoveredFossils[index][1] = false;
             }
             if (victory) {
+                points += 15;
+
+                if (elapsedTime < 60) {
+                    points += 20;
+                } else if (elapsedTime <= 120) {
+                    points += 10;
+                } else if (elapsedTime > 180) {
+                    points -= 10;
+                }
+
                 createAlerts('win');
                 audios['win'].play();
+                document.getElementById("rankingInfo").style.display = "block";
+                document.getElementById("score").innerHTML = points;
+                document.getElementById("winner").style.display = "block";
             } else {
                 if (hitAndSink) {
+                    points += 15;
                     // fosil descubierto
                     if (!audios['dino'].paused) {
                         audios['dino'].pause(); // Si está reproduciéndose, lo pausamos
@@ -145,6 +196,7 @@ function checkStatus(event) {
                     audios['dino'].play();
 
                 } else {
+                    points += 10;
                     // huesso encontrado
                     if (!audios['hueso'].paused) {
                         audios['hueso'].pause(); // Si está reproduciéndose, lo pausamos
@@ -156,13 +208,20 @@ function checkStatus(event) {
 
             }
         } else {
+            accumulatedErrors++;
+            consecutiveAccumulatedHits = 0;
+
+            if (accumulatedErrors >= 3) {
+                points -= 5;
+                accumulatedErrors = 0;
+            }
             // fallo al buscar
             if (!audios['arena'].paused) {
                 audios['arena'].pause(); // Si está reproduciéndose, lo pausamos
                 audios['arena'].currentTime = 0; // Reiniciamos el audio
-            } 
+            }
             createAlerts('miss');
-            audios['arena'].play(); 
+            audios['arena'].play();
         }
 
     }
@@ -178,7 +237,10 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
+    document.getElementById("rankingInfo").style.display = "none";
     document.getElementById("winner").style.display = "none";
+    // Iniciar el temporizador al cargar la pÃ¡gina
+    startClock();
 
     ships.forEach(ship => {
         discoveredFossils.push([true, false]);

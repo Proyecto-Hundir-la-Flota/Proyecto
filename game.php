@@ -7,10 +7,14 @@
 <title>Batalla Naval</title>
 <script src="https://kit.fontawesome.com/9c44094610.js" crossorigin="anonymous"></script>
 
-
 </head>
 
 <body>
+    <noscript>
+        <div id="noScriptAlert">
+            <p>Atenció! El navegador no té habilitat el JavaScript. Cal habilitar-lo per jugar.</p>
+        </div>
+    </noscript>
     <?php
 
     // Función para generar el tablero HTML
@@ -157,10 +161,16 @@
 
     ?>
 
+    <form id="rankingInfo" action="ranking.php" method="post">
+        <label for="nom">Entra el teu nom:</label>
+        <input type="text" id="nom" name="nom" required minlength="3">
+        <input type="number" id="score" name="score" value="0" hidden>
+        <input type="submit" value="Guardar">
+    </form>
 
-    <div id="winner" id="winner_result">
-        <button onclick="location.href='index.php'">Inici</button>
-        <button onclick="location.href='ranking.php'">Ranking</button>
+    <div id="winner">
+        <a href="index.php"><i class="fa-solid fa-gamepad"></i>Inici</a>
+        <a href="ranking.php"><i class="fa-solid fa-ranking-star"></i>Rànquing</a>
     </div>
 
     <script type="text/javascript">
