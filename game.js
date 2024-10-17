@@ -5,7 +5,7 @@
 const audios = [];
 audios['arena'] = new Audio("./sounds/desenterrar_arena.mp3");
 audios['hueso'] = new Audio("./sounds/desenterrar_huesos.mp3");
-// audios['easter_egg']=new Audio("./sounds/game_over.mp3");
+audios['easter_egg'] = new Audio("./sounds/easter_egg.mp3");
 audios['dino'] = new Audio("./sounds/dino.mp3");
 audios['win'] = new Audio("./sounds/win.mp3");
 
@@ -17,6 +17,25 @@ let timerId;
 let points = 0;
 let accumulatedErrors = 0;
 let consecutiveAccumulatedHits = 0;
+
+
+// Definimos las IDs de las celdas necesarias para el easter egg
+let cell_0_0 = false;
+let cell_0_9 = false;
+let cell_9_0 = false;
+let cell_9_9 = false;
+// definir variable para comprovar que el easter egg solo se inicia una vez
+let easterEggPlayed = false;
+
+// Guardar la imagen para el easter egg
+const easterEggImage = document.createElement('img');
+easterEggImage.id = 'easter_egg'; 
+easterEggImage.src = './images/easter_egg.png'; 
+easterEggImage.alt = 'Easter Egg'; 
+easterEggImage.style.display = 'none'; 
+easterEggImage.className = 'easter-egg-style';
+document.body.appendChild(easterEggImage);
+
 
 // Mostrar el tiempo formateado en mm:ss
 function displayTime() {
@@ -53,7 +72,6 @@ function createAlerts(alert_type) {
     emojis['incorrect']="fa-solid fa-circle-xmark";
     emojis['win']="fa-solid fa-crown";
     emojis['complet']="fa-solid fa-bone";
-
 
 
     // Crear la alerta de "encontrado"
@@ -119,14 +137,28 @@ function createAlerts(alert_type) {
 }
 
 
-
-
-
-
 function checkStatus(event) {
     const cell = event.target;
     if (cell.classList.contains("covered")) {
         cell.classList.remove("covered");
+
+
+        // Verificar que las celdas para completar el easter egg estan seleccionadas
+        if (cell.id === 'cell_0_0') cell_0_0 = true;
+        if (cell.id === 'cell_0_9') cell_0_9 = true;
+        if (cell.id === 'cell_9_0') cell_9_0 = true;
+        if (cell.id === 'cell_9_9') cell_9_9 = true;
+
+        // Condicional para reproducir el easter egg
+        if (cell_0_0 && cell_0_9 && cell_9_0 && cell_9_9 && !easterEggPlayed) {
+            easterEggPlayed = true;  // Marcar que el easter egg ya se ha reproducido
+            audios['easter_egg'].play();
+            easterEggImage.style.display = 'block';
+            setTimeout(() => {
+                if (easterEggImage) easterEggImage.remove();
+            }, 3600);
+        }
+        
         if (cell.classList.contains("bone")) {
             accumulatedErrors = 0;
             consecutiveAccumulatedHits++;

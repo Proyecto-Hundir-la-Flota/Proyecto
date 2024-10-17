@@ -99,3 +99,16 @@ td {
 #winAlert {
     background-color: gold; 
 }
+
+#easter_eggAlert{
+    background-color: black;
+}
+
+
+.easter-egg-style {
+    position: absolute;
+    top: 47px;
+    left: 45px;
+    width: 305px; 
+    height: 386px;
+}
