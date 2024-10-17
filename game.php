@@ -1,20 +1,69 @@
 <!DOCTYPE html>
 <html lang="ca">
-<head>    
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" type="text/css" href="style.css">
-<title>Batalla Naval</title>
-<script src="https://kit.fontawesome.com/9c44094610.js" crossorigin="anonymous"></script>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>Excavació Juràssica</title>
+    <script src="https://kit.fontawesome.com/9c44094610.js" crossorigin="anonymous"></script>
 
 </head>
 
-<body>
+<body id="game_page">
+
+    <div class="tape">
+        <div class="dinosaurs-left">
+            <svg width="10px" height="10px" version="1.1" viewBox="0 0 1200 1200" preserveAspectRatio="none"
+                xmlns="http://www.w3.org/2000/svg" xmlns:bx="https://boxy-svg.com">
+                <path
+                    d="M 520.381 572.885 C 574.982 549.924 621.554 540.597 657.333 540.647 C 719.945 540.733 762.732 561.489 796.125 552.227 C 829.518 542.981 879.168 475.671 895.034 420.399 C 910.884 365.129 959.313 209.476 988.914 169.937 C 1018.53 130.397 1038.664 108.096 1098.863 109.196 C 1135.37 109.874 1211.215 143.538 1198.6 207.664 C 1185.967 271.792 1094.916 237.603 1073.615 281.596 C 1052.329 325.606 1021.036 574.308 968.813 635.421 C 916.59 696.533 866.213 769.974 860.185 798.371 C 854.156 826.786 850.177 879.602 857.035 907.779 C 863.893 935.939 882.486 1049.732 861.337 1073.608 C 840.186 1097.484 787.828 1096.129 770.962 1072.169 C 754.079 1048.208 770.725 940.241 726.496 925.119 C 682.248 909.997 560.598 920.157 538.483 937.836 C 516.367 955.497 486.802 1025.975 471.63 1056.404 C 456.44 1086.816 391.568 1083.515 354.652 1076.775 C 317.721 1070.018 366.015 960.916 347.676 907.949 C 329.354 854.963 16.237 943.745 7.906 937.954 C -0.425 932.18 -2.423 921.427 3.114 914.078 C 8.651 906.712 285.717 843.635 317.061 750.839 C 348.387 658.061 464.713 596.295 520.381 572.885 Z"
+                    stroke="#000" stroke-width=".085605" />
+            </svg>
+            <svg width="10px" height="10px" version="1.1" viewBox="0 0 1200 1200" preserveAspectRatio="none"
+                xmlns="http://www.w3.org/2000/svg" xmlns:bx="https://boxy-svg.com">
+                <path
+                    d="M 520.381 572.885 C 574.982 549.924 621.554 540.597 657.333 540.647 C 719.945 540.733 762.732 561.489 796.125 552.227 C 829.518 542.981 879.168 475.671 895.034 420.399 C 910.884 365.129 959.313 209.476 988.914 169.937 C 1018.53 130.397 1038.664 108.096 1098.863 109.196 C 1135.37 109.874 1211.215 143.538 1198.6 207.664 C 1185.967 271.792 1094.916 237.603 1073.615 281.596 C 1052.329 325.606 1021.036 574.308 968.813 635.421 C 916.59 696.533 866.213 769.974 860.185 798.371 C 854.156 826.786 850.177 879.602 857.035 907.779 C 863.893 935.939 882.486 1049.732 861.337 1073.608 C 840.186 1097.484 787.828 1096.129 770.962 1072.169 C 754.079 1048.208 770.725 940.241 726.496 925.119 C 682.248 909.997 560.598 920.157 538.483 937.836 C 516.367 955.497 486.802 1025.975 471.63 1056.404 C 456.44 1086.816 391.568 1083.515 354.652 1076.775 C 317.721 1070.018 366.015 960.916 347.676 907.949 C 329.354 854.963 16.237 943.745 7.906 937.954 C -0.425 932.18 -2.423 921.427 3.114 914.078 C 8.651 906.712 285.717 843.635 317.061 750.839 C 348.387 658.061 464.713 596.295 520.381 572.885 Z"
+                    stroke="#000" stroke-width=".085605" />
+            </svg>
+            <svg width="10px" height="10px" version="1.1" viewBox="0 0 1200 1200" preserveAspectRatio="none"
+                xmlns="http://www.w3.org/2000/svg" xmlns:bx="https://boxy-svg.com">
+                <path
+                    d="M 520.381 572.885 C 574.982 549.924 621.554 540.597 657.333 540.647 C 719.945 540.733 762.732 561.489 796.125 552.227 C 829.518 542.981 879.168 475.671 895.034 420.399 C 910.884 365.129 959.313 209.476 988.914 169.937 C 1018.53 130.397 1038.664 108.096 1098.863 109.196 C 1135.37 109.874 1211.215 143.538 1198.6 207.664 C 1185.967 271.792 1094.916 237.603 1073.615 281.596 C 1052.329 325.606 1021.036 574.308 968.813 635.421 C 916.59 696.533 866.213 769.974 860.185 798.371 C 854.156 826.786 850.177 879.602 857.035 907.779 C 863.893 935.939 882.486 1049.732 861.337 1073.608 C 840.186 1097.484 787.828 1096.129 770.962 1072.169 C 754.079 1048.208 770.725 940.241 726.496 925.119 C 682.248 909.997 560.598 920.157 538.483 937.836 C 516.367 955.497 486.802 1025.975 471.63 1056.404 C 456.44 1086.816 391.568 1083.515 354.652 1076.775 C 317.721 1070.018 366.015 960.916 347.676 907.949 C 329.354 854.963 16.237 943.745 7.906 937.954 C -0.425 932.18 -2.423 921.427 3.114 914.078 C 8.651 906.712 285.717 843.635 317.061 750.839 C 348.387 658.061 464.713 596.295 520.381 572.885 Z"
+                    stroke="#000" stroke-width=".085605" />
+            </svg>
+        </div>
+
+        <h1>Excavació Juràssica</h1>
+
+        <div class="dinosaurs-right">
+            <svg width="10px" height="10px" version="1.1" viewBox="0 0 1200 1200" preserveAspectRatio="none"
+                xmlns="http://www.w3.org/2000/svg" xmlns:bx="https://boxy-svg.com">
+                <path
+                    d="M 520.381 572.885 C 574.982 549.924 621.554 540.597 657.333 540.647 C 719.945 540.733 762.732 561.489 796.125 552.227 C 829.518 542.981 879.168 475.671 895.034 420.399 C 910.884 365.129 959.313 209.476 988.914 169.937 C 1018.53 130.397 1038.664 108.096 1098.863 109.196 C 1135.37 109.874 1211.215 143.538 1198.6 207.664 C 1185.967 271.792 1094.916 237.603 1073.615 281.596 C 1052.329 325.606 1021.036 574.308 968.813 635.421 C 916.59 696.533 866.213 769.974 860.185 798.371 C 854.156 826.786 850.177 879.602 857.035 907.779 C 863.893 935.939 882.486 1049.732 861.337 1073.608 C 840.186 1097.484 787.828 1096.129 770.962 1072.169 C 754.079 1048.208 770.725 940.241 726.496 925.119 C 682.248 909.997 560.598 920.157 538.483 937.836 C 516.367 955.497 486.802 1025.975 471.63 1056.404 C 456.44 1086.816 391.568 1083.515 354.652 1076.775 C 317.721 1070.018 366.015 960.916 347.676 907.949 C 329.354 854.963 16.237 943.745 7.906 937.954 C -0.425 932.18 -2.423 921.427 3.114 914.078 C 8.651 906.712 285.717 843.635 317.061 750.839 C 348.387 658.061 464.713 596.295 520.381 572.885 Z"
+                    stroke="#000" stroke-width=".085605" />
+            </svg>
+            <svg width="10px" height="10px" version="1.1" viewBox="0 0 1200 1200" preserveAspectRatio="none"
+                xmlns="http://www.w3.org/2000/svg" xmlns:bx="https://boxy-svg.com">
+                <path
+                    d="M 520.381 572.885 C 574.982 549.924 621.554 540.597 657.333 540.647 C 719.945 540.733 762.732 561.489 796.125 552.227 C 829.518 542.981 879.168 475.671 895.034 420.399 C 910.884 365.129 959.313 209.476 988.914 169.937 C 1018.53 130.397 1038.664 108.096 1098.863 109.196 C 1135.37 109.874 1211.215 143.538 1198.6 207.664 C 1185.967 271.792 1094.916 237.603 1073.615 281.596 C 1052.329 325.606 1021.036 574.308 968.813 635.421 C 916.59 696.533 866.213 769.974 860.185 798.371 C 854.156 826.786 850.177 879.602 857.035 907.779 C 863.893 935.939 882.486 1049.732 861.337 1073.608 C 840.186 1097.484 787.828 1096.129 770.962 1072.169 C 754.079 1048.208 770.725 940.241 726.496 925.119 C 682.248 909.997 560.598 920.157 538.483 937.836 C 516.367 955.497 486.802 1025.975 471.63 1056.404 C 456.44 1086.816 391.568 1083.515 354.652 1076.775 C 317.721 1070.018 366.015 960.916 347.676 907.949 C 329.354 854.963 16.237 943.745 7.906 937.954 C -0.425 932.18 -2.423 921.427 3.114 914.078 C 8.651 906.712 285.717 843.635 317.061 750.839 C 348.387 658.061 464.713 596.295 520.381 572.885 Z"
+                    stroke="#000" stroke-width=".085605" />
+            </svg>
+            <svg width="10px" height="10px" version="1.1" viewBox="0 0 1200 1200" preserveAspectRatio="none"
+                xmlns="http://www.w3.org/2000/svg" xmlns:bx="https://boxy-svg.com">
+                <path
+                    d="M 520.381 572.885 C 574.982 549.924 621.554 540.597 657.333 540.647 C 719.945 540.733 762.732 561.489 796.125 552.227 C 829.518 542.981 879.168 475.671 895.034 420.399 C 910.884 365.129 959.313 209.476 988.914 169.937 C 1018.53 130.397 1038.664 108.096 1098.863 109.196 C 1135.37 109.874 1211.215 143.538 1198.6 207.664 C 1185.967 271.792 1094.916 237.603 1073.615 281.596 C 1052.329 325.606 1021.036 574.308 968.813 635.421 C 916.59 696.533 866.213 769.974 860.185 798.371 C 854.156 826.786 850.177 879.602 857.035 907.779 C 863.893 935.939 882.486 1049.732 861.337 1073.608 C 840.186 1097.484 787.828 1096.129 770.962 1072.169 C 754.079 1048.208 770.725 940.241 726.496 925.119 C 682.248 909.997 560.598 920.157 538.483 937.836 C 516.367 955.497 486.802 1025.975 471.63 1056.404 C 456.44 1086.816 391.568 1083.515 354.652 1076.775 C 317.721 1070.018 366.015 960.916 347.676 907.949 C 329.354 854.963 16.237 943.745 7.906 937.954 C -0.425 932.18 -2.423 921.427 3.114 914.078 C 8.651 906.712 285.717 843.635 317.061 750.839 C 348.387 658.061 464.713 596.295 520.381 572.885 Z"
+                    stroke="#000" stroke-width=".085605" />
+            </svg>
+        </div>
+    </div>
+
     <noscript>
         <div id="noScriptAlert">
             <p>Atenció! El navegador no té habilitat el JavaScript. Cal habilitar-lo per jugar.</p>
         </div>
     </noscript>
+
     <?php
 
     // Función para generar el tablero HTML
@@ -22,7 +71,7 @@
     {
 
         ob_start(); //comando para no imprimir todo los echos hasta llamar a la funcion posteriormente; lo almacena y despues lo debuelve
-
+    
         // Definimos el tamaño del tablero
         $column_board = 10;
         $row_board = 10;
@@ -31,7 +80,7 @@
         $number_id = 1;
 
 
-        echo "<table border='1' cellpadding='10'>";
+        echo "<div class='container'><div class='container-table'><div class='timer-fame'><div class='fame'><i class='fa-solid fa-bullhorn'></i>Fama: <span class='score'>-</span></div><div class='timer'><i class='fa-solid fa-hourglass-end'></i>Temps: <span id='gameClock'>00:00</span></div></div><table>";
 
         for ($i = 0; $i <= $column_board; $i++) {
             echo "<tr>";
@@ -47,7 +96,7 @@
                     $number_id++;
                 } else {
 
-                    $cell_id =  $i - 1 . "_" . ($j - 1); // Generamos el ID de la celda
+                    $cell_id = $i - 1 . "_" . ($j - 1); // Generamos el ID de la celda
                     if (isset($board_array[$i - 1][$j - 1])) {
                         echo "<td id='cell_$cell_id' class= 'bone covered'></td>";
                     } else {
@@ -59,7 +108,18 @@
             echo "</tr>";
         }
 
-        echo "</table>";
+        echo "</table></div><div class='container-info'>
+        
+        
+       <div class='info-item'> <h3>Com aconseguir fama</h3>
+            <div class='secondary-info'>
+            <ul>
+                <li>Se sumen 10 punts de fama per os trobat.</li>
+                <li>Si trobes el fòssil sencer se sumen 15 de fama.</li>
+                <li>Si portes una ratxa de 2 o més ossos trobats, s'aniran sumant 2 punts a la puntuació.</li>
+                <li>Cada 3 errors seguits es restaran 2 punts.</li>
+            </ul></div></div>
+        </div></div>";
         return ob_get_clean(); // Devolver el tablero
     }
 
@@ -81,7 +141,7 @@
 
         while ($attempts < 100) {
             $orientation = rand(0, 1); // 0 = horizontal, 1 = vertical
-
+    
             if ($orientation == 0) { // Horizontal
                 $start_row = rand(0, $n - 1);
                 $start_col = rand(0, $n - $ship_length);
@@ -161,16 +221,21 @@
 
     ?>
 
-    <form id="rankingInfo" action="ranking.php" method="post">
-        <label for="nom">Entra el teu nom:</label>
-        <input type="text" id="nom" name="nom" required minlength="3">
-        <input type="number" id="score" name="score" value="0" hidden>
-        <input type="submit" value="Guardar">
-    </form>
+    <div id="rankingInfo" class="centered-form">
+        <h2>Has aconseguit <span id="score">-</span> punts de fama</h2>
+        <h3>Entra el teu nom</h3>
+        <form id="scoreForm" action="ranking.php" method="POST">
+            <input type="text" id="nom" name="name" required minlength="3"> <!-- Cambiado a "name" -->
+            <input type="hidden" id="score-hidden" name="score" value=""> <!-- Campo oculto para puntaje -->
+            <input type="submit" value="Guardar">
+        </form>
+    </div>
+
+
 
     <div id="winner">
-        <a href="index.php"><i class="fa-solid fa-gamepad"></i>Inici</a>
-        <a href="ranking.php"><i class="fa-solid fa-ranking-star"></i>Rànquing</a>
+        <a href="index.php" class="nav-button home-button"><i class="fa-solid fa-chevron-left"></i>Inici</a>
+        <a href="ranking.php" class="nav-button rank-button">Rànquing<i class="fa-solid fa-chevron-right"></i></a>
     </div>
 
     <script type="text/javascript">

@@ -5,7 +5,7 @@
 const audios = [];
 audios['arena'] = new Audio("./sounds/desenterrar_arena.mp3");
 audios['hueso'] = new Audio("./sounds/desenterrar_huesos.mp3");
-// audios['easter_egg']=new Audio("./sounds/game_over.mp3");
+audios['easter_egg'] = new Audio("./sounds/easter_egg.mp3");
 audios['dino'] = new Audio("./sounds/dino.mp3");
 audios['win'] = new Audio("./sounds/win.mp3");
 
@@ -17,6 +17,23 @@ let timerId;
 let points = 0;
 let accumulatedErrors = 0;
 let consecutiveAccumulatedHits = 0;
+let pointsFrozen = false;
+// Definimos las IDs de las celdas necesarias para el easter egg
+let cell_0_0 = false;
+let cell_0_9 = false;
+let cell_9_0 = false;
+let cell_9_9 = false;
+// definir variable para comprovar que el easter egg solo se inicia una vez
+let easterEggPlayed = false;
+
+// Guardar la imagen para el easter egg
+const easterEggImage = document.createElement('img');
+easterEggImage.id = 'easter_egg'; 
+easterEggImage.src = './images/easter_egg.png'; 
+easterEggImage.alt = 'Easter Egg'; 
+easterEggImage.style.display = 'none'; 
+easterEggImage.className = 'easter-egg-style';
+document.body.appendChild(easterEggImage);
 
 // Mostrar el tiempo formateado en mm:ss
 function displayTime() {
@@ -30,7 +47,7 @@ function displayTime() {
 function startClock() {
     timerId = setInterval(function () {
         elapsedTime++;
-        //  displayTime();
+        displayTime();
     }, 1000); // Incrementar cada segundo
 }
 
@@ -53,7 +70,6 @@ function createAlerts(alert_type) {
     emojis['incorrect']="fa-solid fa-circle-xmark";
     emojis['win']="fa-solid fa-crown";
     emojis['complet']="fa-solid fa-bone";
-
 
 
     // Crear la alerta de "encontrado"
@@ -79,7 +95,7 @@ function createAlerts(alert_type) {
         elementI = document.createElement('i');
         elementI.className = emojis['incorrect']; // Agregamos el icono usando la clase
         alert.appendChild(elementI);  //añadimos element i como hijo de alert para agregar el emoji
-        const textNode = document.createTextNode("No s'ha trobat res en la cerca");
+        const textNode = document.createTextNode(" No s'ha trobat res en la cerca");
         alert.appendChild(textNode); //añadimos element textNode como hijo de alert para agregar el texto
         alert.style.display = 'block';
     }
@@ -93,7 +109,7 @@ function createAlerts(alert_type) {
         elementI = document.createElement('i');
         elementI.className = emojis['complet']; // Agregamos el icono usando la clase
         alert.appendChild(elementI);  //añadimos element i como hijo de alert para agregar el emoji
-        const textNode = document.createTextNode("Has trobat un fòssil!");
+        const textNode = document.createTextNode(" Has trobat un fòssil!");
         alert.appendChild(textNode); //añadimos element textNode como hijo de alert para agregar el texto
         alert.style.display = 'block';
     }
@@ -107,7 +123,7 @@ function createAlerts(alert_type) {
         elementI = document.createElement('i');
         elementI.className = emojis['win']; // Agregamos el icono usando la clase
         alert.appendChild(elementI); //añadimos element i como hijo de alert para agregar el emoji
-        const textNode = document.createTextNode("Has guanyat el joc!");
+        const textNode = document.createTextNode(" Has guanyat el joc!");
         alert.appendChild(textNode); //añadimos element textNode como hijo de alert para agregar el texto
         alert.style.display = 'block';
     }
@@ -118,15 +134,43 @@ function createAlerts(alert_type) {
     }, 2000);
 }
 
+// Función para actualizar el contador de puntos en pantalla
+function updatePointsCounter() {
+    if (!pointsFrozen) { 
+        const scoreElements = document.querySelectorAll(".score");
+        
+        scoreElements.forEach(element => {
+            element.innerText = points;
+        });
+    }
+}
 
-
-
-
+function stopUpdatePoints() {
+    pointsFrozen = true;
+}
 
 function checkStatus(event) {
     const cell = event.target;
     if (cell.classList.contains("covered")) {
         cell.classList.remove("covered");
+
+
+        // Verificar que las celdas para completar el easter egg estan seleccionadas
+        if (cell.id === 'cell_0_0') cell_0_0 = true;
+        if (cell.id === 'cell_0_9') cell_0_9 = true;
+        if (cell.id === 'cell_9_0') cell_9_0 = true;
+        if (cell.id === 'cell_9_9') cell_9_9 = true;
+
+        // Condicional para reproducir el easter egg
+        if (cell_0_0 && cell_0_9 && cell_9_0 && cell_9_9 && !easterEggPlayed) {
+            easterEggPlayed = true;  // Marcar que el easter egg ya se ha reproducido
+            audios['easter_egg'].play();
+            easterEggImage.style.display = 'block';
+            setTimeout(() => {
+                if (easterEggImage) easterEggImage.remove();
+            }, 3600);
+        }
+        
         if (cell.classList.contains("bone")) {
             accumulatedErrors = 0;
             consecutiveAccumulatedHits++;
@@ -169,8 +213,10 @@ function checkStatus(event) {
                 discoveredFossils[index][1] = false;
             }
             if (victory) {
-                points += 15;
 
+                stopClock();
+                points += 15;
+                
                 if (elapsedTime < 60) {
                     points += 20;
                 } else if (elapsedTime <= 120) {
@@ -179,11 +225,16 @@ function checkStatus(event) {
                     points -= 10;
                 }
 
+                updatePointsCounter();
+
                 createAlerts('win');
                 audios['win'].play();
                 document.getElementById("rankingInfo").style.display = "block";
                 document.getElementById("score").innerHTML = points;
-                document.getElementById("winner").style.display = "block";
+                document.getElementById("winner").style.display = "flex";
+                
+
+                stopUpdatePoints();
             } else {
                 if (hitAndSink) {
                     points += 15;
@@ -223,7 +274,7 @@ function checkStatus(event) {
             createAlerts('miss');
             audios['arena'].play();
         }
-
+        updatePointsCounter();
     }
 }
 
@@ -245,6 +296,13 @@ document.addEventListener("DOMContentLoaded", function () {
     ships.forEach(ship => {
         discoveredFossils.push([true, false]);
         //console.log(ship);
+    });
+
+    // Manejar el evento de envío del formulario
+    const form = document.getElementById("scoreForm");
+    form.addEventListener("submit", function (event) {
+        // Aquí colocamos el puntaje en el campo oculto
+        document.getElementById("score-hidden").value = points; // Asignar el puntaje acumulado
     });
 
 });
