@@ -1,12 +1,14 @@
 
 
 // crear un array, donde usando cada nombre guarda un archivo de audio
+
 const audios = [];
 audios['arena'] = new Audio("./sounds/desenterrar_arena.mp3");
 audios['hueso'] = new Audio("./sounds/desenterrar_huesos.mp3");
 // audios['easter_egg']=new Audio("./sounds/game_over.mp3");
 audios['dino'] = new Audio("./sounds/dino.mp3");
 audios['win'] = new Audio("./sounds/win.mp3");
+
 
 const discoveredFossils = [];
 
@@ -46,13 +48,25 @@ function createAlerts(alert_type) {
     let alert;
     let elementI;
 
+    const emojis=[];
+    emojis['correct']= "fa-solid fa-thumbs-up";
+    emojis['incorrect']="fa-solid fa-circle-xmark";
+    emojis['win']="fa-solid fa-crown";
+    emojis['complet']="fa-solid fa-bone";
+
+
+
     // Crear la alerta de "encontrado"
     if (alert_type === 'found') {
         alert = document.createElement('div');
         alert.id = 'foundAlert';
         alert.className = 'alert';
-        alert.textContent = 'Has trobat un ós!';
         document.body.appendChild(alert);
+        elementI = document.createElement('i'); 
+        elementI.className = emojis['correct']; // Agregamos el icono usando la clase
+        alert.appendChild(elementI); //añadimos element i como hijo de alert para agregar el emoji
+        const textCode = document.createTextNode(" Has trobat un ós!");
+        alert.appendChild(textCode); //añadimos element textNode como hijo de alert para agregar el texto
         alert.style.display = 'block';
     }
 
@@ -61,8 +75,12 @@ function createAlerts(alert_type) {
         alert = document.createElement('div');
         alert.id = 'missAlert';
         alert.className = 'alert';
-        alert.textContent = "No s'ha trobat res en la cerca";
         document.body.appendChild(alert);
+        elementI = document.createElement('i');
+        elementI.className = emojis['incorrect']; // Agregamos el icono usando la clase
+        alert.appendChild(elementI);  //añadimos element i como hijo de alert para agregar el emoji
+        const textNode = document.createTextNode("No s'ha trobat res en la cerca");
+        alert.appendChild(textNode); //añadimos element textNode como hijo de alert para agregar el texto
         alert.style.display = 'block';
     }
 
@@ -71,8 +89,12 @@ function createAlerts(alert_type) {
         alert = document.createElement('div');
         alert.id = 'foundAlertAll';
         alert.className = 'alert';
-        alert.textContent = "Has trobat un fòssil!";
         document.body.appendChild(alert);
+        elementI = document.createElement('i');
+        elementI.className = emojis['complet']; // Agregamos el icono usando la clase
+        alert.appendChild(elementI);  //añadimos element i como hijo de alert para agregar el emoji
+        const textNode = document.createTextNode("Has trobat un fòssil!");
+        alert.appendChild(textNode); //añadimos element textNode como hijo de alert para agregar el texto
         alert.style.display = 'block';
     }
 
@@ -81,8 +103,12 @@ function createAlerts(alert_type) {
         alert = document.createElement('div');
         alert.id = 'winAlert';
         alert.className = 'alert';
-        alert.textContent = "Has guanyat el joc!";
         document.body.appendChild(alert);
+        elementI = document.createElement('i');
+        elementI.className = emojis['win']; // Agregamos el icono usando la clase
+        alert.appendChild(elementI); //añadimos element i como hijo de alert para agregar el emoji
+        const textNode = document.createTextNode("Has guanyat el joc!");
+        alert.appendChild(textNode); //añadimos element textNode como hijo de alert para agregar el texto
         alert.style.display = 'block';
     }
 
@@ -90,10 +116,10 @@ function createAlerts(alert_type) {
     setTimeout(() => {
         if (alert) alert.remove();
     }, 2000);
-
-
-
 }
+
+
+
 
 
 
@@ -162,14 +188,20 @@ function checkStatus(event) {
                 if (hitAndSink) {
                     points += 15;
                     // fosil descubierto
-
+                    if (!audios['dino'].paused) {
+                        audios['dino'].pause(); // Si está reproduciéndose, lo pausamos
+                        audios['dino'].currentTime = 0; // Reiniciamos el audio
+                    }
                     createAlerts('foundAll');
                     audios['dino'].play();
 
                 } else {
                     points += 10;
                     // huesso encontrado
-
+                    if (!audios['hueso'].paused) {
+                        audios['hueso'].pause(); // Si está reproduciéndose, lo pausamos
+                        audios['hueso'].currentTime = 0; // Reiniciamos el audio
+                    }
                     createAlerts('found');
                     audios['hueso'].play();
                 }

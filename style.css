@@ -73,6 +73,11 @@ td {
     z-index: 1000; 
     display: none;
     opacity: 0.58;
+
+}
+
+#foundAlert::before{
+    content:\F26A;
 }
 
 #foundAlert {
@@ -81,6 +86,10 @@ td {
 
 #missAlert {
     background-color: red; 
+}
+
+#missAlert::before{
+    content:\F336;
 }
 
 #foundAlertAll {
