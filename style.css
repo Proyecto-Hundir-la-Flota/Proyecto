@@ -1,52 +1,550 @@
-body {
-    background-image: url(space.jpg);
-    background-size: cover;
-    color: white;
+@import url('https://fonts.googleapis.com/css2?family=Akaya+Kanadaka&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Merienda:wght@300..900&display=swap');
+
+html {
+    /* COLORS */
+    --background: #ede0d4;
+    --title_color: #ede0d4;
+    --secondary_div: #f5ddbd;
+    --board_header_row: #E1BB95;
+    --primary_div: #C39570;
+    --board_covered_cells: #9c6644;
+    --board_uncovered_cells: #864D31;
+    --button: #703722;
+    --board_borders: #4a160d;
+    --title-tape: #513f36;
+    --text_color: #232323;
+
+    /* FONTS */
+    --primary_title_font: "Merienda", cursive;
+    --secondary_title_font: "Akaya Kanadaka", system-ui;
+    --text_font: "Inter", sans-serif;
 }
 
-h1 {
-    font-size: 60px;
-    text-shadow: 2px 2px 4px rgba(0, 0, 255, 0.5);
+/*----------------*/
+* {
+    margin: 0;
+    cursor: default;
 }
 
-p {
-    font-size: 30px;
-    text-shadow: 2px 2px 4px rgba(0, 0, 255, 0.5);
+
+#noScriptAlert {
+    position: absolute;
+    text-align: center;
+    width: 500px;
+    background-color: var(--primary_div);
+    z-index: 1;
+    top: 400px;
+    left: 700px;
+    border-radius: 16px;
+    box-shadow: rgba(0, 0, 0, 0.33) 0px 5px 20px;
 }
 
-button {
+
+#noScriptAlert p {
     font-size: 20px;
-    background-color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
+    color: var(--text_color);
+    font-family: var(--text_font);
+    padding: 30px 10% 30px;
+    font-size: 1.2em;
+    font-weight: 400;
 }
 
-img {
-    width: 100%;
-    height: 100%;
+#landing_page {
+    background: url(./images/landing_page_bg.png);
+    background-size: cover;
+    margin: 0;
+    display: flex;
+    height: 100vh;
+    align-items: center;
+    justify-content: center;
 }
 
-table,
-th,
-td {
-    border: 1px solid white;
+#landing_page .hero {
+    background-color: #ffffff6e;
+    width: 1000px;
+    height: auto;
+    padding: 50px 0 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    box-shadow: rgba(0, 0, 0, 0.33) 0px 5px 20px;
+    backdrop-filter: blur(17px);
+    -webkit-backdrop-filter: blur(6.8px);
+    border-radius: 16px;
+}
+
+#landing_page .button_container {
+    display: flex;
+    gap: 20px;
+}
+
+#landing_page h1 {
+    color: var(--text_color);
+    font-family: var(--primary_title_font);
+    text-shadow: 3px 3px 0 #ffffff;
+    font-size: 6em;
+}
+
+#landing_page h3 {
+    color: var(--text_color);
+    font-family: var(--secondary_title_font);
+    font-size: 2em;
+    font-weight: 400;
+}
+
+#landing_page p {
+    color: var(--text_color);
+    font-family: var(--text_font);
+    padding: 30px 10% 30px;
+    font-size: 1.2em;
+    font-weight: 400;
+}
+
+#landing_page a {
+    height: 80px;
+    width: 300px;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--text_font);
+    background: #00000000;
+    font-size: 1.2em;
+    font-weight: 600;
+    color: var(--button);
+    border: 3px solid var(--button);
+    border-radius: 30px;
+    gap: 10px;
+    box-shadow: rgba(0, 0, 0, 0.33) 0px 1px 4px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.disabled {
+    opacity: .5;
+    cursor: not-allowed !important;
+}
+
+#landing_page a:hover {
+    color: #fff;
+    background-color: var(--button);
+    transition-duration: .33s;
+}
+
+/* GAME PAGE*/
+
+#game_page {
+    background: var(--background);
+    margin: 0;
+    color: var(--text_color);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+#game_page table {
     border-collapse: collapse;
 }
 
-.container {
+#game_page .tape {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--title-tape);
+    color: var(--title_color);
+    font-family: var(--primary_title_font);
+    margin-top: 15px;
+    padding: 10px
+}
+
+#game_page h1 {
+    font-size: 2.5em;
+    text-align: center;
+    width: 100%;
+}
+
+#game_page .dinosaurs-right {
+    justify-content: space-around;
     display: flex;
     width: 100%;
+}
+
+#game_page .dinosaurs-left {
+    transform: scaleX(-1);
+    justify-content: space-around;
+    display: flex;
+    width: 100%;
+}
+
+#game_page h1 {
+    font-size: 2.5em;
+    text-align: center;
+    width: 100%;
+}
+
+#game_page svg {
+    height: 3.6em;
+    width: 3.6em;
+    fill: var(--background);
+}
+
+#game_page table td {
+    width: 50px;
+    height: 50px;
+}
+
+#game_page .container {
+    margin: 25px 0 0;
+    display: flex;
+    justify-content: center;
+    gap: 100px;
+    align-items: center;
+}
+
+#game_page .container-table {
+    display: flex;
+    flex-direction: column;
+}
+
+#game_page .container-table .timer-fame {
+    display: flex;
+    justify-content: end;
+    gap: 10px;
+}
+
+#game_page .container-table .timer-fame .timer,
+#game_page .container-table .timer-fame .fame {
+    background-color: var(--primary_div);
+    font-family: var(--text_font);
+    font-size: 1.15em;
+    padding: 7px 14px 7px;
+    text-align: end;
+    margin-bottom: 5px;
+    border-radius: 18px;
+}
+
+#game_page .container-table .timer-fame .timer i,
+#game_page .container-table .timer-fame .fame i{
+    margin-right: 5px;
+}
+
+#game_page .container-table .timer-fame .timer #gameClock {
+    display: inline-block; 
+    width: 50px;
+    text-align: center;
+}
+
+#game_page .container-table .timer-fame .fame #score {
+    display: inline-block; 
+    width: 50px;
+    text-align: center;
+}
+
+
+
+#game_page .container-info {
+    background-color: var(--primary_div);
+    width: 500px;
+    height: 180px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 15px;
+    border-radius: 18px;
+    align-items: center;
+    justify-content: center;
+}
+
+
+#game_page .container-info .info-item {
     height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
-.content {
-    flex-basis: 50%;
+#game_page .container-info .info-item h3{
+    color: var(--text_color);
+    font-family: var(--secondary_title_font);
+    font-size: 2em;
+    font-weight: 400;
+    margin: 0 0 3px;
 }
 
-.shipImage {
-    flex-basis: 50%;
+#game_page .container-info .info-item .secondary-info{
+    color: var(--text_color);
+    font-family: var(--text_font);
+    font-size: 1.2em;
+    font-weight: 400;
+    height: 100%;
+    background-color: var(--secondary_div);
+    border-radius: 5px;
+    padding: 5px;
+}
+
+
+#game_page #winner {
+    position: relative;
+    height: 100px;
+    align-items: center;
+}
+
+#game_page #winner .nav-button {
+    height: 36px; 
+    padding: 0 20px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    font-family: var(--text_font); 
+    font-size: 16px;
+    font-weight: 500; 
+    color: var(--button); 
+    background: #00000000;
+    border: 2px solid var(--button);
+    border-radius: 18px;
+    gap: 6px;
+    text-decoration: none;
+    cursor: pointer;
+    position: absolute; /* Para posicionamiento absoluto */
+    box-shadow: rgba(0, 0, 0, 0.33) 0px 1px 4px;
+}
+
+/* Aplica las posiciones correctas a los botones */
+#game_page #winner .home-button {
+    left: 30px;
+}
+
+#game_page #winner .rank-button {
+    right: 30px;
+}
+
+#game_page #winner .nav-button i {
+    cursor: pointer;
+}
+
+
+#game_page #winner .nav-button:hover{
+    background-color: var(--button); 
+    color: #fff;
+    transition-duration: .33s;
+}
+
+/* RANKING_PAGE */
+
+#ranking_page {
+    background: var(--background);
+    margin: 0;
+    color: var(--text_color);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+#ranking_page .tape {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--title-tape);
+    color: var(--title_color);
+    font-family: var(--primary_title_font);
+    margin: 15px 0 15px;
+    padding: 10px
+}
+
+#ranking_page h1 {
+    font-size: 2.5em;
+    text-align: center;
+    width: 100%;
+}
+
+#ranking_page .dinosaurs-right {
+    justify-content: space-around;
+    display: flex;
+    width: 100%;
+}
+
+#ranking_page .dinosaurs-left {
+    transform: scaleX(-1);
+    justify-content: space-around;
+    display: flex;
+    width: 100%;
+}
+
+#ranking_page h1 {
+    font-size: 2.5em;
+    text-align: center;
+    width: 100%;
+}
+
+#ranking_page svg {
+    height: 3.6em;
+    width: 3.6em;
+    fill: var(--background);
+}
+
+#ranking_page table {
+    border-collapse: collapse;
+    margin: 0 auto auto auto;
+    box-shadow: rgba(0, 0, 0, 0.33) 0px 2px 8px;
+    width: 50%;
+}
+
+#ranking_page th, td {
+    border: 1px solid var(--board_borders);
+    height: 40px;
+    text-align: center;
+    font-family: var(--text_font);
+    font-size: 1em;
+    background-color: var(--secondary_div);
+}
+
+#ranking_page th{
+    background-color: #fffffd;
+    font-family: var(--secondary_title_font);
+    font-size: 1.5em;
+    font-weight: 400;
+}
+
+#ranking_page .empty-txt{
+    font-family: var(--secondary_title_font);
+    font-size: 1.5em;
+    font-weight: 400;
+    text-align: center;
+}
+
+#ranking_page td:first-child {
+    background-color: #fffffd;
+    width: 6%;
+}
+
+#ranking_page td:nth-child(2) {
+    width: 31%;
+}
+
+#ranking_page td:nth-child(3) {
+    width: 26%;
+}
+
+#ranking_page td:nth-child(4) {
+    width: 37%;
+}
+
+
+#ranking_page .podium:nth-child(2) td {
+    background-color: #fdd216;
+    font-weight: 600;
+}
+
+#ranking_page .podium:nth-child(3) td {
+    background-color: #e2d3d5;
+    font-weight: 600;
+}
+
+#ranking_page .podium:nth-child(4) td {
+    background-color: #df9b33;
+    font-weight: 600;
+}
+
+#ranking_page .podium:nth-child(2) td:first-child {
+    background-image: radial-gradient(circle at 120.71% 50%, #ffe81e 0, #fdd015 25%, #efb80f 50%, #dfa00c 75%, #d08b0c 100%);
+}
+
+#ranking_page .podium:nth-child(3) td:first-child {
+    background-image: radial-gradient(circle at 120.71% 50%, #f8dfe1 0, #e6d5d7 16.67%, #d3cacb 33.33%, #bebebe 50%, #aab2b0 66.67%, #99a7a2 83.33%, #899e95 100%);
+}
+
+#ranking_page .podium:nth-child(4) td:first-child {
+    background-image: radial-gradient(circle at 120.71% 50%, #e7ab34 0, #e19d33 16.67%, #d88e33 33.33%, #cd7f32 50%, #c17031 66.67%, #b56330 83.33%, #aa5830 100%);
+}
+
+#ranking_page .navigation-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100px;
+    position: relative;
+}
+
+#ranking_page .pagination {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+#ranking_page .pagination a, #ranking_page .pagination span  {
+    margin: 0 5px;
+    display: flex;
+    height: 35px;
+    width: 35px;
+    align-items: center; 
+    justify-content: center;
+    color: var(--button); 
+    background: #00000000;
+    border: 2px solid var(--button);
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 16px;
+    cursor: pointer;
+    gap: 6px;
+    box-shadow: rgba(0, 0, 0, 0.33) 0px 1px 4px;
+}
+
+#ranking_page .pagination .page, #ranking_page .pagination .current-page {
+    font-family: var(--text_font); 
+    font-weight: 500; 
+    font-size: 1em;
+}
+
+#ranking_page .pagination a:hover, #ranking_page .pagination span:hover  {
+    background-color: var(--button); 
+    color: #fff;    
+    transition-duration: .33s;
+}
+
+#ranking_page .pagination .current-page {
+    background-color: var(--button); 
+    color: #fff;
+    font-size: 1em;   
+}
+
+
+/************
+/ NAV BUTTONS 
+/************/
+
+#ranking_page .navigation-container .nav-button {
+    height: 36px; 
+    padding: 0 20px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    font-family: var(--text_font); 
+    font-size: 16px;
+    font-weight: 500; 
+    color: var(--button); 
+    background: #00000000;
+    border: 2px solid var(--button);
+    border-radius: 18px;
+    gap: 6px;
+    text-decoration: none;
+    cursor: pointer;
+    position: absolute;
+    left: 30px;
+    top: auto;
+    box-shadow: rgba(0, 0, 0, 0.33) 0px 1px 4px;
+}
+
+#ranking_page .navigation-container .nav-button i {
+    cursor: pointer;
+}
+
+#ranking_page .navigation-container .nav-button:hover{
+    background-color: var(--button); 
+    color: #fff;
+    transition-duration: .33s;
 }
 
 .bone {
@@ -63,16 +561,18 @@ td {
 
 .alert {
     position: fixed;
-    top: 20px;  
+    top: 100px;  
     right: 20px; 
     padding: 15px; 
     margin: 10px; 
     border-radius: 5px; 
     color: white;
-    font-size: 16px; 
+    font-size: 1.5em; 
     z-index: 1000; 
     display: none;
-    opacity: 0.58;
+    opacity: 0.75;
+    font-family: var(--secondary_title_font);
+    font-weight: 400;
 
 }
 
@@ -81,7 +581,7 @@ td {
 }
 
 #foundAlert {
-    background-color: green; 
+    background-color: green;
 }
 
 #missAlert {
@@ -97,8 +597,66 @@ td {
 }
 
 #winAlert {
-    background-color: gold; 
+    background-color: gold;
 }
+
+.centered-form {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    width: 500px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+    text-align: center;
+}
+
+.centered-form h2 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: var(--text_color);
+    font-family: var(--secondary_title_font);
+    font-size: 2em;
+    font-weight: 400;
+}
+
+.centered-form h3 {
+    color: var(--text_color);
+    font-family: var(--text_font);
+    font-size: 1.2em;
+
+}
+
+.centered-form input[type="text"] {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+    color: var(--text_color);
+    font-family: var(--text_font);
+}
+
+/* Estilo del botón */
+.centered-form input[type="submit"] {
+    background-color: #28a745;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: var(--text_font);
+    font-size: 1em;
+}
+
+/* Hover en el botón */
+.centered-form input[type="submit"]:hover {
+    background-color: #218838;
+}
+
 
 #easter_eggAlert{
     background-color: black;
@@ -107,8 +665,8 @@ td {
 
 .easter-egg-style {
     position: absolute;
-    top: 47px;
-    left: 45px;
+    top: 200px;
+    left: 700px;
     width: 305px; 
     height: 386px;
 }
