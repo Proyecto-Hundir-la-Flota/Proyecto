@@ -58,84 +58,96 @@
     </div>
 
     <?php
-    $file = 'ranking.txt';
-    $records_per_page = 25;
+$file = 'ranking.txt';
+$records_per_page = 25;
 
-    // Si el archivo no existe, crearlo vacío
-    if (!file_exists($file)) {
-        file_put_contents($file, "");
+// Si el archivo no existe, crearlo vacío
+if (!file_exists($file)) {
+    file_put_contents('ranking.txt', '');
+}
+
+// Verifica si los datos han sido enviados por POST
+if (isset($_POST['score']) && isset($_POST['name'])) {
+    $score = $_POST['score'];
+    $name = $_POST['name'];
+    $timestamp = date('Y-m-d H:i:s'); // Generar timestamp
+
+    // Guardar los datos en el archivo
+    file_put_contents($file, $name . "/" . $score . '/' . $timestamp . "#\n", FILE_APPEND);
+}
+
+// Cargar el contenido del archivo
+$content = file_get_contents($file);
+$lines = explode('#', $content);
+$filtered_lines = array_filter($lines, 'trim');
+
+// Comprobar si hay registros
+if (empty($filtered_lines)) {
+    echo "<p class='empty-txt'>No hi ha cap paleontòleg registrat</p>";
+} else {
+    // Ordenar registros
+    usort($filtered_lines, function ($a, $b) {
+        list(, $pointsA) = explode('/', $a);
+        list(, $pointsB) = explode('/', $b);
+        return $pointsB - $pointsA;
+    });
+
+    $total_records = count($filtered_lines);
+    $total_pages = ceil($total_records / $records_per_page);
+    $current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+    if ($current_page < 1) $current_page = 1;
+    
+    $start_index = ($current_page - 1) * $records_per_page;
+    $end_index = min($start_index + $records_per_page, $total_records);
+
+    // Mostrar la tabla
+    echo '<table>
+        <tr>
+            <th>#</th>
+            <th>Nom del Paleontòleg</th>
+            <th>Fama Adquirida</th>
+            <th>Data i Hora de l\'Excavació</th>
+        </tr>';
+
+    for ($i = $start_index; $i < $end_index; $i++) {
+        if (!empty(trim($filtered_lines[$i]))) {
+            list($name, $points, $dateTime) = explode('/', $filtered_lines[$i]);
+            $row_index = $i + 1;
+
+            // Clase podium para los primeros tres registros
+            $class = ($i < 3) ? ' class="podium"' : '';
+
+            echo "<tr{$class}>
+                <td>$row_index</td>
+                <td>$name</td>
+                <td>$points</td>
+                <td>$dateTime</td>
+              </tr>";
+        }
     }
 
-    $current_page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
-    if ($current_page < 1)
-        $current_page = 1;
+    echo '</table>';
 
-    $content = file_get_contents($file);
-    $lines = explode('#', $content);
-    $filtered_lines = array_filter($lines, 'trim');
+    // Paginación
+    echo '<div class="navigation-container">';
+    echo '<a href="index.php" class="nav-button home-button"><i class="fa-solid fa-chevron-left icon"></i>Inici</a>';
+    if ($total_pages > 1) {
+        echo '<div class="pagination">';
 
-    if (empty($filtered_lines)) {
-        echo "<p class='empty-txt'>No hi ha cap paleontòleg registrat</p>";
-    } else {
-        usort($filtered_lines, function ($a, $b) {
-            list(, $pointsA) = explode('/', $a);
-            list(, $pointsB) = explode('/', $b);
-            return $pointsB - $pointsA;
-        });
+        if ($current_page > 1) {
+            echo '<a href="?page=' . ($current_page - 1) . '" class="fa-solid fa-chevron-left"></a>';
+        }
 
-        $total_records = count($filtered_lines);
-        $total_pages = ceil($total_records / $records_per_page);
-        $start_index = ($current_page - 1) * $records_per_page;
-        $end_index = min($start_index + $records_per_page, $total_records);
-
-        echo '<table>
-            <tr>
-                <th>#</th>
-                <th>Nom del Paleontòleg</th>
-                <th>Fama Adquirida</th>
-                <th>Data i Hora de l\'Excavació</th>
-            </tr>';
-
-        for ($i = $start_index; $i < $end_index; $i++) {
-            if (!empty(trim($filtered_lines[$i]))) {
-                list($name, $points, $dateTime) = explode('/', $filtered_lines[$i]);
-                $row_index = $i + 1;
-
-                // Clase podium para los primeros tres registros
-                $class = ($i < 3) ? ' class="podium"' : '';
-
-                echo "<tr{$class}>
-                    <td>$row_index</td>
-                    <td>$name</td>
-                    <td>$points</td>
-                    <td>$dateTime</td>
-                  </tr>";
+        for ($page = 1; $page <= $total_pages; $page++) {
+            if ($page == $current_page) {
+                echo '<span class="current-page">' . $page . '</span>';
+            } else {
+                echo '<a class="page" href="?page=' . $page . '">' . $page . '</a>';
             }
         }
 
-        echo '</table>';
-
-        // Paginación
-        echo '<div class="navigation-container">';
-        echo '<a href="index.php" class="nav-button home-button"><i class="fa-solid fa-chevron-left icon"></i>Inici</a>';
-        if ($total_pages > 1) {
-            echo '<div class="pagination">';
-
-            if ($current_page > 1) {
-                echo '<a href="?page=' . ($current_page - 1) . '" class="fa-solid fa-chevron-left"></a>';
-            }
-
-            for ($page = 1; $page <= $total_pages; $page++) {
-                if ($page == $current_page) {
-                    echo '<span class="current-page">' . $page . '</span>';
-                } else {
-                    echo '<a class="page" href="?page=' . $page . '">' . $page . '</a>';
-                }
-            }
-
-            if ($current_page < $total_pages) {
-                echo '<a href="?page=' . ($current_page + 1) . '" class="fa-solid fa-chevron-right"></a>';
-            }
+        if ($current_page < $total_pages) {
+            echo '<a href="?page=' . ($current_page + 1) . '" class="fa-solid fa-chevron-right"></a>';
         }
     }
-    ?>
+}

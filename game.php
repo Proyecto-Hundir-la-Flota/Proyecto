@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="ca">
-<head>    
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" type="text/css" href="style.css">
-<title>Batalla Naval</title>
-<script src="https://kit.fontawesome.com/9c44094610.js" crossorigin="anonymous"></script>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>Batalla Naval</title>
+    <script src="https://kit.fontawesome.com/9c44094610.js" crossorigin="anonymous"></script>
 
 </head>
 
@@ -214,16 +215,18 @@
     echo $board_html;
 
     ?>
-    
+
     <div id="rankingInfo" class="centered-form">
         <h2>Has aconseguit <span id="score">-</span> punts de fama</h2>
         <h3>Entra el teu nom</h3>
-        <form action="ranking.php" method="GET">
-            <input type="text" id="nom" name="nom" required minlength="3">
-            <input type="number" id="score" name="score" value="" hidden>
+        <form id="scoreForm" action="ranking.php" method="POST">
+            <input type="text" id="nom" name="name" required minlength="3"> <!-- Cambiado a "name" -->
+            <input type="hidden" id="score-hidden" name="score" value=""> <!-- Campo oculto para puntaje -->
             <input type="submit" value="Guardar">
         </form>
     </div>
+
+
 
     <div id="winner">
         <a href="index.php" class="nav-button home-button"><i class="fa-solid fa-chevron-left"></i>Inici</a>
