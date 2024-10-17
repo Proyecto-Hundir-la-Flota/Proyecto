@@ -99,7 +99,11 @@ function createAlerts(alert_type) {
 // Función para actualizar el contador de puntos en pantalla
 function updatePointsCounter() {
     if (!pointsFrozen) { 
-        document.getElementById("score").innerText = points;
+        const scoreElements = document.querySelectorAll(".score");
+        
+        scoreElements.forEach(element => {
+            element.innerText = points;
+        });
     }
 }
 
@@ -166,13 +170,14 @@ function checkStatus(event) {
                 }
 
                 updatePointsCounter();
-                stopUpdatePoints();
 
                 createAlerts('win');
                 audios['win'].play();
                 document.getElementById("rankingInfo").style.display = "block";
                 document.getElementById("score").innerHTML = points;
-                document.getElementById("winner").style.display = "block";
+                document.getElementById("winner").style.display = "flex";
+
+                stopUpdatePoints();
             } else {
                 if (hitAndSink) {
                     points += 15;

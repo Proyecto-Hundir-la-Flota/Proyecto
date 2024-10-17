@@ -126,7 +126,7 @@ html {
     background-color: var(--title-tape);
     color: var(--title_color);
     font-family: var(--primary_title_font);
-    margin: 15px 0 15px;
+    margin-top: 15px;
     padding: 10px
 }
 
@@ -162,11 +162,12 @@ html {
 }
 
 #game_page table td {
-    width: 55px;
-    height: 55px;
+    width: 50px;
+    height: 50px;
 }
 
 #game_page .container {
+    margin: 15px 0 0;
     display: flex;
     justify-content: center;
     gap: 100px;
@@ -187,11 +188,16 @@ html {
 #game_page .container-table .timer-fame .fame {
     background-color: var(--primary_div);
     font-family: var(--text_font);
-    font-size: 1em;
-    padding: 5px 10px 5px;
+    font-size: 1.15em;
+    padding: 7px 14px 7px;
     text-align: end;
     margin-bottom: 5px;
     border-radius: 18px;
+}
+
+#game_page .container-table .timer-fame .timer i,
+#game_page .container-table .timer-fame .fame i{
+    margin-right: 5px;
 }
 
 #game_page .container-table .timer-fame .timer #gameClock {
@@ -242,6 +248,53 @@ html {
     background-color: var(--secondary_div);
     border-radius: 5px;
     padding: 5px;
+}
+
+
+#game_page #winner {
+    position: relative;
+    height: 100px;
+    align-items: center;
+}
+
+#game_page #winner .nav-button {
+    height: 36px; 
+    padding: 0 20px; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    font-family: var(--text_font); 
+    font-size: 16px;
+    font-weight: 500; 
+    color: var(--button); 
+    background: #00000000;
+    border: 2px solid var(--button);
+    border-radius: 18px;
+    gap: 6px;
+    text-decoration: none;
+    cursor: pointer;
+    position: absolute; /* Para posicionamiento absoluto */
+    box-shadow: rgba(0, 0, 0, 0.33) 0px 1px 4px;
+}
+
+/* Aplica las posiciones correctas a los botones */
+#game_page #winner .home-button {
+    left: 30px;
+}
+
+#game_page #winner .rank-button {
+    right: 30px;
+}
+
+#game_page #winner .nav-button i {
+    cursor: pointer;
+}
+
+
+#game_page #winner .nav-button:hover{
+    background-color: var(--button); 
+    color: #fff;
+    transition-duration: .33s;
 }
 
 /* RANKING_PAGE */
@@ -499,4 +552,61 @@ html {
 
 #winAlert {
     background-color: gold;
+}
+
+.centered-form {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    width: 500px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+    text-align: center;
+}
+
+.centered-form h2 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: var(--text_color);
+    font-family: var(--secondary_title_font);
+    font-size: 2em;
+    font-weight: 400;
+}
+
+.centered-form h3 {
+    color: var(--text_color);
+    font-family: var(--text_font);
+    font-size: 1.2em;
+
+}
+
+.centered-form input[type="text"] {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+    color: var(--text_color);
+    font-family: var(--text_font);
+}
+
+/* Estilo del botón */
+.centered-form input[type="submit"] {
+    background-color: #28a745;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: var(--text_font);
+    font-size: 1em;
+}
+
+/* Hover en el botón */
+.centered-form input[type="submit"]:hover {
+    background-color: #218838;
 }

@@ -77,7 +77,7 @@
         $number_id = 1;
 
 
-        echo "<div class='container'><div class='container-table'><div class='timer-fame'><div class='fame'>Fama: <span id='score'>-</span></div><div class='timer'>Temps: <span id='gameClock'>00:00</span></div></div><table>";
+        echo "<div class='container'><div class='container-table'><div class='timer-fame'><div class='fame'><i class='fa-solid fa-bullhorn'></i>Fama: <span class='score'>-</span></div><div class='timer'><i class='fa-solid fa-hourglass-end'></i>Temps: <span id='gameClock'>00:00</span></div></div><table>";
 
         for ($i = 0; $i <= $column_board; $i++) {
             echo "<tr>";
@@ -212,17 +212,20 @@
     echo $board_html;
 
     ?>
-
-    <form id="rankingInfo" action="ranking.php" method="post">
-        <label for="nom">Entra el teu nom:</label>
-        <input type="text" id="nom" name="nom" required minlength="3">
-        <input type="number" id="score" name="score" value="0" hidden>
-        <input type="submit" value="Guardar">
-    </form>
+    
+    <div id="rankingInfo" class="centered-form">
+        <h2>Has aconseguit <span id="score">-</span> punts de fama</h2>
+        <h3>Entra el teu nom</h3>
+        <form action="ranking.php" method="GET">
+            <input type="text" id="nom" name="nom" required minlength="3">
+            <input type="number" id="score" name="score" value="" hidden>
+            <input type="submit" value="Guardar">
+        </form>
+    </div>
 
     <div id="winner">
-        <a href="index.php"><i class="fa-solid fa-gamepad"></i>Inici</a>
-        <a href="ranking.php"><i class="fa-solid fa-ranking-star"></i>Rànquing</a>
+        <a href="index.php" class="nav-button home-button"><i class="fa-solid fa-chevron-left"></i>Inici</a>
+        <a href="ranking.php" class="nav-button rank-button">Rànquing<i class="fa-solid fa-chevron-right"></i></a>
     </div>
 
     <script type="text/javascript">
