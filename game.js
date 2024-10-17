@@ -180,7 +180,7 @@ function checkStatus(event) {
             }
 
             let hitAndSink = false;
-            let victory = true;
+            let victory = false;
 
             let cellPosition = cell.id.replace("cell_", "").split("_");
             for (let index = 0; index < ships.length; index++) {
@@ -232,6 +232,7 @@ function checkStatus(event) {
                 document.getElementById("rankingInfo").style.display = "block";
                 document.getElementById("score").innerHTML = points;
                 document.getElementById("winner").style.display = "flex";
+                
 
                 stopUpdatePoints();
             } else {
@@ -295,6 +296,13 @@ document.addEventListener("DOMContentLoaded", function () {
     ships.forEach(ship => {
         discoveredFossils.push([true, false]);
         //console.log(ship);
+    });
+
+    // Manejar el evento de envío del formulario
+    const form = document.getElementById("scoreForm");
+    form.addEventListener("submit", function (event) {
+        // Aquí colocamos el puntaje en el campo oculto
+        document.getElementById("score-hidden").value = points; // Asignar el puntaje acumulado
     });
 
 });
