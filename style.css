@@ -536,6 +536,11 @@ html {
     z-index: 1000; 
     display: none;
     opacity: 0.58;
+
+}
+
+#foundAlert::before{
+    content:\F26A;
 }
 
 #foundAlert {
@@ -544,6 +549,10 @@ html {
 
 #missAlert {
     background-color: red; 
+}
+
+#missAlert::before{
+    content:\F336;
 }
 
 #foundAlertAll {
@@ -609,4 +618,18 @@ html {
 /* Hover en el botón */
 .centered-form input[type="submit"]:hover {
     background-color: #218838;
+}
+
+
+#easter_eggAlert{
+    background-color: black;
+}
+
+
+.easter-egg-style {
+    position: absolute;
+    top: 47px;
+    left: 45px;
+    width: 305px; 
+    height: 386px;
 }
