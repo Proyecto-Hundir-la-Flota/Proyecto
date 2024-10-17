@@ -576,20 +576,12 @@ html {
 
 }
 
-#foundAlert::before{
-    content:\F26A;
-}
-
 #foundAlert {
     background-color: green;
 }
 
 #missAlert {
     background-color: red; 
-}
-
-#missAlert::before{
-    content:\F336;
 }
 
 #foundAlertAll {
