@@ -332,6 +332,34 @@ html {
     transition-duration: .33s;
 }
 
+/* RESULT PAGE (WIN AND LOSE) */
+
+#result_page {
+    background: url(./images/landing_page_bg.png);
+    background-size: cover;
+    margin: 0;
+    display: flex;
+    height: 100vh;
+    align-items: center;
+    justify-content: center;
+}
+
+#result_page .hero {
+    background-color: #ffffff6e;
+    width: 1000px;
+    height: auto;
+    padding: 50px 0 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    box-shadow: rgba(0, 0, 0, 0.33) 0px 5px 20px;
+    backdrop-filter: blur(17px);
+    -webkit-backdrop-filter: blur(6.8px);
+    border-radius: 16px;
+}
+
 /* RANKING_PAGE */
 
 #ranking_page {
