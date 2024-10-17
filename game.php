@@ -125,10 +125,10 @@
 
     // Definir los barcos
     $ships = [
-        "fragata" => [[], 2, "#C70039", 1],
-        "submarí" => [[], 3, "#0057C7", 1],
-        "destructor" => [[], 4, "#00C745", 1],
-        "portaavions" => [[], 5, "#EFDF23", 1]
+        "fragata" => [[], 1, "#C70039", 4],
+        "submarí" => [[], 2, "#0057C7", 3],
+        "destructor" => [[], 3, "#00C745", 2],
+        "portaavions" => [[], 4, "#EFDF23", 1]
     ];
 
     // Función para colocar un barco
