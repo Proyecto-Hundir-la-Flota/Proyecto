@@ -217,15 +217,14 @@
     ?>
 
     <div id="rankingInfo" class="centered-form">
-        <h2>Has aconseguit <span class="score" id="score">-</span> punts de fama</h2>
+        <h2>Has aconseguit <span id="score">-</span> punts de fama</h2>
         <h3>Entra el teu nom</h3>
-        <form action="ranking.php" method="POST">
-            <input type="text" id="name" name="name" required minlength="3">
-            <input type="number" id="score" name="score" value="" hidden>
+        <form id="scoreForm" action="ranking.php" method="POST">
+            <input type="text" id="nom" name="name" required minlength="3"> <!-- Cambiado a "name" -->
+            <input type="hidden" id="score-hidden" name="score" value=""> <!-- Campo oculto para puntaje -->
             <input type="submit" value="Guardar">
         </form>
     </div>
-
 
 
 

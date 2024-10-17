@@ -151,4 +151,3 @@ if (empty($filtered_lines)) {
         }
     }
 }
-?>

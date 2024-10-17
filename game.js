@@ -180,7 +180,7 @@ function checkStatus(event) {
             }
 
             let hitAndSink = false;
-            let victory = false;
+            let victory = true;
 
             let cellPosition = cell.id.replace("cell_", "").split("_");
             for (let index = 0; index < ships.length; index++) {
