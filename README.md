@@ -16,7 +16,7 @@ Si heu triat instal·lar el PHP, podeu aixecar el joc a través d'una terminal, 
 
 Un cop fets aquests passos, podràs provar el joc posant l'adreça d'accés al servidor local (a Apache és "localhost" ia PHP seria "localhost:8080" (el port corresponent al que hagis triat)).
 
-## 🎮 Inici de job
+## 🎮 Inici de joc
 
 Amb els passos anteriors finalitzats, només falta accedir a la pàgina web per començar a joc.
 La primera pàgina us donarà entre diverses opcions que seran per començar el joc o per accedir a la seva pàgina de rànquing.
