@@ -25,6 +25,30 @@ html {
     margin: 0;
     cursor: default;
 }
+
+
+#noScriptAlert {
+    position: absolute;
+    text-align: center;
+    width: 500px;
+    background-color: var(--primary_div);
+    z-index: 1;
+    top: 400px;
+    left: 700px;
+    border-radius: 16px;
+    box-shadow: rgba(0, 0, 0, 0.33) 0px 5px 20px;
+}
+
+
+#noScriptAlert p {
+    font-size: 20px;
+    color: var(--text_color);
+    font-family: var(--text_font);
+    padding: 30px 10% 30px;
+    font-size: 1.2em;
+    font-weight: 400;
+}
+
 #landing_page {
     background: url(./images/landing_page_bg.png);
     background-size: cover;
@@ -94,8 +118,13 @@ html {
     border-radius: 30px;
     gap: 10px;
     box-shadow: rgba(0, 0, 0, 0.33) 0px 1px 4px;
-    cursor: pointer;
     text-decoration: none;
+    cursor: pointer;
+}
+
+.disabled {
+    opacity: .5;
+    cursor: not-allowed !important;
 }
 
 #landing_page a:hover {
@@ -167,10 +196,11 @@ html {
 }
 
 #game_page .container {
-    margin: 15px 0 0;
+    margin: 25px 0 0;
     display: flex;
     justify-content: center;
     gap: 100px;
+    align-items: center;
 }
 
 #game_page .container-table {
@@ -216,19 +246,24 @@ html {
 
 #game_page .container-info {
     background-color: var(--primary_div);
-    width: 450px;
+    width: 500px;
+    height: 180px;
     display: flex;
     flex-direction: column;
     gap: 10px;
     padding: 15px;
     border-radius: 18px;
+    align-items: center;
+    justify-content: center;
 }
 
 
 #game_page .container-info .info-item {
-    height: 50%;
+    height: 100%;
     display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 #game_page .container-info .info-item h3{
@@ -526,16 +561,18 @@ html {
 
 .alert {
     position: fixed;
-    top: 20px;  
+    top: 100px;  
     right: 20px; 
     padding: 15px; 
     margin: 10px; 
     border-radius: 5px; 
     color: white;
-    font-size: 16px; 
+    font-size: 1.5em; 
     z-index: 1000; 
     display: none;
-    opacity: 0.58;
+    opacity: 0.75;
+    font-family: var(--secondary_title_font);
+    font-weight: 400;
 
 }
 
@@ -544,7 +581,7 @@ html {
 }
 
 #foundAlert {
-    background-color: green; 
+    background-color: green;
 }
 
 #missAlert {
@@ -628,8 +665,8 @@ html {
 
 .easter-egg-style {
     position: absolute;
-    top: 47px;
-    left: 45px;
+    top: 200px;
+    left: 700px;
     width: 305px; 
     height: 386px;
 }

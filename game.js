@@ -95,7 +95,7 @@ function createAlerts(alert_type) {
         elementI = document.createElement('i');
         elementI.className = emojis['incorrect']; // Agregamos el icono usando la clase
         alert.appendChild(elementI);  //añadimos element i como hijo de alert para agregar el emoji
-        const textNode = document.createTextNode("No s'ha trobat res en la cerca");
+        const textNode = document.createTextNode(" No s'ha trobat res en la cerca");
         alert.appendChild(textNode); //añadimos element textNode como hijo de alert para agregar el texto
         alert.style.display = 'block';
     }
@@ -109,7 +109,7 @@ function createAlerts(alert_type) {
         elementI = document.createElement('i');
         elementI.className = emojis['complet']; // Agregamos el icono usando la clase
         alert.appendChild(elementI);  //añadimos element i como hijo de alert para agregar el emoji
-        const textNode = document.createTextNode("Has trobat un fòssil!");
+        const textNode = document.createTextNode(" Has trobat un fòssil!");
         alert.appendChild(textNode); //añadimos element textNode como hijo de alert para agregar el texto
         alert.style.display = 'block';
     }
@@ -123,7 +123,7 @@ function createAlerts(alert_type) {
         elementI = document.createElement('i');
         elementI.className = emojis['win']; // Agregamos el icono usando la clase
         alert.appendChild(elementI); //añadimos element i como hijo de alert para agregar el emoji
-        const textNode = document.createTextNode("Has guanyat el joc!");
+        const textNode = document.createTextNode(" Has guanyat el joc!");
         alert.appendChild(textNode); //añadimos element textNode como hijo de alert para agregar el texto
         alert.style.display = 'block';
     }

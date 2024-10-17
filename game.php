@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="style.css">
-    <title>Batalla Naval</title>
+    <title>Excavació Juràssica</title>
     <script src="https://kit.fontawesome.com/9c44094610.js" crossorigin="anonymous"></script>
 
 </head>
@@ -110,10 +110,15 @@
 
         echo "</table></div><div class='container-info'>
         
-        <div class='info-item'><h3>Evidencies fòssils</h3>
-            <div class='secondary-info'></div></div>
+        
        <div class='info-item'> <h3>Com aconseguir fama</h3>
-            <div class='secondary-info'></div></div>
+            <div class='secondary-info'>
+            <ul>
+                <li>Se sumen 10 punts de fama per os trobat.</li>
+                <li>Si trobes el fòssil sencer se sumen 15 de fama.</li>
+                <li>Si portes una ratxa de 2 o més ossos trobats, s'aniran sumant 2 punts a la puntuació.</li>
+                <li>Cada 3 errors seguits es restaran 2 punts.</li>
+            </ul></div></div>
         </div></div>";
         return ob_get_clean(); // Devolver el tablero
     }
