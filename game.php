@@ -34,7 +34,7 @@
             </svg>
         </div>
 
-        <h1>Rànquing de Paleontòlegs</h1>
+        <h1>Excavació Juràssica</h1>
 
         <div class="dinosaurs-right">
             <svg width="10px" height="10px" version="1.1" viewBox="0 0 1200 1200" preserveAspectRatio="none"

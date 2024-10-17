@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ca">
 
 <head>
     <meta charset="UTF-8">
@@ -17,7 +17,7 @@
     </noscript>
 
     <div class="hero">
-        <h1>Excavació Jurásica</h1>
+        <h1>Excavació Juràssica</h1>
         <h3>Desenterra ossos de fa milions d'anys!</h3>
         <p>Explora i excava per trobar ossos de dinosaures ocults sota terra. Tria les coordenades correctes i
             descobreix tresors prehistòrics. Seràs capaç de desenterrar-los tots?</p>
