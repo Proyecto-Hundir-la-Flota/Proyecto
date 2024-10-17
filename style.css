@@ -63,7 +63,7 @@ html {
     background-color: #ffffff6e;
     width: 1000px;
     height: auto;
-    padding: 50px 0 50px;
+    padding: 50px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -78,6 +78,7 @@ html {
 #landing_page .button_container {
     display: flex;
     gap: 20px;
+    width: 100%;
 }
 
 #landing_page h1 {

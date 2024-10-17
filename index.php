@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+x<!DOCTYPE html>
 <html lang="ca">
 
 <head>
@@ -22,8 +22,9 @@
         <p>Explora i excava per trobar ossos de dinosaures ocults sota terra. Tria les coordenades correctes i
             descobreix tresors prehistòrics. Seràs capaç de desenterrar-los tots?</p>
         <div class="button_container">
-            <a id="btn_play" href="#" class="disabled"><i class="fa-solid fa-gamepad"></i>Començar Joc</a>
+            <a id="btn_play" href="#" class="disabled"><i class="fa-solid fa-gamepad"></i>Terreny de Proves</a>
             <a href="ranking.php"><i class="fa-solid fa-ranking-star"></i>Rànquing Paleontòlegs</a>
+            <a href="ranking.php"><i class="fa-solid fa-robot"></i>Excavació contra IA</a>
         </div>
     </div>
     <script type="text/javascript">
