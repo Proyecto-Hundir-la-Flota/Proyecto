@@ -3,7 +3,7 @@
         
     if (isset($_POST["name_landing"])) {
         $_SESSION['name'] = $_POST["name_landing"];//sesion index
-        $_SESSION['nombre'] = $_SESSION['name'];//sesion game
+        $_SESSION['finishName'] = $_SESSION['name'];//sesion game
                 unset($_SESSION['name']); //borrar la sesion de index
     }
         
@@ -21,6 +21,7 @@
     <script src="https://kit.fontawesome.com/9c44094610.js" crossorigin="anonymous"></script>
 
 </head>
+
 
 <body id="game_page">
 
@@ -92,7 +93,7 @@
         $number_id = 1;
 
 // editar $_SESSION['nombre']; para cambiarlo de lugar
-        echo "<div class='container'><div class='container-table'><div class='timer-fame'>".$_SESSION['nombre']."<div class='fame'><i class='fa-solid fa-bullhorn'></i>Fama: <span class='score'>-</span></div><div class='timer'><i class='fa-solid fa-hourglass-end'></i>Temps: <span id='gameClock'>00:00</span></div></div><table>";
+        echo "<div class='container'><div class='container-table'><div class='timer-fame'>".$_SESSION['finishName']."<div class='fame'><i class='fa-solid fa-bullhorn'></i>Fama: <span class='score'>-</span></div><div class='timer'><i class='fa-solid fa-hourglass-end'></i>Temps: <span id='gameClock'>00:00</span></div></div><table>";
 
         for ($i = 0; $i <= $column_board; $i++) {
             echo "<tr>";
