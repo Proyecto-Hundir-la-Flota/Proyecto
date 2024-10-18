@@ -23,23 +23,63 @@
         exit;
     }
     // Resta del codi de la pàgina
+
+    session_start();
+    $userName = "";
+    $score = 0;
+    if (isset($_SESSION['finishName'])) {
+        $userName = $_SESSION['finishName'];
+    }
+    if (isset($_SESSION['score'])) {
+        $score = $_SESSION['score'];
+    }
+
 ?>
-    <title>Excavació Juràssica</title>
+<title>Excavació Juràssica</title>
 </head>
 
 <body id="result_page">
     <div class="hero">
         <h1>Has perdut</h1>
-        <div id="rankingInfo"   >
-            <h2>Has aconseguit <span id="score">-</span> punts de fama</h2>
+        <div id="rankingInfo">
+            <h2>Has aconseguit <span id="score"><?php echo $score ?></span> punts de fama</h2>
             <h3>Entra el teu nom</h3>
             <form id="scoreForm" action="ranking.php" method="POST">
-                <input type="text" id="nom" name="name" required minlength="3"> <!-- Cambiado a "name" -->
-                <input type="hidden" id="score-hidden" name="score" value=""> <!-- Campo oculto para puntaje -->
-                <input type="submit" value="Guardar">
+                <input type="text" id="nameInput" name="name" required minlength="3" value="<?php echo $userName ?>"> <!-- Cambiado a "name" -->
+                <input type="hidden" id="scoreHidden" name="score" value="<?php echo $userName ?>"> <!-- Campo oculto para puntaje -->
             </form>
+            <div class="button_container">
+                <a id="btnReturn" href="index.php"><i class="fa-solid fa-chevron-left"></i>Inici</a>
+                <a id="btnSaveRecord" href="#">Guardar</a>
+            </div>
         </div>
     </div>
+    <script type="text/javascript">
+        document.addEventListener("DOMContentLoaded", function() {
+            const saveRecord = document.getElementById("btnSaveRecord");
+            const nameInput = document.getElementById("nameInput"); //Guardamos los valores introducidos
+            const scoreForm = document.getElementById("scoreForm"); //Guardamos el formato de formulario para poder hacer un submit
+
+            nameInput.addEventListener("input", function() {
+                // Comprobar la longitud del nombre
+                if (nameInput.value.length > 3 && nameInput.value.length < 30) {
+                    saveRecord.classList.remove("disabled");
+                    saveRecord.href = "#"; // Href nulo para esperar que el usuario confirme
+                } else {
+                    saveRecord.classList.add("disabled");
+                    saveRecord.href = "#"; // href nulo
+                }
+            });
+
+            // AÃ±adir el evento click solo una vez
+            saveRecord.addEventListener("click", function(event) {
+                if (!saveRecord.classList.contains("disabled")) {
+                    // Enviar el formulario cuando el boton esta habilitado y se haga click
+                    scoreForm.submit();
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>

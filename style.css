@@ -360,6 +360,64 @@ html {
     border-radius: 16px;
 }
 
+#result_page .button_container {
+    display: flex;
+    gap: 20px;
+}
+
+#result_page h1 {
+    color: var(--text_color);
+    font-family: var(--primary_title_font);
+    text-shadow: 3px 3px 0 #ffffff;
+    font-size: 6em;
+}
+
+#result_page h3 {
+    color: var(--text_color);
+    font-family: var(--secondary_title_font);
+    font-size: 2em;
+    font-weight: 400;
+}
+
+#result_page p {
+    color: var(--text_color);
+    font-family: var(--text_font);
+    padding: 30px 10% 30px;
+    font-size: 1.2em;
+    font-weight: 400;
+}
+
+#result_page a {
+    height: 80px;
+    width: 300px;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--text_font);
+    background: #00000000;
+    font-size: 1.2em;
+    font-weight: 600;
+    color: var(--button);
+    border: 3px solid var(--button);
+    border-radius: 30px;
+    gap: 10px;
+    box-shadow: rgba(0, 0, 0, 0.33) 0px 1px 4px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#result_page .disabled {
+    opacity: .5;
+    cursor: not-allowed !important;
+}
+
+#result_page a:hover {
+    color: #fff;
+    background-color: var(--button);
+    transition-duration: .33s;
+}
+
 /* RANKING_PAGE */
 
 #ranking_page {
