@@ -1,3 +1,15 @@
+<?php
+    session_start();
+        
+    if (isset($_POST["name_landing"])) {
+        $_SESSION['name'] = $_POST["name_landing"];//sesion index
+        $_SESSION['nombre'] = $_SESSION['name'];//sesion game
+                unset($_SESSION['name']); //borrar la sesion de index
+    }
+        
+?>
+
+
 <!DOCTYPE html>
 <html lang="ca">
 
@@ -79,8 +91,8 @@
         $letter_id = 65;
         $number_id = 1;
 
-
-        echo "<div class='container'><div class='container-table'><div class='timer-fame'><div class='fame'><i class='fa-solid fa-bullhorn'></i>Fama: <span class='score'>-</span></div><div class='timer'><i class='fa-solid fa-hourglass-end'></i>Temps: <span id='gameClock'>00:00</span></div></div><table>";
+// editar $_SESSION['nombre']; para cambiarlo de lugar
+        echo "<div class='container'><div class='container-table'><div class='timer-fame'>".$_SESSION['nombre']."<div class='fame'><i class='fa-solid fa-bullhorn'></i>Fama: <span class='score'>-</span></div><div class='timer'><i class='fa-solid fa-hourglass-end'></i>Temps: <span id='gameClock'>00:00</span></div></div><table>";
 
         for ($i = 0; $i <= $column_board; $i++) {
             echo "<tr>";
@@ -125,10 +137,10 @@
 
     // Definir los barcos
     $ships = [
-        "fragata" => [[], 1, "#C70039", 4],
-        "submarí" => [[], 2, "#0057C7", 3],
-        "destructor" => [[], 3, "#00C745", 2],
-        "portaavions" => [[], 4, "#EFDF23", 1]
+        "fragata" => [[], 4, "#C70039", 1],
+        "submarí" => [[], 3, "#0057C7", 2],
+        "destructor" => [[], 2, "#00C745", 3],
+        "portaavions" => [[], 1, "#EFDF23", 4]
     ];
 
     // Función para colocar un barco
@@ -139,7 +151,7 @@
         $ship_positions = [];
         $attempts = 0;
 
-        while ($attempts < 100) {
+        while ($attempts < 1000) {
             $orientation = rand(0, 1); // 0 = horizontal, 1 = vertical
     
             if ($orientation == 0) { // Horizontal
@@ -219,6 +231,9 @@
     // Mostrar el tablero generado
     echo $board_html;
 
+
+    
+
     ?>
 
     <div id="rankingInfo" class="centered-form">
@@ -231,7 +246,7 @@
         </form>
     </div>
 
-
+   
 
     <div id="winner">
         <a href="index.php" class="nav-button home-button"><i class="fa-solid fa-chevron-left"></i>Inici</a>
