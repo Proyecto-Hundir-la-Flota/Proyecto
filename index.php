@@ -1,4 +1,5 @@
-x<!DOCTYPE html>
+x
+<!DOCTYPE html>
 <html lang="ca">
 
 <head>
@@ -22,18 +23,31 @@ x<!DOCTYPE html>
         <p>Explora i excava per trobar ossos de dinosaures ocults sota terra. Tria les coordenades correctes i
             descobreix tresors prehistòrics. Seràs capaç de desenterrar-los tots?</p>
         <div class="button_container">
-            <a id="btn_play" href="#" class="disabled"><i class="fa-solid fa-gamepad"></i>Terreny de Proves</a>
+            <!--<a id="btn_play" href="#" class="disabled"><i class="fa-solid fa-gamepad"></i>Terreny de Proves</a>
+            <a id="btn_play" href="#" class="disabled"><i class="fa-solid fa-robot"></i>Excavació contra IA</a>-->
+            <!-- Formulario para "Terreny de Proves" -->
+
+            <form method="POST" action="game.php">
+                <input type="hidden" name="gamemode" value="training">
+                <button type="submit" class="btn_play" class="disabled"><i class="fa-solid fa-gamepad"></i> Terreny de Proves</button>
+            </form>
+
+            <form method="POST" action="game.php">
+                <input type="hidden" name="gamemode" value="versus-ia">
+                <button type="submit" class="btn_play" class="disabled"><i class="fa-solid fa-robot"></i> Excavació contra IA</button>
+            </form>
+
             <a href="ranking.php"><i class="fa-solid fa-ranking-star"></i>Rànquing Paleontòlegs</a>
-            <a href="ranking.php"><i class="fa-solid fa-robot"></i>Excavació contra IA</a>
         </div>
     </div>
-    <script type="text/javascript">
-        document.addEventListener("DOMContentLoaded", function() {
-            const playButton = document.getElementById("btn_play");
-            playButton.classList.remove("disabled");
-            playButton.href = "game.php";
-        });
-    </script>
+
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function () {
+        const playButton = document.getElementByClass("btn_play");
+        playButton.classList.remove("disabled");
+        playButton.href = "game.php";
+    });
+</script>
 </body>
 
 </html>

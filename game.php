@@ -10,7 +10,18 @@
 
 </head>
 
-<body id="game_page">
+<body <?php
+    if (isset($_POST['gamemode'])) {
+        $gamemode = $_POST['gamemode'];
+        
+        if ($gamemode == 'training') {
+            echo 'id="game_page"';
+        } elseif ($gamemode == 'versus-ia') {
+            echo 'id="game_page" class="versus-ia"';
+        }
+    }
+    ?>
+>
 
     <div class="tape">
         <div class="dinosaurs-left">
@@ -64,67 +75,86 @@
         </div>
     </noscript>
 
+    <div class='container'>
+
     <?php
 
     // Función para generar el tablero HTML
-    function generateBoard(&$board_array)
-    {
+    function generateBoard(&$board_array, $isAI = false)
+{
+    ob_start(); // Command to not print all echoes until calling the function later; it stores and then returns it
 
-        ob_start(); //comando para no imprimir todo los echos hasta llamar a la funcion posteriormente; lo almacena y despues lo debuelve
-    
-        // Definimos el tamaño del tablero
-        $column_board = 10;
-        $row_board = 10;
-        // declaramos los identificadores
-        $letter_id = 65;
-        $number_id = 1;
+    // Define the size of the board
+    $column_board = 10;
+    $row_board = 10;
+    // Declare the identifiers
+    $letter_id = 65;
+    $number_id = 1;
 
+    echo "<div class='container-table'><div class='timer-fame'><div class='fame'><i class='fa-solid fa-bullhorn'></i>Fama: <span class='score'>-</span></div><div class='timer'><i class='fa-solid fa-hourglass-end'></i>Temps: <span id='gameClock'>00:00</span></div></div><table>";
 
-        echo "<div class='container'><div class='container-table'><div class='timer-fame'><div class='fame'><i class='fa-solid fa-bullhorn'></i>Fama: <span class='score'>-</span></div><div class='timer'><i class='fa-solid fa-hourglass-end'></i>Temps: <span id='gameClock'>00:00</span></div></div><table>";
+    for ($i = 0; $i <= $column_board; $i++) {
+        echo "<tr>";
 
-        for ($i = 0; $i <= $column_board; $i++) {
-            echo "<tr>";
-
-            for ($j = 0; $j <= $row_board; $j++) {
-                if ($i == 0 && $j == 0) {
-                    echo "<td></td>"; // Primera celda vacía
-                } elseif ($i == 0) {
-                    echo "<td>" . chr($letter_id) . "</td>"; // Primera fila con letras
-                    $letter_id++;
-                } elseif ($j == 0) {
-                    echo "<td>" . $number_id . "</td>"; // Primera columna con números
-                    $number_id++;
-                } else {
-
-                    $cell_id = $i - 1 . "_" . ($j - 1); // Generamos el ID de la celda
+        for ($j = 0; $j <= $row_board; $j++) {
+            if ($i == 0 && $j == 0) {
+                echo "<td></td>"; // First empty cell
+            } elseif ($i == 0) {
+                echo "<td>" . chr($letter_id) . "</td>"; // First row with letters
+                $letter_id++;
+            } elseif ($j == 0) {
+                echo "<td>" . $number_id . "</td>"; // First column with numbers
+                $number_id++;
+            } else {
+                $cell_id = $i - 1 . "_" . ($j - 1); // Generate the cell ID
+                $cell_prefix = $isAI ? "cell-ia_" : "cell_"; // Determine the prefix based on the board type
+                if (!$isAI) {
                     if (isset($board_array[$i - 1][$j - 1])) {
-                        echo "<td id='cell_$cell_id' class= 'bone covered'></td>";
+                        // If the cell has a value, it is a "bone"
+                        echo "<td id='{$cell_prefix}$cell_id' class='bone covered'></td>";
                     } else {
-                        echo "<td id='cell_$cell_id' class= 'ground covered'></td>";
+                        // If the cell does not have a value, it is "ground"
+                        echo "<td id='{$cell_prefix}$cell_id' class='ground covered'></td>";
+                    }
+                } else {
+                    // For player, apply classes based on the value in the cell
+                    if (isset($board_array[$i - 1][$j - 1])) {
+                        // If the cell has a value, it is a "bone"
+                        echo "<td id='{$cell_prefix}$cell_id' class='bone covered'></td>";
+                    } else {
+                        // If the cell does not have a value, it is "ground"
+                        echo "<td id='{$cell_prefix}$cell_id' class='ground covered'></td>";
                     }
                 }
             }
-
-            echo "</tr>";
         }
 
-        echo "</table></div><div class='container-info'>
-        
-        
-       <div class='info-item'> <h3>Com aconseguir fama</h3>
-            <div class='secondary-info'>
-            <ul>
-                <li>Se sumen 10 punts de fama per os trobat.</li>
-                <li>Si trobes el fòssil sencer se sumen 15 de fama.</li>
-                <li>Si portes una ratxa de 2 o més ossos trobats, s'aniran sumant 2 punts a la puntuació.</li>
-                <li>Cada 3 errors seguits es restaran 2 punts.</li>
-            </ul></div></div>
-        </div></div>";
-        return ob_get_clean(); // Devolver el tablero
+        echo "</tr>";
     }
+
+    echo "</table></div><div class='container-info'>
+    <div class='info-item'> <h3>Com aconseguir fama</h3>
+        <div class='secondary-info'>
+        <ul>
+            <li>Se sumen 10 punts de fama per os trobat.</li>
+            <li>Si trobes el fòssil sencer se sumen 15 de fama.</li>
+            <li>Si portes una ratxa de 2 o més ossos trobats, s'aniran sumant 2 punts a la puntuació.</li>
+            <li>Cada 3 errors seguits es restaran 2 punts.</li>
+        </ul></div></div>
+    </div>";
+    
+    return ob_get_clean(); // Return the board
+}
 
     // Definir los barcos
     $ships = [
+        "fragata" => [[], 1, "#C70039", 4],
+        "submarí" => [[], 2, "#0057C7", 3],
+        "destructor" => [[], 3, "#00C745", 2],
+        "portaavions" => [[], 4, "#EFDF23", 1]
+    ];
+
+    $ships_ia = [
         "fragata" => [[], 1, "#C70039", 4],
         "submarí" => [[], 2, "#0057C7", 3],
         "destructor" => [[], 3, "#00C745", 2],
@@ -139,7 +169,7 @@
         $ship_positions = [];
         $attempts = 0;
 
-        while ($attempts < 100) {
+        while ($attempts < 1000) {
             $orientation = rand(0, 1); // 0 = horizontal, 1 = vertical
     
             if ($orientation == 0) { // Horizontal
@@ -203,6 +233,8 @@
     // Iniciar el tablero vacío
     $board = array_fill(0, 10, array_fill(0, 10, null));
 
+    $board_ia = array_fill(0, 10, array_fill(0, 10, null));
+
     // Colocar los barcos en el tablero
     $shipList = [];
     foreach ($ships as &$ship) {
@@ -212,14 +244,29 @@
             }
         }
     }
-
-    // Generar el tablero con los barcos colocados
+    // Generate the board with the ships placed
     $board_html = generateBoard($board);
 
-    // Mostrar el tablero generado
+    // Show the generated board
     echo $board_html;
 
+    $shipList = [];
+    foreach ($ships_ia as &$ship) {
+        for ($i = 0; $i < $ship[3]; $i++) {
+            if (!placeShip($board_ia, $ship, $shipList)) {
+                echo "<p>Error al colocar el barco: {$ship[2]}</p>";
+            }
+        }
+    }
+    // Generate the AI board with the ships placed
+    $board_ia = generateBoard($board_ia, true);
+
+    // Show the generated AI board
+    echo $board_ia;
+
     ?>
+
+    </div>
 
     <div id="rankingInfo" class="centered-form">
         <h2>Has aconseguit <span id="score">-</span> punts de fama</h2>

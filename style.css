@@ -103,6 +103,7 @@ html {
     font-weight: 400;
 }
 
+#landing_page button,
 #landing_page a {
     height: 80px;
     width: 300px;
@@ -128,7 +129,8 @@ html {
     cursor: not-allowed !important;
 }
 
-#landing_page a:hover {
+#landing_page a:hover,
+#landing_page button:hover {
     color: #fff;
     background-color: var(--button);
     transition-duration: .33s;
@@ -332,6 +334,16 @@ html {
     color: #fff;
     transition-duration: .33s;
 }
+
+.versus-ia .container {
+    /* flex-direction: row-reverse; */
+} 
+
+.versus-ia .container-info {
+    display: none !important;
+} 
+
+/* VERSUS IA */
 
 /* RANKING_PAGE */
 
@@ -663,3 +675,4 @@ html {
     width: 305px; 
     height: 386px;
 }
+
