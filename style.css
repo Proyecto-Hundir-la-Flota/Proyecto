@@ -335,6 +335,9 @@ html {
     transition-duration: .33s;
 }
 
+/* VERSUS IA */
+
+
 .versus-ia .container {
     /* flex-direction: row-reverse; */
 } 
@@ -343,7 +346,13 @@ html {
     display: none !important;
 } 
 
-/* VERSUS IA */
+#game_page:not(.versus-ia) .ia-table {
+    display: none;
+}
+
+#game_page .ia-info {
+    display: none;
+} 
 
 /* RANKING_PAGE */
 

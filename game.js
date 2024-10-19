@@ -149,11 +149,24 @@ function stopUpdatePoints() {
     pointsFrozen = true;
 }
 
-function checkStatus(event) {
+function checkStatus(event, boardType) {
     const cell = event.target;
+
+    // Si la celda está cubierta, se destapa
     if (cell.classList.contains("covered")) {
         cell.classList.remove("covered");
 
+        if (boardType === 'player') {
+            // Lógica y sonidos para el tablero del jugador
+            handlePlayerBoardLogic(cell);
+        } else if (boardType === 'ai') {
+            // Lógica y sonidos para el tablero de la IA
+            handleAIBoardLogic(cell);
+        }
+    }
+}
+
+function handlePlayerBoardLogic(cell) {
 
         // Verificar que las celdas para completar el easter egg estan seleccionadas
         if (cell.id === 'cell_0_0') cell_0_0 = true;
@@ -275,35 +288,40 @@ function checkStatus(event) {
             audios['arena'].play();
         }
         updatePointsCounter();
-    }
-}
+   }
+
 
 document.addEventListener("DOMContentLoaded", function () {
-    const cells = document.getElementsByTagName("td");
-    for (cell of cells) {
-        if (cell.id.includes("cell")) {
-            cell.addEventListener("click", function (event) {
-                checkStatus(event);
-            });
-        }
+    const playerCells = document.querySelectorAll("td[id^='cell_']"); // Selecciona las celdas del jugador (IDs que empiezan por 'cell_')
+    const aiCells = document.querySelectorAll("td[id^='ia_cell_']"); // Selecciona las celdas de la IA (IDs que empiezan por 'ia_cell_')
+
+    // Asignar eventos de clic a las celdas del jugador
+    for (let cell of playerCells) {
+        cell.addEventListener("click", function (event) {
+            checkStatus(event, 'player'); // Llamamos a checkStatus indicando que es del tablero del jugador
+        });
+    }
+
+    // Asignar eventos de clic a las celdas del tablero de la IA
+    for (let cell of aiCells) {
+        cell.addEventListener("click", function (event) {
+            checkStatus(event, 'ai'); // Llamamos a checkStatus indicando que es del tablero de la IA
+        });
     }
 
     document.getElementById("rankingInfo").style.display = "none";
     document.getElementById("winner").style.display = "none";
-    // Iniciar el temporizador al cargar la pÃ¡gina
-    startClock();
+    startClock(); // Iniciar el temporizador
 
     ships.forEach(ship => {
         discoveredFossils.push([true, false]);
-        //console.log(ship);
     });
 
-    // Manejar el evento de envío del formulario
+    // Evento del formulario para enviar puntaje
     const form = document.getElementById("scoreForm");
     form.addEventListener("submit", function (event) {
-        // Aquí colocamos el puntaje en el campo oculto
-        document.getElementById("score-hidden").value = points; // Asignar el puntaje acumulado
+        document.getElementById("score-hidden").value = points;
     });
-
 });
+
 
