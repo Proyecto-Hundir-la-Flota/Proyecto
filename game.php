@@ -9,19 +9,20 @@
     <script src="https://kit.fontawesome.com/9c44094610.js" crossorigin="anonymous"></script>
 
 </head>
-
 <body <?php
     if (isset($_POST['gamemode'])) {
         $gamemode = $_POST['gamemode'];
         
         if ($gamemode == 'training') {
-            echo 'id="game_page"';
+            echo 'id="game_page" data-gamemode="singlePlayer"';
+            
         } elseif ($gamemode == 'versus-ia') {
-            echo 'id="game_page" class="versus-ia"';
+            echo 'id="game_page" class="versus-ia" data-gamemode="multiPlayer"';
         }
     }
     ?>
 >
+
 
     <div class="tape">
         <div class="dinosaurs-left">
@@ -138,7 +139,7 @@ function generateBoard(&$board_array, $isAI = false) {
                 } else {
                     // Si la celda tiene un valor en $board_array, es un "bone"
                     if (isset($board_array[$i - 1][$j - 1])) {
-                        echo "<td id='{$cell_prefix}{$cell_id}' class='bone'></td>";
+                        echo "<td id='{$cell_prefix}{$cell_id}' class='bone covered'></td>";
                     } else {
                         // Si la celda no tiene valor, es "ground"
                         echo "<td id='{$cell_prefix}{$cell_id}' class='ground covered'></td>";
@@ -192,16 +193,14 @@ $ships = [
     "destructor" => [[], 3, "#00C745", 2],
     "portaavions" => [[], 4, "#EFDF23", 1]
 ];
-
-// Función para colocar un barco
 function placeShip(&$board, &$ship, &$shipList)
 {
     $n = count($board);
     $ship_length = $ship[1];
     $ship_positions = [];
-    $attempts = 0;
+    $attempts = 0; // Puedes seguir contando intentos, pero no limitarás a 1000.
 
-    while ($attempts < 1000) {
+    while (true) { // Bucle infinito hasta que se coloque el barco
         $orientation = rand(0, 1); // 0 = horizontal, 1 = vertical
 
         if ($orientation == 0) { // Horizontal
@@ -253,14 +252,11 @@ function placeShip(&$board, &$ship, &$shipList)
             }
             array_push($shipList, $shipPositions);
             $ship[0] = $ship_positions;
-            return true;
+            return true; // Devuelve `true` al colocar el barco correctamente
         }
-
-        $attempts++;
     }
-
-    return false;
 }
+
 
 // Iniciar el tablero vacío
 $board = array_fill(0, 10, array_fill(0, 10, null));
@@ -322,7 +318,9 @@ echo $AIboard_html;
 
 <script type="text/javascript">
     const ships = <?php echo json_encode($shipList); ?>;
+    const iaShips = <?php echo json_encode($AIshipList); ?>;
 </script>
+
 
 <script type="text/javascript" src="game.js"></script>
 </body>

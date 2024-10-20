@@ -1,7 +1,9 @@
+// Obtener el modo de juego desde el atributo data-gamemode del body
+const gameMode = document.body.getAttribute('data-gamemode');
 
+// Ahora gameMode será 'singlePlayer' o 'multiPlayer'
 
 // crear un array, donde usando cada nombre guarda un archivo de audio
-
 const audios = [];
 audios['arena'] = new Audio("./sounds/desenterrar_arena.mp3");
 audios['hueso'] = new Audio("./sounds/desenterrar_huesos.mp3");
@@ -9,8 +11,10 @@ audios['easter_egg'] = new Audio("./sounds/easter_egg.mp3");
 audios['dino'] = new Audio("./sounds/dino.mp3");
 audios['win'] = new Audio("./sounds/win.mp3");
 
-
 const discoveredFossils = [];
+
+// Variable para controlar si el jugador puede hacer clic
+let playerCanClick = true;
 
 let elapsedTime = 0; //Tiempo que transcurrido
 let timerId;
@@ -23,6 +27,7 @@ let cell_0_0 = false;
 let cell_0_9 = false;
 let cell_9_0 = false;
 let cell_9_9 = false;
+
 // definir variable para comprovar que el easter egg solo se inicia una vez
 let easterEggPlayed = false;
 
@@ -54,35 +59,34 @@ function startClock() {
 // Detener el reloj
 function stopClock() {
     clearInterval(timerId); // Detener el temporizador
-    console.log("Timer stopped at " + elapsedTime + " seconds.");
 }
 
-// creamos la fincion para definir las alertas
-function createAlerts(alert_type) {
-
-    // forzamos a limpiar la alerta para no repetir una alarma exstente
+function createAlerts(alert_type, playerType) {
+    // forzamos a limpiar la alerta para no repetir una alarma existente
     document.querySelectorAll('.alert').forEach(alert => alert.remove());
     let alert;
     let elementI;
 
-    const emojis=[];
-    emojis['correct']= "fa-solid fa-thumbs-up";
-    emojis['incorrect']="fa-solid fa-circle-xmark";
-    emojis['win']="fa-solid fa-crown";
-    emojis['complet']="fa-solid fa-bone";
+    const emojis = [];
+    emojis['correct'] = "fa-solid fa-thumbs-up";
+    emojis['incorrect'] = "fa-solid fa-circle-xmark";
+    emojis['win'] = "fa-solid fa-crown";
+    emojis['complet'] = "fa-solid fa-bone";
 
+    // Clase adicional para diferenciar las alertas del jugador y la IA
+    const playerClass = playerType === 'player' ? 'player-alert' : 'ia-alert';
 
     // Crear la alerta de "encontrado"
     if (alert_type === 'found') {
         alert = document.createElement('div');
         alert.id = 'foundAlert';
-        alert.className = 'alert';
+        alert.className = `alert ${playerClass}`; // Añadimos la clase del jugador/IA
         document.body.appendChild(alert);
-        elementI = document.createElement('i'); 
+        elementI = document.createElement('i');
         elementI.className = emojis['correct']; // Agregamos el icono usando la clase
-        alert.appendChild(elementI); //añadimos element i como hijo de alert para agregar el emoji
-        const textCode = document.createTextNode(" Has trobat un ós!");
-        alert.appendChild(textCode); //añadimos element textNode como hijo de alert para agregar el texto
+        alert.appendChild(elementI); // Añadimos element i como hijo de alert para agregar el emoji
+        const textNode = document.createTextNode(playerType === 'player' ? " Has trobat un ós!" : " La IA ha trobat un ós!");
+        alert.appendChild(textNode); // Añadimos element textNode como hijo de alert para agregar el texto
         alert.style.display = 'block';
     }
 
@@ -90,27 +94,27 @@ function createAlerts(alert_type) {
     if (alert_type === 'miss') {
         alert = document.createElement('div');
         alert.id = 'missAlert';
-        alert.className = 'alert';
+        alert.className = `alert ${playerClass}`; // Añadimos la clase del jugador/IA
         document.body.appendChild(alert);
         elementI = document.createElement('i');
         elementI.className = emojis['incorrect']; // Agregamos el icono usando la clase
-        alert.appendChild(elementI);  //añadimos element i como hijo de alert para agregar el emoji
-        const textNode = document.createTextNode(" No s'ha trobat res en la cerca");
-        alert.appendChild(textNode); //añadimos element textNode como hijo de alert para agregar el texto
+        alert.appendChild(elementI);  // Añadimos element i como hijo de alert para agregar el emoji
+        const textNode = document.createTextNode(playerType === 'player' ? " No s'ha trobat res" : " La IA no ha trobat res");
+        alert.appendChild(textNode); // Añadimos element textNode como hijo de alert para agregar el texto
         alert.style.display = 'block';
     }
 
-    // Crear la alerta de "fosil entero descubierto"
+    // Crear la alerta de "fósil entero descubierto"
     if (alert_type === 'foundAll') {
         alert = document.createElement('div');
         alert.id = 'foundAlertAll';
-        alert.className = 'alert';
+        alert.className = `alert ${playerClass}`; // Añadimos la clase del jugador/IA
         document.body.appendChild(alert);
         elementI = document.createElement('i');
         elementI.className = emojis['complet']; // Agregamos el icono usando la clase
-        alert.appendChild(elementI);  //añadimos element i como hijo de alert para agregar el emoji
-        const textNode = document.createTextNode(" Has trobat un fòssil!");
-        alert.appendChild(textNode); //añadimos element textNode como hijo de alert para agregar el texto
+        alert.appendChild(elementI);  // Añadimos element i como hijo de alert para agregar el emoji
+        const textNode = document.createTextNode(playerType === 'player' ? " Has trobat un fòssil!" : " La IA ha trobat un fòssil!");
+        alert.appendChild(textNode); // Añadimos element textNode como hijo de alert para agregar el texto
         alert.style.display = 'block';
     }
 
@@ -118,21 +122,30 @@ function createAlerts(alert_type) {
     if (alert_type === 'win') {
         alert = document.createElement('div');
         alert.id = 'winAlert';
-        alert.className = 'alert';
+        alert.className = `alert ${playerClass}`; // Añadimos la clase del jugador/IA
         document.body.appendChild(alert);
         elementI = document.createElement('i');
         elementI.className = emojis['win']; // Agregamos el icono usando la clase
-        alert.appendChild(elementI); //añadimos element i como hijo de alert para agregar el emoji
-        const textNode = document.createTextNode(" Has guanyat el joc!");
-        alert.appendChild(textNode); //añadimos element textNode como hijo de alert para agregar el texto
+        alert.appendChild(elementI); // Añadimos element i como hijo de alert para agregar el emoji
+        const textNode = document.createTextNode(playerType === 'player' ? " Has guanyat el joc!" : " La IA ha guanyat el joc!");
+        alert.appendChild(textNode); // Añadimos element textNode como hijo de alert para agregar el texto
         alert.style.display = 'block';
     }
 
     // Remover las alertas después de 3 segundos (opcional)
     setTimeout(() => {
-        if (alert) alert.remove();
+        if (alert) {
+            // Añadir la clase de salida según el tipo de jugador
+            alert.classList.add(playerType === 'player' ? 'slide-out-player' : 'slide-out-ai');
+            // Remover después de la animación
+            setTimeout(() => {
+                alert.remove();
+            }, 500); // Duración de la animación de salida
+        }
     }, 2000);
 }
+
+
 
 // Función para actualizar el contador de puntos en pantalla
 function updatePointsCounter() {
@@ -149,8 +162,15 @@ function stopUpdatePoints() {
     pointsFrozen = true;
 }
 
+// Función checkStatus
 function checkStatus(event, boardType) {
     const cell = event.target;
+
+    // Verificar si es el turno del jugador
+    if (!playerCanClick) {
+        console.log("Espera tu turno");
+        return; // Salir si el jugador no puede hacer clic
+    }
 
     // Si la celda está cubierta, se destapa
     if (cell.classList.contains("covered")) {
@@ -159,12 +179,31 @@ function checkStatus(event, boardType) {
         if (boardType === 'player') {
             // Lógica y sonidos para el tablero del jugador
             handlePlayerBoardLogic(cell);
-        } else if (boardType === 'ai') {
-            // Lógica y sonidos para el tablero de la IA
-            handleAIBoardLogic(cell);
+
+            // Deshabilitar los clics del jugador después de su turno
+            playerCanClick = false;
+
+            // Solo ejecutar iaTurn si estamos en modo multiPlayer o versus-ia
+            if (gameMode === 'multiPlayer' || gameMode === 'versus-ia') {
+                // Esperar 2 segundos antes de que la IA haga su movimiento
+                setTimeout(() => {
+                    iaTurn(); // La IA hace su turno después de 2 segundos
+
+                    // Después del turno de la IA, esperar 1 segundo antes de habilitar los clics del jugador
+                    setTimeout(() => {
+                        playerCanClick = true;
+                    }, 2500); // Espera 2.5 segundo antes de permitir al jugador hacer clic de nuevo
+                }, 2500); // 2.5 segundos antes de que la IA haga su movimiento
+            } else {
+                // En single player, podemos reactivar los clics inmediatamente si no hay IA
+                playerCanClick = true;
+            }
         }
     }
 }
+
+
+
 
 function handlePlayerBoardLogic(cell) {
 
@@ -196,10 +235,14 @@ function handlePlayerBoardLogic(cell) {
             let victory = true;
 
             let cellPosition = cell.id.replace("cell_", "").split("_");
+
+
             for (let index = 0; index < ships.length; index++) {
                 discoveredFossils[index][0] = true;
                 for (let indexShip = 0; indexShip < ships[index].length; indexShip++) {
+                    
                     let position = ships[index][indexShip][0];
+
 
                     if (position[0] == cellPosition[0] && position[1] == cellPosition[1]) {
                         ships[index][indexShip][1] = true;
@@ -211,6 +254,7 @@ function handlePlayerBoardLogic(cell) {
                     }
                 }
             }
+
 
             for (let index = 0; index < discoveredFossils.length; index++) {
                 let discoveredFossil = discoveredFossils[index];
@@ -240,7 +284,7 @@ function handlePlayerBoardLogic(cell) {
 
                 updatePointsCounter();
 
-                createAlerts('win');
+                createAlerts('win', 'player');
                 audios['win'].play();
                 document.getElementById("rankingInfo").style.display = "block";
                 document.getElementById("score").innerHTML = points;
@@ -256,7 +300,7 @@ function handlePlayerBoardLogic(cell) {
                         audios['dino'].pause(); // Si está reproduciéndose, lo pausamos
                         audios['dino'].currentTime = 0; // Reiniciamos el audio
                     }
-                    createAlerts('foundAll');
+                    createAlerts('foundAll', 'player');
                     audios['dino'].play();
 
                 } else {
@@ -266,7 +310,7 @@ function handlePlayerBoardLogic(cell) {
                         audios['hueso'].pause(); // Si está reproduciéndose, lo pausamos
                         audios['hueso'].currentTime = 0; // Reiniciamos el audio
                     }
-                    createAlerts('found');
+                    createAlerts('found', 'player');
                     audios['hueso'].play();
                 }
 
@@ -284,11 +328,109 @@ function handlePlayerBoardLogic(cell) {
                 audios['arena'].pause(); // Si está reproduciéndose, lo pausamos
                 audios['arena'].currentTime = 0; // Reiniciamos el audio
             }
-            createAlerts('miss');
+            createAlerts('miss', 'player');
             audios['arena'].play();
         }
         updatePointsCounter();
-   }
+}
+
+function handleAIBoardLogic(cell) {
+    // Verifica si la celda clicada contiene un hueso
+    if (cell.classList.contains("bone")) {
+
+        let hitAndSink = false;
+        let victory = true;
+
+        // Obtener la posición de la celda IA
+        let cellPosition = cell.id.replace("ia_cell_", "").split("_");
+
+        // Recorremos los barcos de la IA para verificar si la posición coincide con algún fósil
+        for (let index = 0; index < iaShips.length; index++) {  
+            discoveredFossils[index][0] = true;
+
+            for (let indexShip = 0; indexShip < iaShips[index].length; indexShip++) {
+                let position = iaShips[index][indexShip][0];  
+
+                // Comprobar si la posición de la celda corresponde a un fósil del barco
+                if (position[0] == cellPosition[0] && position[1] == cellPosition[1]) {
+                    iaShips[index][indexShip][1] = true; // Marcar como descubierto en IA
+                    discoveredFossils[index][1] = true; // Marcar fósil como encontrado
+                }
+
+                // Si alguna parte del barco no ha sido descubierta, no se completa el fósil
+                if (!iaShips[index][indexShip][1]) {
+                    discoveredFossils[index][0] = false;
+                }
+            }
+        }
+
+        for (let index = 0; index < discoveredFossils.length; index++) {
+            let discoveredFossil = discoveredFossils[index];
+            let foundBone = discoveredFossil[0];
+
+            if (!foundBone) {
+                victory = false; // Si no se encontró todo el fósil
+            } else {
+                if (discoveredFossil[1]) {
+                    hitAndSink = true; // Se descubrió el fósil completo
+                }
+            }
+
+            discoveredFossils[index][1] = false; // Reiniciar la parte encontrada para el próximo clic
+        }
+
+        if (victory) {
+            stopClock();
+
+            // Mostrar alerta de victoria para la IA
+            createAlerts('win', 'ia');
+            audios['win'].play();
+            document.getElementById("rankingInfo").style.display = "block";
+            document.getElementById("winner").style.display = "flex";
+            
+            // Lógica de fin del juego aquí, si es necesario
+        } else {
+            if (hitAndSink) {
+                // Mostrar alerta de fósil completo
+                createAlerts('foundAll', 'ia');
+                audios['dino'].play();
+            } else {
+                // Mostrar alerta de fósil encontrado
+                createAlerts('found', 'ia');
+                audios['hueso'].play();
+            }
+        }
+    } else {
+        // Si no se encontró un fósil, reproducimos el sonido de fallo
+        createAlerts('miss', 'ia');
+        audios['arena'].play();
+    }
+}
+
+
+
+// Función que maneja el turno de la IA
+function iaTurn() {
+    console.log("Turno de la IA");
+    
+    let validMove = false;
+
+    // Bucle que busca una celda válida para que la IA juegue
+    while (!validMove) {
+        const randomRow = Math.floor(Math.random() * 10);
+        const randomCol = Math.floor(Math.random() * 10);
+        const cell = document.getElementById(`ia_cell_${randomRow}_${randomCol}`);
+
+        // Verificar si la celda existe y está cubierta
+        if (cell && cell.classList.contains("covered")) {
+            // La IA hace su jugada
+            cell.classList.remove("covered"); // Destapar la celda
+            handleAIBoardLogic(cell); // Lógica para manejar el clic de la IA
+            validMove = true; // Salir del bucle al encontrar una celda válida
+        }
+    }
+}
+
 
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -304,9 +446,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Asignar eventos de clic a las celdas del tablero de la IA
     for (let cell of aiCells) {
-        cell.addEventListener("click", function (event) {
-            checkStatus(event, 'ai'); // Llamamos a checkStatus indicando que es del tablero de la IA
-        });
+        // cell.addEventListener("click", function (event) {
+        //     checkStatus(event, 'ai'); // Llamamos a checkStatus indicando que es del tablero de la IA
+        // });
+        // cell.removeEventListener("click", checkStatus);
     }
 
     document.getElementById("rankingInfo").style.display = "none";
