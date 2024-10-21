@@ -148,133 +148,272 @@ function updatePointsCounter() {
 function stopUpdatePoints() {
     pointsFrozen = true;
 }
+class checkTypeBoard{}
 
-function checkStatus(event) {
-    const cell = event.target;
-    if (cell.classList.contains("covered")) {
-        cell.classList.remove("covered");
+// ejecutar solo con el boton de entrenamiento
+if(checkTypeBoard==="tainning"){
+// no tocar dado que es el codigo de entrenamiento
+    function checkStatus(event) {
+        const cell = event.target;
+        if (cell.classList.contains("covered")) {
+            cell.classList.remove("covered");
 
 
-        // Verificar que las celdas para completar el easter egg estan seleccionadas
-        if (cell.id === 'cell_0_0') cell_0_0 = true;
-        if (cell.id === 'cell_0_9') cell_0_9 = true;
-        if (cell.id === 'cell_9_0') cell_9_0 = true;
-        if (cell.id === 'cell_9_9') cell_9_9 = true;
+            // Verificar que las celdas para completar el easter egg estan seleccionadas
+            if (cell.id === 'cell_0_0') cell_0_0 = true;
+            if (cell.id === 'cell_0_9') cell_0_9 = true;
+            if (cell.id === 'cell_9_0') cell_9_0 = true;
+            if (cell.id === 'cell_9_9') cell_9_9 = true;
 
-        // Condicional para reproducir el easter egg
-        if (cell_0_0 && cell_0_9 && cell_9_0 && cell_9_9 && !easterEggPlayed) {
-            easterEggPlayed = true;  // Marcar que el easter egg ya se ha reproducido
-            audios['easter_egg'].play();
-            easterEggImage.style.display = 'block';
-            setTimeout(() => {
-                if (easterEggImage) easterEggImage.remove();
-            }, 3600);
-        }
-        
-        if (cell.classList.contains("bone")) {
-            accumulatedErrors = 0;
-            consecutiveAccumulatedHits++;
-
-            if (consecutiveAccumulatedHits > 1) {
-                points += 2;
+            // Condicional para reproducir el easter egg
+            if (cell_0_0 && cell_0_9 && cell_9_0 && cell_9_9 && !easterEggPlayed) {
+                easterEggPlayed = true;  // Marcar que el easter egg ya se ha reproducido
+                audios['easter_egg'].play();
+                easterEggImage.style.display = 'block';
+                setTimeout(() => {
+                    if (easterEggImage) easterEggImage.remove();
+                }, 3600);
             }
-
-            let hitAndSink = false;
-            let victory = true;
-
-            let cellPosition = cell.id.replace("cell_", "").split("_");
-            for (let index = 0; index < ships.length; index++) {
-                discoveredFossils[index][0] = true;
-                for (let indexShip = 0; indexShip < ships[index].length; indexShip++) {
-                    let position = ships[index][indexShip][0];
-
-                    if (position[0] == cellPosition[0] && position[1] == cellPosition[1]) {
-                        ships[index][indexShip][1] = true;
-                        discoveredFossils[index][1] = true;
-                    }
-
-                    if (!ships[index][indexShip][1]) {
-                        discoveredFossils[index][0] = false;
-                    }
-                }
-            }
-
-            for (let index = 0; index < discoveredFossils.length; index++) {
-                let discoveredFossil = discoveredFossils[index];
-                let foundBone = discoveredFossil[0];
-
-                if (!foundBone) {
-                    victory = false;
-                } else {
-                    if (discoveredFossil[1]) {
-                        hitAndSink = true;
-                    }
-                }
-                discoveredFossils[index][1] = false;
-            }
-            if (victory) {
-
-                stopClock();
-                points += 15;
-                
-                if (elapsedTime < 60) {
-                    points += 20;
-                } else if (elapsedTime <= 120) {
-                    points += 10;
-                } else if (elapsedTime > 180) {
-                    points -= 10;
-                }
-
-                updatePointsCounter();
-
-                createAlerts('win');
-                audios['win'].play();
-                document.getElementById("rankingInfo").style.display = "block";
-                document.getElementById("score").innerHTML = points;
-                document.getElementById("winner").style.display = "flex";
-                
-
-                stopUpdatePoints();
-            } else {
-                if (hitAndSink) {
-                    points += 15;
-                    // fosil descubierto
-                    if (!audios['dino'].paused) {
-                        audios['dino'].pause(); // Si está reproduciéndose, lo pausamos
-                        audios['dino'].currentTime = 0; // Reiniciamos el audio
-                    }
-                    createAlerts('foundAll');
-                    audios['dino'].play();
-
-                } else {
-                    points += 10;
-                    // huesso encontrado
-                    if (!audios['hueso'].paused) {
-                        audios['hueso'].pause(); // Si está reproduciéndose, lo pausamos
-                        audios['hueso'].currentTime = 0; // Reiniciamos el audio
-                    }
-                    createAlerts('found');
-                    audios['hueso'].play();
-                }
-
-            }
-        } else {
-            accumulatedErrors++;
-            consecutiveAccumulatedHits = 0;
-
-            if (accumulatedErrors >= 3) {
-                points -= 5;
+            
+            if (cell.classList.contains("bone")) {
                 accumulatedErrors = 0;
+                consecutiveAccumulatedHits++;
+
+                if (consecutiveAccumulatedHits > 1) {
+                    points += 2;
+                }
+
+                let hitAndSink = false;
+                let victory = true;
+
+                let cellPosition = cell.id.replace("cell_", "").split("_");
+                for (let index = 0; index < ships.length; index++) {
+                    discoveredFossils[index][0] = true;
+                    for (let indexShip = 0; indexShip < ships[index].length; indexShip++) {
+                        let position = ships[index][indexShip][0];
+
+                        if (position[0] == cellPosition[0] && position[1] == cellPosition[1]) {
+                            ships[index][indexShip][1] = true;
+                            discoveredFossils[index][1] = true;
+                        }
+
+                        if (!ships[index][indexShip][1]) {
+                            discoveredFossils[index][0] = false;
+                        }
+                    }
+                }
+
+                for (let index = 0; index < discoveredFossils.length; index++) {
+                    let discoveredFossil = discoveredFossils[index];
+                    let foundBone = discoveredFossil[0];
+
+                    if (!foundBone) {
+                        victory = false;
+                    } else {
+                        if (discoveredFossil[1]) {
+                            hitAndSink = true;
+                        }
+                    }
+                    discoveredFossils[index][1] = false;
+                }
+                if (victory) {
+
+                    stopClock();
+                    points += 15;
+                    
+                    if (elapsedTime < 60) {
+                        points += 20;
+                    } else if (elapsedTime <= 120) {
+                        points += 10;
+                    } else if (elapsedTime > 180) {
+                        points -= 10;
+                    }
+
+                    updatePointsCounter();
+
+                    createAlerts('win');
+                    audios['win'].play();
+                    document.getElementById("rankingInfo").style.display = "block";
+                    document.getElementById("score").innerHTML = points;
+                    document.getElementById("winner").style.display = "flex";
+                    
+
+                    stopUpdatePoints();
+                } else {
+                    if (hitAndSink) {
+                        points += 15;
+                        // fosil descubierto
+                        if (!audios['dino'].paused) {
+                            audios['dino'].pause(); // Si está reproduciéndose, lo pausamos
+                            audios['dino'].currentTime = 0; // Reiniciamos el audio
+                        }
+                        createAlerts('foundAll');
+                        audios['dino'].play();
+
+                    } else {
+                        points += 10;
+                        // huesso encontrado
+                        if (!audios['hueso'].paused) {
+                            audios['hueso'].pause(); // Si está reproduciéndose, lo pausamos
+                            audios['hueso'].currentTime = 0; // Reiniciamos el audio
+                        }
+                        createAlerts('found');
+                        audios['hueso'].play();
+                    }
+
+                }
+            } else {
+                accumulatedErrors++;
+                consecutiveAccumulatedHits = 0;
+
+                if (accumulatedErrors >= 3) {
+                    points -= 5;
+                    accumulatedErrors = 0;
+                }
+                // fallo al buscar
+                if (!audios['arena'].paused) {
+                    audios['arena'].pause(); // Si está reproduciéndose, lo pausamos
+                    audios['arena'].currentTime = 0; // Reiniciamos el audio
+                }
+                createAlerts('miss');
+                audios['arena'].play();
             }
-            // fallo al buscar
-            if (!audios['arena'].paused) {
-                audios['arena'].pause(); // Si está reproduciéndose, lo pausamos
-                audios['arena'].currentTime = 0; // Reiniciamos el audio
-            }
-            createAlerts('miss');
-            audios['arena'].play();
+            updatePointsCounter();
         }
-        updatePointsCounter();
+    }
+}
+
+// ejecutar solo con el boton de contra la maquina
+if(checkTypeBoard==="versus-ia"){
+    function checkStatus(event) {
+        const cell = event.target;
+        const turn= true; //poner condicionales en todo el codigo para cambiar de turnos y tener en cuenta el crear otro tablero para el turno de la maquina
+        const hit= false;
+        if (cell.classList.contains("covered")) {
+            cell.classList.remove("covered");
+
+
+            // Verificar que las celdas para completar el easter egg estan seleccionadas
+            if (cell.id === 'cell_0_0') cell_0_0 = true;
+            if (cell.id === 'cell_0_9') cell_0_9 = true;
+            if (cell.id === 'cell_9_0') cell_9_0 = true;
+            if (cell.id === 'cell_9_9') cell_9_9 = true;
+
+            // Condicional para reproducir el easter egg
+            if (cell_0_0 && cell_0_9 && cell_9_0 && cell_9_9 && !easterEggPlayed) {
+                easterEggPlayed = true;  // Marcar que el easter egg ya se ha reproducido
+                audios['easter_egg'].play();
+                easterEggImage.style.display = 'block';
+                setTimeout(() => {
+                    if (easterEggImage) easterEggImage.remove();
+                }, 3600);
+            }
+            //codigo de la funcion
+            if (cell.classList.contains("bone")) {
+                accumulatedErrors = 0;
+                consecutiveAccumulatedHits++;
+
+                if (consecutiveAccumulatedHits > 1) {
+                    points += 2;
+                }
+
+                let hitAndSink = false;
+                let victory = true;
+
+                let cellPosition = cell.id.replace("cell_", "").split("_");
+                for (let index = 0; index < ships.length; index++) {
+                    discoveredFossils[index][0] = true;
+                    for (let indexShip = 0; indexShip < ships[index].length; indexShip++) {
+                        let position = ships[index][indexShip][0];
+
+                        if (position[0] == cellPosition[0] && position[1] == cellPosition[1]) {
+                            ships[index][indexShip][1] = true;
+                            discoveredFossils[index][1] = true;
+                        }
+
+                        if (!ships[index][indexShip][1]) {
+                            discoveredFossils[index][0] = false;
+                        }
+                    }
+                }
+
+                for (let index = 0; index < discoveredFossils.length; index++) {
+                    let discoveredFossil = discoveredFossils[index];
+                    let foundBone = discoveredFossil[0];
+
+                    if (!foundBone) {
+                        victory = false;
+                    } else {
+                        if (discoveredFossil[1]) {
+                            hitAndSink = true;
+                        }
+                    }
+                    discoveredFossils[index][1] = false;
+                }
+                if (victory) {
+
+                    stopClock();
+                    points += 15;
+                    
+                    if (elapsedTime < 60) {
+                        points += 20;
+                    } else if (elapsedTime <= 120) {
+                        points += 10;
+                    } else if (elapsedTime > 180) {
+                        points -= 10;
+                    }
+
+                    updatePointsCounter();
+
+                    createAlerts('win');
+                    audios['win'].play();
+                    document.getElementById("rankingInfo").style.display = "block";
+                    document.getElementById("score").innerHTML = points;
+                    document.getElementById("winner").style.display = "flex";
+                    
+
+                    stopUpdatePoints();
+                } else {
+                    if (hitAndSink) {
+                        points += 15;
+                        // fosil descubierto
+                        if (!audios['dino'].paused) {
+                            audios['dino'].pause(); // Si está reproduciéndose, lo pausamos
+                            audios['dino'].currentTime = 0; // Reiniciamos el audio
+                        }
+                        createAlerts('foundAll');
+                        audios['dino'].play();
+
+                    } else {
+                        points += 10;
+                        // huesso encontrado
+                        if (!audios['hueso'].paused) {
+                            audios['hueso'].pause(); // Si está reproduciéndose, lo pausamos
+                            audios['hueso'].currentTime = 0; // Reiniciamos el audio
+                        }
+                        createAlerts('found');
+                        audios['hueso'].play();
+                    }
+
+                }
+            } else {
+                accumulatedErrors++;
+                consecutiveAccumulatedHits = 0;
+
+                if (accumulatedErrors >= 3) {
+                    points -= 5;
+                    accumulatedErrors = 0;
+                }
+                // fallo al buscar
+                if (!audios['arena'].paused) {
+                    audios['arena'].pause(); // Si está reproduciéndose, lo pausamos
+                    audios['arena'].currentTime = 0; // Reiniciamos el audio
+                }
+                createAlerts('miss');
+                audios['arena'].play();
+            }
+            updatePointsCounter();
+        }
     }
 }
 
