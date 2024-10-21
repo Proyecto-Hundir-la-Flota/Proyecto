@@ -162,7 +162,8 @@ html {
 }
 
 
-#game_page td:first-child, #game_page tr:first-child {
+#game_page td:first-child,
+#game_page tr:first-child {
     background-color: var(--board_header_row);
 }
 
@@ -276,18 +277,18 @@ html {
 }
 
 #game_page .container-table .timer-fame .timer i,
-#game_page .container-table .timer-fame .fame i{
+#game_page .container-table .timer-fame .fame i {
     margin-right: 5px;
 }
 
 #game_page .container-table .timer-fame .timer #gameClock {
-    display: inline-block; 
+    display: inline-block;
     width: 50px;
     text-align: center;
 }
 
 #game_page .container-table .timer-fame .fame #score {
-    display: inline-block; 
+    display: inline-block;
     width: 50px;
     text-align: center;
 }
@@ -316,7 +317,7 @@ html {
     justify-content: center;
 }
 
-#game_page .container-info .info-item h3{
+#game_page .container-info .info-item h3 {
     color: var(--text_color);
     font-family: var(--secondary_title_font);
     font-size: 2em;
@@ -324,7 +325,7 @@ html {
     margin: 0 0 3px;
 }
 
-#game_page .container-info .info-item .secondary-info{
+#game_page .container-info .info-item .secondary-info {
     color: var(--text_color);
     font-family: var(--text_font);
     font-size: 1.2em;
@@ -343,22 +344,23 @@ html {
 }
 
 #game_page #winner .nav-button {
-    height: 36px; 
-    padding: 0 20px; 
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
-    font-family: var(--text_font); 
+    height: 36px;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--text_font);
     font-size: 16px;
-    font-weight: 500; 
-    color: var(--button); 
+    font-weight: 500;
+    color: var(--button);
     background: #00000000;
     border: 2px solid var(--button);
     border-radius: 18px;
     gap: 6px;
     text-decoration: none;
     cursor: pointer;
-    position: absolute; /* Para posicionamiento absoluto */
+    position: absolute;
+    /* Para posicionamiento absoluto */
     box-shadow: rgba(0, 0, 0, 0.33) 0px 1px 4px;
 }
 
@@ -376,8 +378,8 @@ html {
 }
 
 
-#game_page #winner .nav-button:hover{
-    background-color: var(--button); 
+#game_page #winner .nav-button:hover {
+    background-color: var(--button);
     color: #fff;
     transition-duration: .33s;
 }
@@ -387,11 +389,11 @@ html {
 
 .versus-ia .container {
     /* flex-direction: row-reverse; */
-} 
+}
 
 .versus-ia .container-info {
     display: none !important;
-} 
+}
 
 #game_page:not(.versus-ia) .ia-table {
     display: none;
@@ -399,6 +401,98 @@ html {
 
 #game_page .ia-info {
     display: none;
+}
+
+/* RESULT PAGE (WIN AND LOSE) */
+
+#result_page {
+    background-size: cover;
+    margin: 0;
+    display: flex;
+    height: 100vh;
+    align-items: center;
+    justify-content: center;
+}
+
+#result_page.win{
+    background: url(./images/result_page_win_bg.png);
+}
+#result_page.lose{
+    background: url(./images/result_page_lose_bg.png);
+}
+
+#result_page .hero {
+    background-color: #ffffff6e;
+    width: 1000px;
+    height: auto;
+    padding: 50px 0 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    box-shadow: rgba(0, 0, 0, 0.33) 0px 5px 20px;
+    backdrop-filter: blur(17px);
+    -webkit-backdrop-filter: blur(6.8px);
+    border-radius: 16px;
+}
+
+#result_page .button_container {
+    display: flex;
+    gap: 20px;
+}
+
+#result_page h1 {
+    color: var(--text_color);
+    font-family: var(--primary_title_font);
+    text-shadow: 3px 3px 0 #ffffff;
+    font-size: 6em;
+}
+
+#result_page h3 {
+    color: var(--text_color);
+    font-family: var(--secondary_title_font);
+    font-size: 2em;
+    font-weight: 400;
+}
+
+#result_page p {
+    color: var(--text_color);
+    font-family: var(--text_font);
+    padding: 30px 10% 30px;
+    font-size: 1.2em;
+    font-weight: 400;
+}
+
+#result_page a {
+    height: 80px;
+    width: 300px;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--text_font);
+    background: #00000000;
+    font-size: 1.2em;
+    font-weight: 600;
+    color: var(--button);
+    border: 3px solid var(--button);
+    border-radius: 30px;
+    gap: 10px;
+    box-shadow: rgba(0, 0, 0, 0.33) 0px 1px 4px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#result_page .disabled {
+    opacity: .5;
+    cursor: not-allowed !important;
+}
+
+#result_page a:hover {
+    color: #fff;
+    background-color: var(--button);
+    transition-duration: .33s;
 }
 
 /* RANKING_PAGE */
@@ -461,7 +555,8 @@ html {
     width: 50%;
 }
 
-#ranking_page th, #ranking_page td {
+#ranking_page th,
+#ranking_page td {
     border: 1px solid var(--board_borders);
     height: 40px;
     text-align: center;
@@ -471,14 +566,14 @@ html {
 }
 
 
-#ranking_page th{
+#ranking_page th {
     background-color: #fffffd;
     font-family: var(--secondary_title_font);
     font-size: 1.5em;
     font-weight: 400;
 }
 
-#ranking_page .empty-txt{
+#ranking_page .empty-txt {
     font-family: var(--secondary_title_font);
     font-size: 1.5em;
     font-weight: 400;
@@ -544,14 +639,15 @@ html {
     justify-content: center;
 }
 
-#ranking_page .pagination a, #ranking_page .pagination span  {
+#ranking_page .pagination a,
+#ranking_page .pagination span {
     margin: 0 5px;
     display: flex;
     height: 35px;
     width: 35px;
-    align-items: center; 
+    align-items: center;
     justify-content: center;
-    color: var(--button); 
+    color: var(--button);
     background: #00000000;
     border: 2px solid var(--button);
     border-radius: 6px;
@@ -562,22 +658,24 @@ html {
     box-shadow: rgba(0, 0, 0, 0.33) 0px 1px 4px;
 }
 
-#ranking_page .pagination .page, #ranking_page .pagination .current-page {
-    font-family: var(--text_font); 
-    font-weight: 500; 
+#ranking_page .pagination .page,
+#ranking_page .pagination .current-page {
+    font-family: var(--text_font);
+    font-weight: 500;
     font-size: 1em;
 }
 
-#ranking_page .pagination a:hover, #ranking_page .pagination span:hover  {
-    background-color: var(--button); 
-    color: #fff;    
+#ranking_page .pagination a:hover,
+#ranking_page .pagination span:hover {
+    background-color: var(--button);
+    color: #fff;
     transition-duration: .33s;
 }
 
 #ranking_page .pagination .current-page {
-    background-color: var(--button); 
+    background-color: var(--button);
     color: #fff;
-    font-size: 1em;   
+    font-size: 1em;
 }
 
 
@@ -586,15 +684,15 @@ html {
 /************/
 
 #ranking_page .navigation-container .nav-button {
-    height: 36px; 
-    padding: 0 20px; 
-    display: flex; 
-    align-items: center; 
-    justify-content: center; 
-    font-family: var(--text_font); 
+    height: 36px;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--text_font);
     font-size: 16px;
-    font-weight: 500; 
-    color: var(--button); 
+    font-weight: 500;
+    color: var(--button);
     background: #00000000;
     border: 2px solid var(--button);
     border-radius: 18px;
@@ -611,8 +709,8 @@ html {
     cursor: pointer;
 }
 
-#ranking_page .navigation-container .nav-button:hover{
-    background-color: var(--button); 
+#ranking_page .navigation-container .nav-button:hover {
+    background-color: var(--button);
     color: #fff;
     transition-duration: .33s;
 }
@@ -623,6 +721,7 @@ html {
         transform: translateX(-100%);
         opacity: 0;
     }
+
     100% {
         transform: translateX(0);
         opacity: 1;
@@ -634,6 +733,7 @@ html {
         transform: translateX(0);
         opacity: 1;
     }
+
     100% {
         transform: translateX(-100%);
         opacity: 0;
@@ -645,6 +745,7 @@ html {
         transform: translateX(100%);
         opacity: 0;
     }
+
     100% {
         transform: translateX(0);
         opacity: 1;
@@ -656,6 +757,7 @@ html {
         transform: translateX(0);
         opacity: 1;
     }
+
     100% {
         transform: translateX(100%);
         opacity: 0;
@@ -666,65 +768,74 @@ html {
 
 .player-alert {
     position: fixed;
-    top: 100px;  
-    left: 20px; 
-    padding: 15px; 
-    margin: 10px; 
-    border-radius: 5px; 
+    top: 100px;
+    left: 20px;
+    padding: 15px;
+    margin: 10px;
+    border-radius: 5px;
     color: white;
-    font-size: 1.3em; 
-    z-index: 1000; 
-    opacity: 0; /* Comenzamos con opacidad 0 */
-    animation: slideInPlayer 0.5s forwards; /* Animación al aparecer */
+    font-size: 1.3em;
+    z-index: 1000;
+    opacity: 0;
+    /* Comenzamos con opacidad 0 */
+    animation: slideInPlayer 0.5s forwards;
+    /* Animación al aparecer */
     font-family: var(--secondary_title_font);
     font-weight: 400;
 }
 
 .ia-alert {
     position: fixed;
-    top: 100px;  
-    right: 20px; 
-    padding: 15px; 
-    margin: 10px; 
-    border-radius: 5px; 
+    top: 100px;
+    right: 20px;
+    padding: 15px;
+    margin: 10px;
+    border-radius: 5px;
     color: white;
-    font-size: 1.3em; 
-    z-index: 1000; 
-    opacity: 0; /* Comenzamos con opacidad 0 */
-    animation: slideInAI 0.5s forwards; /* Animación al aparecer */
+    font-size: 1.3em;
+    z-index: 1000;
+    opacity: 0;
+    /* Comenzamos con opacidad 0 */
+    animation: slideInAI 0.5s forwards;
+    /* Animación al aparecer */
     font-family: var(--secondary_title_font);
     font-weight: 400;
 }
 
 /* Clases para animar la salida */
 .alert.slide-out-player {
-    animation: slideOutPlayer 0.5s forwards; /* Animación al salir del jugador */
+    animation: slideOutPlayer 0.5s forwards;
+    /* Animación al salir del jugador */
 }
 
 .alert.slide-out-ai {
-    animation: slideOutAI 0.5s forwards; /* Animación al salir de la IA */
+    animation: slideOutAI 0.5s forwards;
+    /* Animación al salir de la IA */
 }
 
 .ia-alert#foundAlert {
     background-color: #007f00;
 }
+
 .player-alert#foundAlert {
     background-color: green;
 }
 
 
 .ia-alert#missAlert {
-    background-color: #7f0000; 
+    background-color: #7f0000;
 }
+
 .player-alert#missAlert {
-    background-color: red; 
+    background-color: red;
 }
 
 .ia-alert#foundAlertAll {
-    background-color: #00007f; 
+    background-color: #00007f;
 }
+
 .player-alert#foundAlertAll {
-    background-color: blue; 
+    background-color: blue;
 }
 
 .ia-alert#winAlert {
@@ -793,7 +904,7 @@ html {
 }
 
 
-#easter_eggAlert{
+#easter_eggAlert {
     background-color: black;
 }
 
@@ -802,7 +913,6 @@ html {
     position: absolute;
     top: 200px;
     left: 700px;
-    width: 305px; 
+    width: 305px;
     height: 386px;
 }
-

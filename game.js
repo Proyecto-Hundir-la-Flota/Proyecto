@@ -5,7 +5,6 @@ const gameMode = document.body.getAttribute('data-gamemode');
 
 // crear un array, donde usando cada nombre guarda un archivo de audio
 const audios = [];
-audios['cavar'] = new Audio("./sounds/cavar.mp3");
 audios['arena'] = new Audio("./sounds/desenterrar_arena.mp3");
 audios['hueso'] = new Audio("./sounds/desenterrar_huesos.mp3");
 audios['easter_egg'] = new Audio("./sounds/easter_egg.mp3");
@@ -13,6 +12,7 @@ audios['dino'] = new Audio("./sounds/dino.mp3");
 audios['win'] = new Audio("./sounds/win.mp3");
 
 const discoveredFossils = [];
+const discoveredAIFossils = [];
 
 // Variable para controlar si el jugador puede hacer clic
 let playerCanClick = true;
@@ -34,10 +34,10 @@ let easterEggPlayed = false;
 
 // Guardar la imagen para el easter egg
 const easterEggImage = document.createElement('img');
-easterEggImage.id = 'easter_egg'; 
-easterEggImage.src = './images/easter_egg.png'; 
-easterEggImage.alt = 'Easter Egg'; 
-easterEggImage.style.display = 'none'; 
+easterEggImage.id = 'easter_egg';
+easterEggImage.src = './images/easter_egg.png';
+easterEggImage.alt = 'Easter Egg';
+easterEggImage.style.display = 'none';
 easterEggImage.className = 'easter-egg-style';
 document.body.appendChild(easterEggImage);
 
@@ -62,12 +62,8 @@ function stopClock() {
     clearInterval(timerId); // Detener el temporizador
 }
 
-
-// creamos la funcion para definir las alertas
 function createAlerts(alert_type, playerType) {
-
-    // forzamos a limpiar la alerta para no repetir una alarma exstente
-
+    // forzamos a limpiar la alerta para no repetir una alarma existente
     document.querySelectorAll('.alert').forEach(alert => alert.remove());
     let alert;
     let elementI;
@@ -154,9 +150,9 @@ function createAlerts(alert_type, playerType) {
 
 // Función para actualizar el contador de puntos en pantalla
 function updatePointsCounter() {
-    if (!pointsFrozen) { 
+    if (!pointsFrozen) {
         const scoreElements = document.querySelectorAll(".score");
-        
+
         scoreElements.forEach(element => {
             element.innerText = points;
         });
@@ -166,7 +162,6 @@ function updatePointsCounter() {
 function stopUpdatePoints() {
     pointsFrozen = true;
 }
-
 
 // Función checkStatus
 function checkStatus(event, boardType) {
@@ -180,13 +175,7 @@ function checkStatus(event, boardType) {
 
     // Si la celda está cubierta, se destapa
     if (cell.classList.contains("covered")) {
-        audios['cavar'].play(); //sonido de cavar antes de destapar casilla
-        setTimeout(() => {
-
-            cell.classList.remove("covered");
-        }, 3200);
-        
-
+        cell.classList.remove("covered");
 
         if (boardType === 'player') {
             // Lógica y sonidos para el tablero del jugador
@@ -216,6 +205,7 @@ function checkStatus(event, boardType) {
 
 
 
+
 function handlePlayerBoardLogic(cell) {
 
     // Verificar que las celdas para completar el easter egg estan seleccionadas
@@ -233,7 +223,7 @@ function handlePlayerBoardLogic(cell) {
             if (easterEggImage) easterEggImage.remove();
         }, 3600);
     }
-    
+
     if (cell.classList.contains("bone")) {
         accumulatedErrors = 0;
         consecutiveAccumulatedHits++;
@@ -251,7 +241,7 @@ function handlePlayerBoardLogic(cell) {
         for (let index = 0; index < ships.length; index++) {
             discoveredFossils[index][0] = true;
             for (let indexShip = 0; indexShip < ships[index].length; indexShip++) {
-                
+
                 let position = ships[index][indexShip][0];
 
 
@@ -284,7 +274,7 @@ function handlePlayerBoardLogic(cell) {
 
             stopClock();
             points += 15;
-            
+
             if (elapsedTime < 60) {
                 points += 20;
             } else if (elapsedTime <= 120) {
@@ -293,38 +283,39 @@ function handlePlayerBoardLogic(cell) {
                 points -= 10;
             }
 
+            points += 200;
+
             updatePointsCounter();
 
             createAlerts('win', 'player');
             audios['win'].play();
-            document.getElementById("rankingInfo").style.display = "block";
-            document.getElementById("score").innerHTML = points;
-            document.getElementById("winner").style.display = "flex";
-            
-
+            //document.getElementById("winner").style.display = "flex";
             stopUpdatePoints();
+
+            document.getElementById("score-hidden").value = points;
+            let scoreForm = document.getElementById("scoreForm");
+            scoreForm.action = "win.php";
+            scoreForm.submit();
         } else {
             if (hitAndSink) {
                 points += 15;
                 // fosil descubierto
-                playerCanClick = false;
+                if (!audios['dino'].paused) {
+                    audios['dino'].pause(); // Si está reproduciéndose, lo pausamos
+                    audios['dino'].currentTime = 0; // Reiniciamos el audio
+                }
                 createAlerts('foundAll', 'player');
-                
-                setTimeout(() => {
-                    audios['dino'].play();
-                    playerCanClick = true;
-                }, 3000);
+                audios['dino'].play();
 
             } else {
                 points += 10;
                 // huesso encontrado
-               
+                if (!audios['hueso'].paused) {
+                    audios['hueso'].pause(); // Si está reproduciéndose, lo pausamos
+                    audios['hueso'].currentTime = 0; // Reiniciamos el audio
+                }
                 createAlerts('found', 'player');
-                playerCanClick = false;
-                setTimeout(() => {
-                    audios['hueso'].play();
-                    playerCanClick = true;
-                }, 3000);
+                audios['hueso'].play();
             }
 
         }
@@ -337,14 +328,12 @@ function handlePlayerBoardLogic(cell) {
             accumulatedErrors = 0;
         }
         // fallo al buscar
-        
+        if (!audios['arena'].paused) {
+            audios['arena'].pause(); // Si está reproduciéndose, lo pausamos
+            audios['arena'].currentTime = 0; // Reiniciamos el audio
+        }
         createAlerts('miss', 'player');
-        
-        playerCanClick = false;
-        setTimeout(() => {
-            audios['arena'].play();
-            playerCanClick = true;
-        }, 3000);
+        audios['arena'].play();
     }
     updatePointsCounter();
 }
@@ -360,27 +349,27 @@ function handleAIBoardLogic(cell) {
         let cellPosition = cell.id.replace("ia_cell_", "").split("_");
 
         // Recorremos los barcos de la IA para verificar si la posición coincide con algún fósil
-        for (let index = 0; index < iaShips.length; index++) {  
-            discoveredFossils[index][0] = true;
+        for (let index = 0; index < iaShips.length; index++) {
+            discoveredAIFossils[index][0] = true;
 
             for (let indexShip = 0; indexShip < iaShips[index].length; indexShip++) {
-                let position = iaShips[index][indexShip][0];  
+                let position = iaShips[index][indexShip][0];
 
                 // Comprobar si la posición de la celda corresponde a un fósil del barco
                 if (position[0] == cellPosition[0] && position[1] == cellPosition[1]) {
                     iaShips[index][indexShip][1] = true; // Marcar como descubierto en IA
-                    discoveredFossils[index][1] = true; // Marcar fósil como encontrado
+                    discoveredAIFossils[index][1] = true; // Marcar fósil como encontrado
                 }
 
                 // Si alguna parte del barco no ha sido descubierta, no se completa el fósil
                 if (!iaShips[index][indexShip][1]) {
-                    discoveredFossils[index][0] = false;
+                    discoveredAIFossils[index][0] = false;
                 }
             }
         }
 
-        for (let index = 0; index < discoveredFossils.length; index++) {
-            let discoveredFossil = discoveredFossils[index];
+        for (let index = 0; index < discoveredAIFossils.length; index++) {
+            let discoveredFossil = discoveredAIFossils[index];
             let foundBone = discoveredFossil[0];
 
             if (!foundBone) {
@@ -391,7 +380,7 @@ function handleAIBoardLogic(cell) {
                 }
             }
 
-            discoveredFossils[index][1] = false; // Reiniciar la parte encontrada para el próximo clic
+            discoveredAIFossils[index][1] = false; // Reiniciar la parte encontrada para el próximo clic
         }
 
         if (victory) {
@@ -400,10 +389,15 @@ function handleAIBoardLogic(cell) {
             // Mostrar alerta de victoria para la IA
             createAlerts('win', 'ia');
             audios['win'].play();
-            document.getElementById("rankingInfo").style.display = "block";
-            document.getElementById("winner").style.display = "flex";
-            
+            //document.getElementById("winner").style.display = "flex";
+
             // Lógica de fin del juego aquí, si es necesario
+            stopUpdatePoints();
+
+            document.getElementById("score-hidden").value = points;
+            let scoreForm = document.getElementById("scoreForm");
+            scoreForm.action = "lose.php";
+            scoreForm.submit();
         } else {
             if (hitAndSink) {
                 // Mostrar alerta de fósil completo
@@ -419,93 +413,15 @@ function handleAIBoardLogic(cell) {
         // Si no se encontró un fósil, reproducimos el sonido de fallo
         createAlerts('miss', 'ia');
         audios['arena'].play();
-            updatePointsCounter();
-        }
     }
-
-
-    function handleAIBoardLogic(cell) {
-        // Verifica si la celda clicada contiene un hueso
-        if (cell.classList.contains("bone")) {
-    
-            let hitAndSink = false;
-            let victory = true;
-    
-            // Obtener la posición de la celda IA
-            let cellPosition = cell.id.replace("ia_cell_", "").split("_");
-    
-            // Recorremos los barcos de la IA para verificar si la posición coincide con algún fósil
-            for (let index = 0; index < iaShips.length; index++) {  
-                discoveredFossils[index][0] = true;
-    
-                for (let indexShip = 0; indexShip < iaShips[index].length; indexShip++) {
-                    let position = iaShips[index][indexShip][0];  
-    
-                    // Comprobar si la posición de la celda corresponde a un fósil del barco
-                    if (position[0] == cellPosition[0] && position[1] == cellPosition[1]) {
-                        iaShips[index][indexShip][1] = true; // Marcar como descubierto en IA
-                        discoveredFossils[index][1] = true; // Marcar fósil como encontrado
-                    }
-    
-                    // Si alguna parte del barco no ha sido descubierta, no se completa el fósil
-                    if (!iaShips[index][indexShip][1]) {
-                        discoveredFossils[index][0] = false;
-                    }
-                }
-            }
-    
-            for (let index = 0; index < discoveredFossils.length; index++) {
-                let discoveredFossil = discoveredFossils[index];
-                let foundBone = discoveredFossil[0];
-    
-                if (!foundBone) {
-                    victory = false; // Si no se encontró todo el fósil
-                } else {
-                    if (discoveredFossil[1]) {
-                        hitAndSink = true; // Se descubrió el fósil completo
-                    }
-                }
-    
-                discoveredFossils[index][1] = false; // Reiniciar la parte encontrada para el próximo clic
-            }
-    
-            if (victory) {
-                stopClock();
-    
-                // Mostrar alerta de victoria para la IA
-                createAlerts('win', 'ia');
-                audios['win'].play();
-                document.getElementById("rankingInfo").style.display = "block";
-                document.getElementById("winner").style.display = "flex";
-                
-                // Lógica de fin del juego aquí, si es necesario
-            } else {
-                if (hitAndSink) {
-                    // Mostrar alerta de fósil completo
-                    createAlerts('foundAll', 'ia');
-                    audios['dino'].play();
-                } else {
-                    // Mostrar alerta de fósil encontrado
-                    createAlerts('found', 'ia');
-                    audios['hueso'].play();
-                }
-            }
-        } else {
-            // Si no se encontró un fósil, reproducimos el sonido de fallo
-            createAlerts('miss', 'ia');
-            audios['arena'].play();
-        }
-    }
-    
-    
-    
+}
 
 
 
 // Función que maneja el turno de la IA
 function iaTurn() {
     console.log("Turno de la IA");
-    
+
     let validMove = false;
 
     // Bucle que busca una celda válida para que la IA juegue
@@ -520,7 +436,6 @@ function iaTurn() {
             cell.classList.remove("covered"); // Destapar la celda
             handleAIBoardLogic(cell); // Lógica para manejar el clic de la IA
             validMove = true; // Salir del bucle al encontrar una celda válida
-
         }
     }
 }
@@ -547,11 +462,13 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     document.getElementById("rankingInfo").style.display = "none";
-    document.getElementById("winner").style.display = "none";
-    startClock(); // Iniciar el temporizador
+    //document.getElementById("winner").style.display = "none";
+    // Iniciar el temporizador al cargar la pÃ¡gina
+    startClock();
 
     ships.forEach(ship => {
         discoveredFossils.push([true, false]);
+        discoveredAIFossils.push([true, false]);
     });
 
     // Evento del formulario para enviar puntaje
