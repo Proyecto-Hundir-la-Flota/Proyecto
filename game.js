@@ -12,9 +12,13 @@ audios['dino'] = new Audio("./sounds/dino.mp3");
 audios['win'] = new Audio("./sounds/win.mp3");
 
 const discoveredFossils = [];
+const playerBoard = document.getElementById("playerBoard");
+const aiBoard = document.getElementById("aiBoard");
 
 // Variable para controlar si el jugador puede hacer clic
 let playerCanClick = true;
+let repeatTurn = false;
+let IArepeatTurn = false;
 
 let elapsedTime = 0; //Tiempo que transcurrido
 let timerId;
@@ -162,6 +166,17 @@ function stopUpdatePoints() {
     pointsFrozen = true;
 }
 
+
+function setPlayerTurn() {
+    playerBoard.classList.add('table-player-turn');
+    aiBoard.classList.remove('table-ia-turn');
+}
+
+function setIATurn() {
+    aiBoard.classList.add('table-ia-turn');
+    playerBoard.classList.remove('table-player-turn');
+}
+
 // Función checkStatus
 function checkStatus(event, boardType) {
     const cell = event.target;
@@ -174,10 +189,12 @@ function checkStatus(event, boardType) {
 
     // Si la celda está cubierta, se destapa
     if (cell.classList.contains("covered")) {
+        
         cell.classList.remove("covered");
 
         if (boardType === 'player') {
             // Lógica y sonidos para el tablero del jugador
+            
             handlePlayerBoardLogic(cell);
 
             // Deshabilitar los clics del jugador después de su turno
@@ -185,15 +202,27 @@ function checkStatus(event, boardType) {
 
             // Solo ejecutar iaTurn si estamos en modo multiPlayer o versus-ia
             if (gameMode === 'multiPlayer' || gameMode === 'versus-ia') {
-                // Esperar 2 segundos antes de que la IA haga su movimiento
-                setTimeout(() => {
-                    iaTurn(); // La IA hace su turno después de 2 segundos
-
-                    // Después del turno de la IA, esperar 1 segundo antes de habilitar los clics del jugador
+                if (!repeatTurn) {
+                    // Esperar 2 segundos antes de que la IA haga su movimiento
+                    setTimeout(() => {
+                        setIATurn();
+                    }, 1250);
+                    setTimeout(() => {
+                        iaTurn(); // La IA hace su turno después de 2 segundos
+                        // Después del turno de la IA, esperar 1 segundo antes de habilitar los clics del jugador
+                        setTimeout(() => {
+                            playerCanClick = true;
+                            setTimeout(() => {
+                                setPlayerTurn(); 
+                            }, 1250);
+                        }, 2500);  // Espera 2.5 segundo antes de permitir al jugador hacer clic de nuevo
+                    }, 2500); // 2.5 segundos antes de que la IA haga su movimiento
+                } else {
                     setTimeout(() => {
                         playerCanClick = true;
-                    }, 2500); // Espera 2.5 segundo antes de permitir al jugador hacer clic de nuevo
-                }, 2500); // 2.5 segundos antes de que la IA haga su movimiento
+                    }, 2500);
+                }
+                
             } else {
                 // En single player, podemos reactivar los clics inmediatamente si no hay IA
                 playerCanClick = true;
@@ -231,6 +260,7 @@ function handlePlayerBoardLogic(cell) {
                 points += 2;
             }
 
+            repeatTurn = true;
             let hitAndSink = false;
             let victory = true;
 
@@ -318,6 +348,7 @@ function handlePlayerBoardLogic(cell) {
         } else {
             accumulatedErrors++;
             consecutiveAccumulatedHits = 0;
+            repeatTurn = false;
 
             if (accumulatedErrors >= 3) {
                 points -= 5;
@@ -340,6 +371,7 @@ function handleAIBoardLogic(cell) {
 
         let hitAndSink = false;
         let victory = true;
+        IArepeatTurn = true;
 
         // Obtener la posición de la celda IA
         let cellPosition = cell.id.replace("ia_cell_", "").split("_");
@@ -402,6 +434,7 @@ function handleAIBoardLogic(cell) {
         }
     } else {
         // Si no se encontró un fósil, reproducimos el sonido de fallo
+        IArepeatTurn = false;
         createAlerts('miss', 'ia');
         audios['arena'].play();
     }
@@ -412,9 +445,7 @@ function handleAIBoardLogic(cell) {
 // Función que maneja el turno de la IA
 function iaTurn() {
     console.log("Turno de la IA");
-    
     let validMove = false;
-
     // Bucle que busca una celda válida para que la IA juegue
     while (!validMove) {
         const randomRow = Math.floor(Math.random() * 10);
@@ -429,14 +460,20 @@ function iaTurn() {
             validMove = true; // Salir del bucle al encontrar una celda válida
         }
     }
+
+    // Si la IA acierta y tiene que repetir turno
+    if (IArepeatTurn) {
+        setTimeout(iaTurn, 2500);  // Espera 2 segundos y repite el turno
+    }  
 }
+
 
 
 
 document.addEventListener("DOMContentLoaded", function () {
     const playerCells = document.querySelectorAll("td[id^='cell_']"); // Selecciona las celdas del jugador (IDs que empiezan por 'cell_')
     const aiCells = document.querySelectorAll("td[id^='ia_cell_']"); // Selecciona las celdas de la IA (IDs que empiezan por 'ia_cell_')
-
+    setPlayerTurn();
     // Asignar eventos de clic a las celdas del jugador
     for (let cell of playerCells) {
         cell.addEventListener("click", function (event) {

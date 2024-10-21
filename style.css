@@ -265,7 +265,8 @@ html {
 }
 
 #game_page .container-table .timer-fame .timer,
-#game_page .container-table .timer-fame .fame {
+#game_page .container-table .timer-fame .fame,
+#game_page .container-table .timer-fame .player_name {
     background-color: var(--primary_div);
     font-family: var(--text_font);
     font-size: 1.15em;
@@ -276,8 +277,18 @@ html {
 }
 
 #game_page .container-table .timer-fame .timer i,
-#game_page .container-table .timer-fame .fame i{
+#game_page .container-table .timer-fame .fame i,
+#game_page .container-table .timer-fame .player_name i{
     margin-right: 5px;
+}
+#game_page .container-table .timer-fame .player_name {
+    margin-right: auto;
+}
+
+#game_page .container-table .timer-fame .fame .score {
+    display: inline-block; 
+    width: 30px;
+    text-align: center;
 }
 
 #game_page .container-table .timer-fame .timer #gameClock {
@@ -806,3 +817,13 @@ html {
     height: 386px;
 }
 
+
+/* Estilo para el turno del jugador */
+.table-player-turn {
+    box-shadow: 0 15px 0px #ff0000;
+}
+
+/* Estilo para el turno de la IA */
+.table-ia-turn {
+    box-shadow: 0 15px 0px #ff0000;
+}

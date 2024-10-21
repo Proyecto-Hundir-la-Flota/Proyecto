@@ -1,3 +1,15 @@
+<?php
+    session_start();
+        
+    if (isset($_POST["name_landing"])) {
+        $_SESSION['name'] = $_POST["name_landing"];//sesion index
+        $_SESSION['finishName'] = $_SESSION['name'];//sesion game
+        unset($_SESSION['name']); //borrar la sesion de index
+    }
+        
+?>
+
+
 <!DOCTYPE html>
 <html lang="ca">
 
@@ -88,28 +100,33 @@ function generateBoard(&$board_array, $isAI = false) {
     // Declarar los identificadores
     $letter_id = 65;
     $number_id = 1;
+
     if ($isAI) {
+    // Array con los nombres de los bots
+    $botNames = ['XaviBOT', 'LeandroBOT', 'EnricBOT'];
+    // Seleccionar un nombre aleatorio
+    $randomBotName = $botNames[array_rand($botNames)];
     echo "<div class='container-table ia-table'>
             <div class='timer-fame'>
-                <div class='fame'>
-                    <i class='fa-solid fa-bullhorn'></i>Fama: <span class='score'>-</span>
-                </div>
-                <div class='timer'>
-                    <i class='fa-solid fa-hourglass-end'></i>Temps: <span id='gameClock'>00:00</span>
+                <div class='player_name'>
+                    <i class='fa-solid fa-robot'></i>$randomBotName
                 </div>
             </div>
-            <table>";
+            <table id='aiBoard'>";
     } else {
         echo "<div class='container-table'>
             <div class='timer-fame'>
+                <div class='player_name'>
+                    <i class='fa-solid fa-user'></i>".$_SESSION["finishName"]."
+                </div>
                 <div class='fame'>
-                    <i class='fa-solid fa-bullhorn'></i>Fama: <span class='score'>-</span>
+                    <i class='fa-solid fa-bullhorn'></i>Fama: <span class='score'>0</span>
                 </div>
                 <div class='timer'>
                     <i class='fa-solid fa-hourglass-end'></i>Temps: <span id='gameClock'>00:00</span>
                 </div>
             </div>
-            <table>";
+            <table id='playerBoard'>";
     }
     for ($i = 0; $i <= $column_board; $i++) {
         echo "<tr>";
@@ -309,7 +326,7 @@ echo $AIboard_html;
     </form>
 </div>
 
-
+   
 
 <div id="winner">
     <a href="index.php" class="nav-button home-button"><i class="fa-solid fa-chevron-left"></i>Inici</a>
