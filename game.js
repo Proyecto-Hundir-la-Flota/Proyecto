@@ -229,12 +229,13 @@ function checkStatus(event) {
 
                 createAlerts('win');
                 audios['win'].play();
-                document.getElementById("rankingInfo").style.display = "block";
-                document.getElementById("score").innerHTML = points;
-                document.getElementById("winner").style.display = "flex";
-                
-
+                //document.getElementById("winner").style.display = "flex";
                 stopUpdatePoints();
+                
+                document.getElementById("score-hidden").value = points;
+                let scoreForm = document.getElementById("scoreForm");
+                scoreForm.action = "win.php";
+                scoreForm.submit();
             } else {
                 if (hitAndSink) {
                     points += 15;
@@ -289,7 +290,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     document.getElementById("rankingInfo").style.display = "none";
-    document.getElementById("winner").style.display = "none";
+    //document.getElementById("winner").style.display = "none";
     // Iniciar el temporizador al cargar la pÃ¡gina
     startClock();
 

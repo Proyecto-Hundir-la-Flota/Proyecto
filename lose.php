@@ -30,8 +30,8 @@
     if (isset($_SESSION['finishName'])) {
         $userName = $_SESSION['finishName'];
     }
-    if (isset($_SESSION['score'])) {
-        $score = $_SESSION['score'];
+    if (isset($_POST['score'])) {
+        $score = $_POST['score'];
     }
 
 ?>
@@ -46,7 +46,7 @@
             <h3>Entra el teu nom</h3>
             <form id="scoreForm" action="ranking.php" method="POST">
                 <input type="text" id="nameInput" name="name" required minlength="3" value="<?php echo $userName ?>"> <!-- Cambiado a "name" -->
-                <input type="hidden" id="scoreHidden" name="score" value="<?php echo $userName ?>"> <!-- Campo oculto para puntaje -->
+                <input type="hidden" id="scoreHidden" name="score" value="<?php echo $score ?>"> <!-- Campo oculto para puntaje -->
             </form>
             <div class="button_container">
                 <a id="btnReturn" href="index.php"><i class="fa-solid fa-chevron-left"></i>Inici</a>

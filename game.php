@@ -238,21 +238,15 @@
     ?>
 
     <div id="rankingInfo" class="centered-form">
-        <h2>Has aconseguit <span id="score">-</span> punts de fama</h2>
-        <h3>Entra el teu nom</h3>
-        <form id="scoreForm" action="ranking.php" method="POST">
-            <input type="text" id="nom" name="name" required minlength="3"> <!-- Cambiado a "name" -->
+        <form id="scoreForm" action="lose.php" method="POST">
             <input type="hidden" id="score-hidden" name="score" value=""> <!-- Campo oculto para puntaje -->
-            <input type="submit" value="Guardar">
         </form>
     </div>
-
-   
-
-    <div id="winner">
+    
+    <!-- <div id="winner">
         <a href="index.php" class="nav-button home-button"><i class="fa-solid fa-chevron-left"></i>Inici</a>
         <a href="ranking.php" class="nav-button rank-button">Rànquing<i class="fa-solid fa-chevron-right"></i></a>
-    </div>
+    </div> -->
 
     <script type="text/javascript">
         const ships = <?php echo json_encode($shipList); ?>;
