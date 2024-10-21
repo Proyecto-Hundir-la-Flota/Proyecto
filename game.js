@@ -5,6 +5,7 @@ const gameMode = document.body.getAttribute('data-gamemode');
 
 // crear un array, donde usando cada nombre guarda un archivo de audio
 const audios = [];
+audios['cavar']= new Audio("./sounds/cavar.mp3");
 audios['arena'] = new Audio("./sounds/desenterrar_arena.mp3");
 audios['hueso'] = new Audio("./sounds/desenterrar_huesos.mp3");
 audios['easter_egg'] = new Audio("./sounds/easter_egg.mp3");
@@ -175,7 +176,13 @@ function checkStatus(event, boardType) {
 
     // Si la celda está cubierta, se destapa
     if (cell.classList.contains("covered")) {
-        cell.classList.remove("covered");
+
+        audios['cavar'].play();
+        setTimeout(() => {
+            
+            cell.classList.remove("covered");
+        }, 3500);
+        
 
         if (boardType === 'player') {
             // Lógica y sonidos para el tablero del jugador
@@ -300,22 +307,23 @@ function handlePlayerBoardLogic(cell) {
             if (hitAndSink) {
                 points += 15;
                 // fosil descubierto
-                if (!audios['dino'].paused) {
-                    audios['dino'].pause(); // Si está reproduciéndose, lo pausamos
-                    audios['dino'].currentTime = 0; // Reiniciamos el audio
-                }
-                createAlerts('foundAll', 'player');
-                audios['dino'].play();
-
+                setTimeout(() => {
+                    createAlerts('foundAll', 'player');
+                    audios['dino'].play();
+    
+                   
+                }, 3500);
+                
             } else {
                 points += 10;
                 // huesso encontrado
-                if (!audios['hueso'].paused) {
-                    audios['hueso'].pause(); // Si está reproduciéndose, lo pausamos
-                    audios['hueso'].currentTime = 0; // Reiniciamos el audio
-                }
-                createAlerts('found', 'player');
-                audios['hueso'].play();
+                setTimeout(() => {
+                    createAlerts('found', 'player');
+                    audios['hueso'].play();
+    
+                   
+                }, 3500);
+                
             }
 
         }
@@ -328,20 +336,30 @@ function handlePlayerBoardLogic(cell) {
             accumulatedErrors = 0;
         }
         // fallo al buscar
-        if (!audios['arena'].paused) {
-            audios['arena'].pause(); // Si está reproduciéndose, lo pausamos
-            audios['arena'].currentTime = 0; // Reiniciamos el audio
-        }
-        createAlerts('miss', 'player');
-        audios['arena'].play();
+        setTimeout(() => {
+            createAlerts('miss', 'player');
+            audios['arena'].play();
+
+           
+        }, 3500);
+        
+        
     }
+
     updatePointsCounter();
 }
 
 function handleAIBoardLogic(cell) {
+
+    if (!audios['cavar'].paused) {
+        audios['cavar'].pause(); // Si está reproduciéndose, lo pausamos
+        audios['cavar'].currentTime = 0; // Reiniciamos el audio
+    }
+    audios['cavar'].play();
     // Verifica si la celda clicada contiene un hueso
     if (cell.classList.contains("bone")) {
 
+        
         let hitAndSink = false;
         let victory = true;
 
@@ -401,18 +419,29 @@ function handleAIBoardLogic(cell) {
         } else {
             if (hitAndSink) {
                 // Mostrar alerta de fósil completo
-                createAlerts('foundAll', 'ia');
-                audios['dino'].play();
+                setTimeout(() => {
+                    createAlerts('foundAll', 'ia');
+                    audios['dino'].play();
+    
+                }, 3500);
             } else {
                 // Mostrar alerta de fósil encontrado
-                createAlerts('found', 'ia');
-                audios['hueso'].play();
+                setTimeout(() => {
+                    createAlerts('found', 'ia');
+                    audios['hueso'].play();
+
+                }, 3500);
+                
             }
         }
     } else {
         // Si no se encontró un fósil, reproducimos el sonido de fallo
-        createAlerts('miss', 'ia');
-        audios['arena'].play();
+        setTimeout(() => {
+            createAlerts('miss', 'ia');
+            audios['arena'].play();
+
+           
+        }, 3500);
     }
 }
 
@@ -421,7 +450,12 @@ function handleAIBoardLogic(cell) {
 // Función que maneja el turno de la IA
 function iaTurn() {
     console.log("Turno de la IA");
-
+    
+    setTimeout(() => {
+        
+   
+    
+    
     let validMove = false;
 
     // Bucle que busca una celda válida para que la IA juegue
@@ -432,12 +466,19 @@ function iaTurn() {
 
         // Verificar si la celda existe y está cubierta
         if (cell && cell.classList.contains("covered")) {
-            // La IA hace su jugada
-            cell.classList.remove("covered"); // Destapar la celda
+             // La IA hace su jugada
+             
+            
+            setTimeout(() => {
+                cell.classList.remove("covered"); // Destapar la celda
+            }, 3000);
+            
+
             handleAIBoardLogic(cell); // Lógica para manejar el clic de la IA
             validMove = true; // Salir del bucle al encontrar una celda válida
         }
     }
+}, 2000);
 }
 
 
