@@ -1,12 +1,12 @@
 <?php
-    session_start();
-        
-    if (isset($_POST["name_landing"])) {
-        $_SESSION['name'] = $_POST["name_landing"];//sesion index
-        $_SESSION['finishName'] = $_SESSION['name'];//sesion game
-                unset($_SESSION['name']); //borrar la sesion de index
-    }
-        
+session_start();
+
+if (isset($_POST["name_landing"])) {
+    $_SESSION['name'] = $_POST["name_landing"]; //sesion index
+    $_SESSION['finishName'] = $_SESSION['name']; //sesion game
+    unset($_SESSION['name']); //borrar la sesion de index
+}
+
 ?>
 
 
@@ -21,19 +21,18 @@
     <script src="https://kit.fontawesome.com/9c44094610.js" crossorigin="anonymous"></script>
 
 </head>
+
 <body <?php
-    if (isset($_POST['gamemode'])) {
-        $gamemode = $_POST['gamemode'];
-        
-        if ($gamemode == 'training') {
-            echo 'id="game_page" data-gamemode="singlePlayer"';
-            
-        } elseif ($gamemode == 'versus-ia') {
-            echo 'id="game_page" class="versus-ia" data-gamemode="multiPlayer"';
+        if (isset($_POST['gamemode'])) {
+            $gamemode = $_POST['gamemode'];
+
+            if ($gamemode == 'training') {
+                echo 'id="game_page" data-gamemode="singlePlayer"';
+            } elseif ($gamemode == 'versus-ia') {
+                echo 'id="game_page" class="versus-ia" data-gamemode="multiPlayer"';
+            }
         }
-    }
-    ?>
->
+        ?>>
 
 
     <div class="tape">
@@ -90,81 +89,92 @@
 
     <div class='container'>
 
-<?php
-function generateBoard(&$board_array, $isAI = false) {
-    ob_start(); // Para almacenar la salida y retornarla luego
+        <?php
+        function generateBoard(&$board_array, $isAI = false)
+        {
+            ob_start(); // Para almacenar la salida y retornarla luego
 
-    // Definir el tamaño del tablero
-    $column_board = 10;
-    $row_board = 10;
-    // Declarar los identificadores
-    $letter_id = 65;
-    $number_id = 1;
-    if ($isAI) {
-    echo "<div class='container-table ia-table'>
-            <div class='timer-fame'>
-                <div class='fame'>
-                    <i class='fa-solid fa-bullhorn'></i>Fama: <span class='score'>-</span>
-                </div>
-                <div class='timer'>
-                    <i class='fa-solid fa-hourglass-end'></i>Temps: <span id='gameClock'>00:00</span>
-                </div>
-            </div>
-            <table>";
-    } else {
-        echo "<div class='container-table'>
-            <div class='timer-fame'>
-                <div class='fame'>
-                    <i class='fa-solid fa-bullhorn'></i>Fama: <span class='score'>-</span>
-                </div>
-                <div class='timer'>
-                    <i class='fa-solid fa-hourglass-end'></i>Temps: <span id='gameClock'>00:00</span>
-                </div>
-            </div>
-            <table>";
-    }
-    for ($i = 0; $i <= $column_board; $i++) {
-        echo "<tr>";
+            // Definir el tamaño del tablero
+            $column_board = 10;
+            $row_board = 10;
+            // Declarar los identificadores
+            $letter_id = 65;
+            $number_id = 1;
+            if ($isAI) {
+                $infoContent = "<div class='container-table ia-table'>
+            <div class='timer-fame'>\n";
 
-        for ($j = 0; $j <= $row_board; $j++) {
-            if ($i == 0 && $j == 0) {
-                echo "<td></td>"; // Primera celda vacía
-            } elseif ($i == 0) {
-                echo "<td>" . chr($letter_id) . "</td>"; // Primera fila con letras
-                $letter_id++;
-            } elseif ($j == 0) {
-                echo "<td>" . $number_id . "</td>"; // Primera columna con números
-                $number_id++;
-            } else {
-                // Generar el ID de la celda
-                $cell_id = ($i - 1) . "_" . ($j - 1);
-                // Determinar el prefijo del ID según si es el tablero del jugador o de la IA
-                $cell_prefix = $isAI ? "ia_cell_" : "cell_";
-                if (!$isAI) {
-                    // Si la celda tiene un valor en $board_array, es un "bone"
-                    if (isset($board_array[$i - 1][$j - 1])) {
-                        echo "<td id='{$cell_prefix}{$cell_id}' class='bone covered'></td>";
-                    } else {
-                        // Si la celda no tiene valor, es "ground"
-                        echo "<td id='{$cell_prefix}{$cell_id}' class='ground covered'></td>";
-                    }
-                } else {
-                    // Si la celda tiene un valor en $board_array, es un "bone"
-                    if (isset($board_array[$i - 1][$j - 1])) {
-                        echo "<td id='{$cell_prefix}{$cell_id}' class='bone covered'></td>";
-                    } else {
-                        // Si la celda no tiene valor, es "ground"
-                        echo "<td id='{$cell_prefix}{$cell_id}' class='ground covered'></td>";
+                if (isset($_POST["limitedAmmo"])) {
+                    if ($_POST["limitedAmmo"] == "true") {
+                        $infoContent .= "                <div class='ammo'>
+                    <i class='fa-solid fa-bullseye'></i>Munició: <span class='ai-ammo'>40</span>
+                </div>\n";
                     }
                 }
-                
+                $infoContent .= "            </div>
+            <table>";
+                echo $infoContent;
+            } else {
+                $infoContent = "<div class='container-table'>
+            <div class='timer-fame'>\n";
+                if (isset($_POST["limitedAmmo"])) {
+                    if ($_POST["limitedAmmo"] == "true") {
+                        $infoContent .= "                <div class='ammo'>
+                    <i class='fa-solid fa-bullseye'></i>Munició: <span class='player-ammo'>40</span>
+                </div>\n";
+                    }
+                }
+                $infoContent .= "                <div class='fame'>
+                    <i class='fa-solid fa-bullhorn'></i>Fama: <span class='score'>-</span>
+                </div>
+                <div class='timer'>
+                    <i class='fa-solid fa-hourglass-end'></i>Temps: <span id='gameClock'>00:00</span>
+                </div>
+            </div>
+            <table>";
+                echo $infoContent;
             }
-        }
+            for ($i = 0; $i <= $column_board; $i++) {
+                echo "<tr>";
 
-        echo "</tr>";
-    }
-    if ($isAI) {
-        echo "</table></div>
+                for ($j = 0; $j <= $row_board; $j++) {
+                    if ($i == 0 && $j == 0) {
+                        echo "<td></td>"; // Primera celda vacía
+                    } elseif ($i == 0) {
+                        echo "<td>" . chr($letter_id) . "</td>"; // Primera fila con letras
+                        $letter_id++;
+                    } elseif ($j == 0) {
+                        echo "<td>" . $number_id . "</td>"; // Primera columna con números
+                        $number_id++;
+                    } else {
+                        // Generar el ID de la celda
+                        $cell_id = ($i - 1) . "_" . ($j - 1);
+                        // Determinar el prefijo del ID según si es el tablero del jugador o de la IA
+                        $cell_prefix = $isAI ? "ia_cell_" : "cell_";
+                        if (!$isAI) {
+                            // Si la celda tiene un valor en $board_array, es un "bone"
+                            if (isset($board_array[$i - 1][$j - 1])) {
+                                echo "<td id='{$cell_prefix}{$cell_id}' class='bone covered'></td>";
+                            } else {
+                                // Si la celda no tiene valor, es "ground"
+                                echo "<td id='{$cell_prefix}{$cell_id}' class='ground covered'></td>";
+                            }
+                        } else {
+                            // Si la celda tiene un valor en $board_array, es un "bone"
+                            if (isset($board_array[$i - 1][$j - 1])) {
+                                echo "<td id='{$cell_prefix}{$cell_id}' class='bone covered'></td>";
+                            } else {
+                                // Si la celda no tiene valor, es "ground"
+                                echo "<td id='{$cell_prefix}{$cell_id}' class='ground covered'></td>";
+                            }
+                        }
+                    }
+                }
+
+                echo "</tr>";
+            }
+            if ($isAI) {
+                echo "</table></div>
           <div class='container-info ia-info'>
             <div class='info-item'> 
               <h3>Com aconseguir fama</h3>
@@ -178,8 +188,8 @@ function generateBoard(&$board_array, $isAI = false) {
               </div>
             </div>
           </div>";
-    } else {
-    echo "</table></div>
+            } else {
+                echo "</table></div>
           <div class='container-info'>
             <div class='info-item'> 
               <h3>Com aconseguir fama</h3>
@@ -193,142 +203,153 @@ function generateBoard(&$board_array, $isAI = false) {
               </div>
             </div>
           </div>";
-    }
-    return ob_get_clean(); // Retornar la salida
-}
-
-
-// Definir los barcos
-$ships = [
-    "fragata" => [[], 1, "#C70039", 4],
-    "submarí" => [[], 2, "#0057C7", 3],
-    "destructor" => [[], 3, "#00C745", 2],
-    "portaavions" => [[], 4, "#EFDF23", 1]
-];
-function placeShip(&$board, &$ship, &$shipList)
-{
-    $n = count($board);
-    $ship_length = $ship[1];
-    $ship_positions = [];
-    $attempts = 0; // Puedes seguir contando intentos, pero no limitarás a 1000.
-
-    while (true) { // Bucle infinito hasta que se coloque el barco
-        $orientation = rand(0, 1); // 0 = horizontal, 1 = vertical
-
-        if ($orientation == 0) { // Horizontal
-            $start_row = rand(0, $n - 1);
-            $start_col = rand(0, $n - $ship_length);
-        } else { // Vertical
-            $start_row = rand(0, $n - $ship_length);
-            $start_col = rand(0, $n - 1);
+            }
+            return ob_get_clean(); // Retornar la salida
         }
 
-        $can_place = true;
 
-        // Verificar si se puede colocar el barco
-        for ($i = 0; $i < $ship_length; $i++) {
-            if ($orientation == 0) {
-                $row = $start_row;
-                $col = $start_col + $i;
-            } else {
-                $row = $start_row + $i;
-                $col = $start_col;
-            }
+        // Definir los barcos
+        $ships = [
+            "fragata" => [[], 1, "#C70039", 4],
+            "submarí" => [[], 2, "#0057C7", 3],
+            "destructor" => [[], 3, "#00C745", 2],
+            "portaavions" => [[], 4, "#EFDF23", 1]
+        ];
+        function placeShip(&$board, &$ship, &$shipList)
+        {
+            $n = count($board);
+            $ship_length = $ship[1];
+            $ship_positions = [];
+            $attempts = 0; // Puedes seguir contando intentos, pero no limitarás a 1000.
 
-            for ($r = $row - 1; $r <= $row + 1 && $can_place; $r++) {
-                for ($c = $col - 1; $c <= $col + 1 && $can_place; $c++) {
-                    if ($r >= 0 && $r < $n && $c >= 0 && $c < $n && !empty($board[$r][$c])) {
-                        $can_place = false;
+            while (true) { // Bucle infinito hasta que se coloque el barco
+                $orientation = rand(0, 1); // 0 = horizontal, 1 = vertical
+
+                if ($orientation == 0) { // Horizontal
+                    $start_row = rand(0, $n - 1);
+                    $start_col = rand(0, $n - $ship_length);
+                } else { // Vertical
+                    $start_row = rand(0, $n - $ship_length);
+                    $start_col = rand(0, $n - 1);
+                }
+
+                $can_place = true;
+
+                // Verificar si se puede colocar el barco
+                for ($i = 0; $i < $ship_length; $i++) {
+                    if ($orientation == 0) {
+                        $row = $start_row;
+                        $col = $start_col + $i;
+                    } else {
+                        $row = $start_row + $i;
+                        $col = $start_col;
+                    }
+
+                    for ($r = $row - 1; $r <= $row + 1 && $can_place; $r++) {
+                        for ($c = $col - 1; $c <= $col + 1 && $can_place; $c++) {
+                            if ($r >= 0 && $r < $n && $c >= 0 && $c < $n && !empty($board[$r][$c])) {
+                                $can_place = false;
+                            }
+                        }
                     }
                 }
-            }
-        }
 
-        if ($can_place) {
-            // Colocar el barco
-            for ($i = 0; $i < $ship_length; $i++) {
-                if ($orientation == 0) {
-                    $row = $start_row;
-                    $col = $start_col + $i;
-                } else {
-                    $row = $start_row + $i;
-                    $col = $start_col;
+                if ($can_place) {
+                    // Colocar el barco
+                    for ($i = 0; $i < $ship_length; $i++) {
+                        if ($orientation == 0) {
+                            $row = $start_row;
+                            $col = $start_col + $i;
+                        } else {
+                            $row = $start_row + $i;
+                            $col = $start_col;
+                        }
+                        $board[$row][$col] = $ship[2];
+                        $ship_positions[] = [$row, $col];
+                    }
+
+                    $shipPositions = [];
+                    foreach ($ship_positions as $position) {
+                        array_push($shipPositions, [[$position[0], $position[1]], false]);
+                    }
+                    array_push($shipList, $shipPositions);
+                    $ship[0] = $ship_positions;
+                    return true; // Devuelve `true` al colocar el barco correctamente
                 }
-                $board[$row][$col] = $ship[2];
-                $ship_positions[] = [$row, $col];
             }
+        }
 
-            $shipPositions = [];
-            foreach ($ship_positions as $position) {
-                array_push($shipPositions, [[$position[0], $position[1]], false]);
+
+        // Iniciar el tablero vacío
+        $board = array_fill(0, 10, array_fill(0, 10, null));
+
+        // Colocar los barcos en el tablero
+        $shipList = [];
+        foreach ($ships as &$ship) {
+            for ($i = 0; $i < $ship[3]; $i++) {
+                if (!placeShip($board, $ship, $shipList)) {
+                    echo "<p>Error al colocar el barco: {$ship[2]}</p>";
+                }
             }
-            array_push($shipList, $shipPositions);
-            $ship[0] = $ship_positions;
-            return true; // Devuelve `true` al colocar el barco correctamente
         }
-    }
-}
+        // Generate the board with the ships placed
+        $board_html = generateBoard($board, false);
 
+        // Show the generated board
 
-// Iniciar el tablero vacío
-$board = array_fill(0, 10, array_fill(0, 10, null));
+        echo $board_html;
 
-// Colocar los barcos en el tablero
-$shipList = [];
-foreach ($ships as &$ship) {
-    for ($i = 0; $i < $ship[3]; $i++) {
-        if (!placeShip($board, $ship, $shipList)) {
-            echo "<p>Error al colocar el barco: {$ship[2]}</p>";
+        // Iniciar el tablero vacío
+        $AIboard = array_fill(0, 10, array_fill(0, 10, null));
+
+        // Colocar los barcos en el tablero
+        $AIshipList = [];
+        foreach ($ships as &$ship) {
+            for ($i = 0; $i < $ship[3]; $i++) {
+                if (!placeShip($AIboard, $ship, $AIshipList)) {
+                    echo "<p>Error al colocar el barco: {$ship[2]}</p>";
+                }
+            }
         }
-    }
-}
-// Generate the board with the ships placed
-$board_html = generateBoard($board, false);
+        // Generate the board with the ships placed
+        $AIboard_html = generateBoard($AIboard, true);
 
-// Show the generated board
+        // Show the generated board
+        echo $AIboard_html;
 
-echo $board_html;
+        ?>
 
-// Iniciar el tablero vacío
-$AIboard = array_fill(0, 10, array_fill(0, 10, null));
-
-// Colocar los barcos en el tablero
-$AIshipList = [];
-foreach ($ships as &$ship) {
-    for ($i = 0; $i < $ship[3]; $i++) {
-        if (!placeShip($AIboard, $ship, $AIshipList)) {
-            echo "<p>Error al colocar el barco: {$ship[2]}</p>";
-        }
-    }
-}
-// Generate the board with the ships placed
-$AIboard_html = generateBoard($AIboard, true);
-
-// Show the generated board
-echo $AIboard_html;
-
-?>
-
-</div>
+    </div>
 
     <div id="rankingInfo" class="centered-form">
         <form id="scoreForm" action="lose.php" method="POST">
             <input type="hidden" id="score-hidden" name="score" value=""> <!-- Campo oculto para puntaje -->
         </form>
     </div>
-    
+
     <!-- <div id="winner">
         <a href="index.php" class="nav-button home-button"><i class="fa-solid fa-chevron-left"></i>Inici</a>
         <a href="ranking.php" class="nav-button rank-button">Rànquing<i class="fa-solid fa-chevron-right"></i></a>
     </div> -->
 
-<script type="text/javascript">
-    const ships = <?php echo json_encode($shipList); ?>;
-    const iaShips = <?php echo json_encode($AIshipList); ?>;
-</script>
+    <script type="text/javascript">
+        const ships = <?php echo json_encode($shipList); ?>;
+        const iaShips = <?php echo json_encode($AIshipList); ?>;
+        const limitedAmmo = false;
+        const playerAmmo = 0;
+        const AIAmmo = 0;
+        <?php if (isset($_POST["limitedAmmo"])) {
+            if ($_POST["limitedAmmo"] == "true") { ?>
+                limitedAmmo = false;
+                playerAmmo = 40;
+                AIAmmo = 40;
+        <?php }
+        }
+        ?>
+    </script>
 
 
-<script type="text/javascript" src="game.js"></script>
+    <script type="text/javascript" src="game.js"></script>
 </body>
 
 </html>

@@ -266,7 +266,8 @@ html {
 }
 
 #game_page .container-table .timer-fame .timer,
-#game_page .container-table .timer-fame .fame {
+#game_page .container-table .timer-fame .fame,
+#game_page .container-table .timer-fame .ammo {
     background-color: var(--primary_div);
     font-family: var(--text_font);
     font-size: 1.15em;
@@ -277,7 +278,8 @@ html {
 }
 
 #game_page .container-table .timer-fame .timer i,
-#game_page .container-table .timer-fame .fame i {
+#game_page .container-table .timer-fame .fame i,
+#game_page .container-table .timer-fame .ammo i {
     margin-right: 5px;
 }
 
