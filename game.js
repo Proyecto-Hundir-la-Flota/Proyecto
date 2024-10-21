@@ -203,25 +203,20 @@ function checkStatus(event, boardType) {
             // Solo ejecutar iaTurn si estamos en modo multiPlayer o versus-ia
             if (gameMode === 'multiPlayer' || gameMode === 'versus-ia') {
                 if (!repeatTurn) {
-                    // Esperar 2 segundos antes de que la IA haga su movimiento
+                    // Esperar 2.5 segundos antes de que la IA haga su movimiento
                     setTimeout(() => {
-                        setIATurn();
-                    }, 1250);
-                    setTimeout(() => {
-                        iaTurn(); // La IA hace su turno después de 2 segundos
-                        // Después del turno de la IA, esperar 1 segundo antes de habilitar los clics del jugador
+                        setIATurn();  // Cambiar el turno a la IA
                         setTimeout(() => {
-                            playerCanClick = true;
-                            setTimeout(() => {
-                                setPlayerTurn(); 
-                            }, 1250);
-                        }, 2500);  // Espera 2.5 segundo antes de permitir al jugador hacer clic de nuevo
-                    }, 2500); // 2.5 segundos antes de que la IA haga su movimiento
+                            iaTurn();  // La IA hace su turno después de 2.5 segundos
+                        }, 2500);
+                    }, 2500);
                 } else {
+                    // Si es turno del jugador de repetir, habilitar los clics nuevamente después de su turno
                     setTimeout(() => {
                         playerCanClick = true;
                     }, 2500);
                 }
+                
                 
             } else {
                 // En single player, podemos reactivar los clics inmediatamente si no hay IA
@@ -442,11 +437,11 @@ function handleAIBoardLogic(cell) {
 
 
 
-// Función que maneja el turno de la IA
 function iaTurn() {
     console.log("Turno de la IA");
     let validMove = false;
-    // Bucle que busca una celda válida para que la IA juegue
+    
+    // Mientras la IA no haga una jugada válida
     while (!validMove) {
         const randomRow = Math.floor(Math.random() * 10);
         const randomCol = Math.floor(Math.random() * 10);
@@ -463,9 +458,17 @@ function iaTurn() {
 
     // Si la IA acierta y tiene que repetir turno
     if (IArepeatTurn) {
-        setTimeout(iaTurn, 2500);  // Espera 2 segundos y repite el turno
-    }  
+        setTimeout(iaTurn, 2500);  // Espera 2.5 segundos y repite el turno
+        playerCanClick = false;    // Deshabilitar clics del jugador mientras la IA tiene derecho a otro turno
+    } else {
+        // Si la IA no repite turno, permitir que el jugador haga clic nuevamente
+        setTimeout(() => {
+            setPlayerTurn();  // Cambiar el turno al jugador
+            playerCanClick = true;  // Permitir clics del jugador
+        }, 2500);  // Espera 2.5 segundos antes de permitir que el jugador haga clic
+    }
 }
+
 
 
 
