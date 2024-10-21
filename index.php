@@ -62,6 +62,7 @@ unset($_SESSION['finishName']);
             const soloName = document.getElementById("soloName");
             const iaName = document.getElementById("iaName");
 
+
             nameInput.addEventListener("input", function () {
                 if (nameInput.value.length >= 3 && nameInput.value.length <= 30) {
                     playButtonIa.classList.remove("disabled");
@@ -76,6 +77,7 @@ unset($_SESSION['finishName']);
                 }
                 soloName.value = nameInput.value;
                 iaName.value = nameInput.value;
+
             });
 
         });

@@ -36,6 +36,11 @@
 >
 
 
+<<<<<<< HEAD
+=======
+<body id="game_page" class="versus-ia">
+
+>>>>>>> adri
     <div class="tape">
         <div class="dinosaurs-left">
             <svg width="10px" height="10px" version="1.1" viewBox="0 0 1200 1200" preserveAspectRatio="none"
