@@ -45,7 +45,7 @@ unset($_SESSION['finishName']);
 
             nameInput.addEventListener("input", function() {
                 // Comprobar la longitud del nombre
-                if (nameInput.value.length > 3 && nameInput.value.length < 30) {
+                if (nameInput.value.length >= 3 && nameInput.value.length < 30) {
                 playButton.classList.remove("disabled");
                 playButton.href = "#"; // Href nulo para esperar que el usuario confirme
             } else {

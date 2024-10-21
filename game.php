@@ -23,7 +23,7 @@
 </head>
 
 
-<body id="game_page">
+<body id="game_page" class="versus-ia">
 
     <div class="tape">
         <div class="dinosaurs-left">
