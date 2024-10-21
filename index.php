@@ -21,12 +21,12 @@ unset($_SESSION['finishName']);
             <p>Atenció! El navegador no té habilitat el JavaScript. Cal habilitar-lo per jugar.</p>
         </div>
     </noscript>
-    
+
     <div class="hero">
         <form id="infoForm" action="game.php" method="POST">
-            <input type="text" id="name_landing" name="name_landing" required minlength="3" maxlength="30"> 
-           
-        </form> 
+            <input type="text" id="name_landing" name="name_landing" required minlength="3" maxlength="30">
+
+        </form>
         <h1>Excavació Juràssica</h1>
         <h3>Desenterra ossos de fa milions d'anys!</h3>
         <p>Explora i excava per trobar ossos de dinosaures ocults sota terra. Tria les coordenades correctes i
@@ -36,14 +36,18 @@ unset($_SESSION['finishName']);
             <a id="btn_play" href="#" class="disabled"><i class="fa-solid fa-robot"></i>Excavació contra IA</a>-->
             <!-- Formulario para "Terreny de Proves" -->
 
-            <form method="POST" action="game.php">
+            <form class="formBottonSolo" method="POST" action="game.php">
+                <input type="hidden" id="soloName" name="name_landing">
                 <input type="hidden" name="gamemode" value="training">
-                <button type="submit" class="btn_play" class="disabled"><i class="fa-solid fa-gamepad"></i> Terreny de Proves</button>
+                <button disabled id="bottonSolo" type="submit" class="btn_play disabled"><i
+                        class="fa-solid fa-gamepad"></i> Terreny de Proves</button>
             </form>
 
-            <form method="POST" action="game.php">
+            <form id="formBottonIa" method="POST" action="game.php">
+                <input type="hidden" id="iaName" name="name_landing">
                 <input type="hidden" name="gamemode" value="versus-ia">
-                <button type="submit" class="btn_play" class="disabled"><i class="fa-solid fa-robot"></i> Excavació contra IA</button>
+                <button disabled id="bottonIa" type="submit" class="btn_play disabled"><i class="fa-solid fa-robot"></i>
+                    Excavació contra IA</button>
             </form>
 
             <a href="ranking.php"><i class="fa-solid fa-ranking-star"></i>Rànquing Paleontòlegs</a>
@@ -51,31 +55,34 @@ unset($_SESSION['finishName']);
     </div>
 
     <script type="text/javascript">
-        document.addEventListener("DOMContentLoaded", function() {
-            const playButton = document.getElementById("btn_play");
+        document.addEventListener("DOMContentLoaded", function () {
+            const playButtonIa = document.getElementById("bottonIa");
+            const playButtonSolo = document.getElementById("bottonSolo");
             const nameInput = document.getElementById("name_landing"); //Guardamos los valores introducidos
-            const infoForm = document.getElementById("infoForm"); //Guardamos el formato de formulario para poder hacer un submit
+            const soloName = document.getElementById("soloName");
+            const iaName = document.getElementById("iaName");
 
-            nameInput.addEventListener("input", function() {
-                // Comprobar la longitud del nombre
-                if (nameInput.value.length > 3 && nameInput.value.length < 30) {
-                playButton.classList.remove("disabled");
-                playButton.href = "#"; // Href nulo para esperar que el usuario confirme
-            } else {
-                playButton.classList.add("disabled");
-                playButton.href = "#"; // href nulo
-            }
-        });
 
-        // Añadir el evento click solo una vez
-        playButton.addEventListener("click", function(event) {
-          if   (!playButton.classList.contains("disabled")) {
-                // Enviar el formulario cuando el boton esta habilitado y se haga click
-                infoForm.submit();
-            } 
+            nameInput.addEventListener("input", function () {
+                if (nameInput.value.length >= 3 && nameInput.value.length <= 30) {
+                    playButtonIa.classList.remove("disabled");
+                    playButtonSolo.classList.remove("disabled");
+                    playButtonIa.disabled = false;  // Habilitar el botón
+                    playButtonSolo.disabled = false;  // Habilitar el botón
+                } else {
+                    playButtonIa.classList.add("disabled");
+                    playButtonSolo.classList.add("disabled");
+                    playButtonIa.disabled = true;   // Deshabilitar el botón
+                    playButtonSolo.disabled = true; // Deshabilitar el botón
+                }
+                soloName.value = nameInput.value;
+                iaName.value = nameInput.value;
+
             });
+
         });
     </script>
 
 </body>
+
 </html>

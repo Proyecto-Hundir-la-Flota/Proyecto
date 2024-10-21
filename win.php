@@ -38,7 +38,7 @@
 <title>Excavació Juràssica</title>
 </head>
 
-<body id="result_page">
+<body id="result_page" class="lose">
     <div class="hero">
         <h1>Has guanyat</h1>
         <div id="rankingInfo">
