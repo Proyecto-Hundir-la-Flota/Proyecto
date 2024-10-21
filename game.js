@@ -5,6 +5,7 @@ const gameMode = document.body.getAttribute('data-gamemode');
 
 // crear un array, donde usando cada nombre guarda un archivo de audio
 const audios = [];
+audios['cavar'] = new Audio("./sounds/cavar.mp3");
 audios['arena'] = new Audio("./sounds/desenterrar_arena.mp3");
 audios['hueso'] = new Audio("./sounds/desenterrar_huesos.mp3");
 audios['easter_egg'] = new Audio("./sounds/easter_egg.mp3");
@@ -63,7 +64,7 @@ function stopClock() {
 
 
 // creamos la funcion para definir las alertas
-function createAlerts(alert_type) {
+function createAlerts(alert_type, playerType) {
 
     // forzamos a limpiar la alerta para no repetir una alarma exstente
 
@@ -179,7 +180,12 @@ function checkStatus(event, boardType) {
 
     // Si la celda está cubierta, se destapa
     if (cell.classList.contains("covered")) {
-        cell.classList.remove("covered");
+        audios['cavar'].play(); //sonido de cavar antes de destapar casilla
+        setTimeout(() => {
+
+            cell.classList.remove("covered");
+        }, 3200);
+        
 
 
         if (boardType === 'player') {
@@ -301,22 +307,24 @@ function handlePlayerBoardLogic(cell) {
             if (hitAndSink) {
                 points += 15;
                 // fosil descubierto
-                if (!audios['dino'].paused) {
-                    audios['dino'].pause(); // Si está reproduciéndose, lo pausamos
-                    audios['dino'].currentTime = 0; // Reiniciamos el audio
-                }
+                playerCanClick = false;
                 createAlerts('foundAll', 'player');
-                audios['dino'].play();
+                
+                setTimeout(() => {
+                    audios['dino'].play();
+                    playerCanClick = true;
+                }, 3000);
 
             } else {
                 points += 10;
                 // huesso encontrado
-                if (!audios['hueso'].paused) {
-                    audios['hueso'].pause(); // Si está reproduciéndose, lo pausamos
-                    audios['hueso'].currentTime = 0; // Reiniciamos el audio
-                }
+               
                 createAlerts('found', 'player');
-                audios['hueso'].play();
+                playerCanClick = false;
+                setTimeout(() => {
+                    audios['hueso'].play();
+                    playerCanClick = true;
+                }, 3000);
             }
 
         }
@@ -329,12 +337,14 @@ function handlePlayerBoardLogic(cell) {
             accumulatedErrors = 0;
         }
         // fallo al buscar
-        if (!audios['arena'].paused) {
-            audios['arena'].pause(); // Si está reproduciéndose, lo pausamos
-            audios['arena'].currentTime = 0; // Reiniciamos el audio
-        }
+        
         createAlerts('miss', 'player');
-        audios['arena'].play();
+        
+        playerCanClick = false;
+        setTimeout(() => {
+            audios['arena'].play();
+            playerCanClick = true;
+        }, 3000);
     }
     updatePointsCounter();
 }
