@@ -6,7 +6,7 @@
         $_SESSION['finishName'] = $_SESSION['name'];//sesion game
                 unset($_SESSION['name']); //borrar la sesion de index
     }
-        
+        echo $_SESSION['finishName'];
 ?>
 
 
