@@ -208,8 +208,8 @@ function checkStatus(event, boardType) {
                         setIATurn();  // Cambiar el turno a la IA
                         setTimeout(() => {
                             iaTurn();  // La IA hace su turno después de 2.5 segundos
-                        }, 2500);
-                    }, 2500);
+                        }, 1250);
+                    }, 1250);
                 } else {
                     // Si es turno del jugador de repetir, habilitar los clics nuevamente después de su turno
                     setTimeout(() => {
@@ -461,13 +461,15 @@ function iaTurn() {
         setTimeout(iaTurn, 2500);  // Espera 2.5 segundos y repite el turno
         playerCanClick = false;    // Deshabilitar clics del jugador mientras la IA tiene derecho a otro turno
     } else {
-        // Si la IA no repite turno, permitir que el jugador haga clic nuevamente
         setTimeout(() => {
-            setPlayerTurn();  // Cambiar el turno al jugador
-            playerCanClick = true;  // Permitir clics del jugador
-        }, 2500);  // Espera 2.5 segundos antes de permitir que el jugador haga clic
+            setPlayerTurn();  // Cambiar el turno a la IA
+            setTimeout(() => {
+                playerCanClick = true;  // La IA hace su turno después de 2.5 segundos
+            }, 1250);
+        }, 1250);
     }
 }
+
 
 
 

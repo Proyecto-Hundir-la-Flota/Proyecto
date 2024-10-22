@@ -198,6 +198,11 @@ html {
     border: 1px solid #000 !important;
 }
 
+.ia-table {
+    
+    position: relative;
+}
+
 #game_page .tape {
     display: flex;
     align-items: center;
@@ -821,9 +826,11 @@ html {
 /* Estilo para el turno del jugador */
 .table-player-turn {
     box-shadow: 0 15px 0px #ff0000;
+    transition: 1.25s;
 }
 
 /* Estilo para el turno de la IA */
 .table-ia-turn {
     box-shadow: 0 15px 0px #ff0000;
+    transition: 1.25s;
 }
