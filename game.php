@@ -4,7 +4,7 @@
     if (isset($_POST["name_landing"])) {
         $_SESSION['name'] = $_POST["name_landing"];//sesion index
         $_SESSION['finishName'] = $_SESSION['name'];//sesion game
-                unset($_SESSION['name']); //borrar la sesion de index
+        unset($_SESSION['name']); //borrar la sesion de index
     }
 
      if (isset($_POST["limitedAmmo"])) {
@@ -124,28 +124,33 @@ function generateBoard(&$board_array, $isAI = false) {
     // Declarar los identificadores
     $letter_id = 65;
     $number_id = 1;
+
     if ($isAI) {
+    // Array con los nombres de los bots
+    $botNames = ['XaviBOT', 'LeandroBOT', 'EnricBOT'];
+    // Seleccionar un nombre aleatorio
+    $randomBotName = $botNames[array_rand($botNames)];
     echo "<div class='container-table ia-table'>
             <div class='timer-fame'>
-                <div class='fame'>
-                    <i class='fa-solid fa-bullhorn'></i>Fama: <span class='score'>-</span>
-                </div>
-                <div class='timer'>
-                    <i class='fa-solid fa-hourglass-end'></i>Temps: <span id='gameClock'>00:00</span>
+                <div class='player_name'>
+                    <i class='fa-solid fa-robot'></i>$randomBotName
                 </div>
             </div>
-            <table>";
+            <table id='aiBoard'>";
     } else {
         echo "<div class='container-table'>
             <div class='timer-fame'>
+                <div class='player_name'>
+                    <i class='fa-solid fa-user'></i>".$_SESSION["finishName"]."
+                </div>
                 <div class='fame'>
-                    <i class='fa-solid fa-bullhorn'></i>Fama: <span class='score'>-</span>
+                    <i class='fa-solid fa-bullhorn'></i>Fama: <span class='score'>0</span>
                 </div>
                 <div class='timer'>
                     <i class='fa-solid fa-hourglass-end'></i>Temps: <span id='gameClock'>00:00</span>
                 </div>
             </div>
-            <table>";
+            <table id='playerBoard'>";
     }
     for ($i = 0; $i <= $column_board; $i++) {
         echo "<tr>";
@@ -188,7 +193,9 @@ function generateBoard(&$board_array, $isAI = false) {
         echo "</tr>";
     }
     if ($isAI) {
-        echo "</table></div>
+        echo "</table>
+        <div class='turn-overlay-ia'>Torn de la IA</div>
+        </div>
           <div class='container-info ia-info'>
             <div class='info-item'> 
               <h3>Com aconseguir fama</h3>
@@ -203,7 +210,8 @@ function generateBoard(&$board_array, $isAI = false) {
             </div>
           </div>";
     } else {
-    echo "</table></div>
+    echo "</table>
+        <div class='turn-overlay'>El teu torn</div></div>
           <div class='container-info'>
             <div class='info-item'> 
               <h3>Com aconseguir fama</h3>
