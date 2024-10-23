@@ -24,15 +24,16 @@ unset($_SESSION['finishName']);
 
     <div class="hero">
        
-            <input type="text" id="name_landing" name="name_landing" required minlength="3" maxlength="30">
-            <input type="button" id="menuBotton" name="menuBotton">
-            <ul id="list" class="hiddenClass">
-                <li ><input type="checkbox" id="limitedAmmo">Munició limitada</li>
-                <li ><input type="checkbox" id="tankShips">Vaixells acorassats</li>
-                <li ><input type="checkbox" id="specialAtack">Atacs especials</li>
-            </ul>
-            </input>
-       
+       <input type="text" id="name_landing" name="name_landing" required minlength="3" maxlength="30">
+       <input type="button" id="menuBotton" name="menuBotton">
+       <ul id="list" class="hiddenClass">
+           <li ><input type="checkbox" id="limitedAmmo">Munició limitada</li>
+           <li ><input type="checkbox" id="tankShips">Vaixells acorassats</li>
+           <li ><input type="checkbox" id="specialAtack">Atacs especials</li>
+       </ul>
+       </input>
+  
+
         <h1>Excavació Juràssica</h1>
         <h3>Desenterra ossos de fa milions d'anys!</h3>
         <p>Explora i excava per trobar ossos de dinosaures ocults sota terra. Tria les coordenades correctes i
@@ -75,6 +76,8 @@ unset($_SESSION['finishName']);
             const iaName = document.getElementById("iaName");
 
 
+
+            
             // agregar variables para el menu desplegable
             const lilimitedAmmo = document.getElementById("limitedAmmo"); //guardamos la variable para la fucion de click en el li
             const litankShips = document.getElementById("tankShips");
@@ -134,9 +137,6 @@ unset($_SESSION['finishName']);
                     }
             });
 
-
-
-            // funcion para pasar parametros del nombre
             nameInput.addEventListener("input", function () {
                 if (nameInput.value.length >= 3 && nameInput.value.length <= 30) {
                     playButtonIa.classList.remove("disabled");

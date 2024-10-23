@@ -9,7 +9,7 @@
 
      if (isset($_POST["limitedAmmo"])) {
         if($_POST["limitedAmmo"]==="limitedAmmo"){
-            echo $_POST["limitedAmmo"];
+        //   echo $_POST["limitedAmmo"];
            
     //  funciona, guardar valor en variable deseada
         }
@@ -18,7 +18,7 @@
      
      if (isset($_POST["menuTankShips"])) {
         if($_POST["menuTankShips"]==="tankShips"){
-            echo $_POST["menuTankShips"];
+            // echo $_POST["menuTankShips"];
             //  funciona, guardar valor en variable deseada
         }
     }
@@ -26,14 +26,13 @@
       
      if (isset($_POST["menuSpecialAtack"])) {
         if($_POST["menuSpecialAtack"]==="specialAtack"){
-            echo $_POST["menuSpecialAtack"];
+            // echo $_POST["menuSpecialAtack"];
             //  funciona, guardar valor en variable deseada
         }
 
      }   
 
 ?>
-
 
 <!DOCTYPE html>
 <html lang="ca">
@@ -59,6 +58,7 @@
     }
     ?>
 >
+
 
     <div class="tape">
         <div class="dinosaurs-left">
