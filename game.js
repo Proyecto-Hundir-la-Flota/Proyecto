@@ -13,6 +13,8 @@ audios['win'] = new Audio("./sounds/win.mp3");
 
 const discoveredFossils = [];
 const discoveredAIFossils = [];
+const playerHits = 0;
+const AIHits = 0;
 
 // Variable para controlar si el jugador puede hacer clic
 let playerCanClick = true;
@@ -184,6 +186,7 @@ function checkStatus(event, boardType) {
             // Deshabilitar los clics del jugador después de su turno
             playerCanClick = false;
 
+
             // Solo ejecutar iaTurn si estamos en modo multiPlayer o versus-ia
             if (gameMode === 'multiPlayer' || gameMode === 'versus-ia') {
                 // Esperar 2 segundos antes de que la IA haga su movimiento
@@ -195,6 +198,37 @@ function checkStatus(event, boardType) {
                         playerCanClick = true;
                     }, 2500); // Espera 2.5 segundo antes de permitir al jugador hacer clic de nuevo
                 }, 2500); // 2.5 segundos antes de que la IA haga su movimiento
+
+                if (limitedAmmoMode) {
+                    if (AIAmmo < 1 && playerAmmo < 1) {
+                        let playerFossilsCount = 0;
+                        let IAFossilsCount = 0;
+                        for (let index = 0; index < discoveredFossils.length; index++) {
+                            if (discoveredFossils[index][0]) {
+                                playerFossilsCount++;
+                            }
+                        }
+                        for (let index = 0; index < discoveredAIFossils.length; index++) {
+                            if (discoveredAIFossils[index][0]) {
+                                IAFossilsCount++;
+                            }
+                        }
+
+                        let playerWin = false
+
+                        if (playerFossilsCount == IAFossilsCount) {
+                            if (playerHits > AIHits) {
+                                playerWin = true;
+                            } else {
+                                playerWin = false;
+                            }
+                        } else if (playerFossilsCount > IAFossilsCount) {
+                            playerWin = true;
+                        } else {
+                            playerWin = false;
+                        }
+                    }
+                }
             } else {
                 // En single player, podemos reactivar los clics inmediatamente si no hay IA
                 playerCanClick = true;
@@ -207,7 +241,10 @@ function checkStatus(event, boardType) {
 
 
 function handlePlayerBoardLogic(cell) {
-
+    if (limitedAmmoMode) {
+        playerAmmo--;
+        document.getElementById("player-ammo").innerText = playerAmmo;
+    }
     // Verificar que las celdas para completar el easter egg estan seleccionadas
     if (cell.id === 'cell_0_0') cell_0_0 = true;
     if (cell.id === 'cell_0_9') cell_0_9 = true;
@@ -246,6 +283,7 @@ function handlePlayerBoardLogic(cell) {
 
 
                 if (position[0] == cellPosition[0] && position[1] == cellPosition[1]) {
+                    playerHits++;
                     ships[index][indexShip][1] = true;
                     discoveredFossils[index][1] = true;
                 }
@@ -270,7 +308,7 @@ function handlePlayerBoardLogic(cell) {
             }
             discoveredFossils[index][1] = false;
         }
-        if (victory) {
+        if (victory && AIAmmo < 1 && playerAmmo < 1) {
 
             stopClock();
             points += 15;
@@ -357,6 +395,7 @@ function handleAIBoardLogic(cell) {
 
                 // Comprobar si la posición de la celda corresponde a un fósil del barco
                 if (position[0] == cellPosition[0] && position[1] == cellPosition[1]) {
+                    AIHits++;
                     iaShips[index][indexShip][1] = true; // Marcar como descubierto en IA
                     discoveredAIFossils[index][1] = true; // Marcar fósil como encontrado
                 }
@@ -434,6 +473,10 @@ function iaTurn() {
         if (cell && cell.classList.contains("covered")) {
             // La IA hace su jugada
             cell.classList.remove("covered"); // Destapar la celda
+            if (limitedAmmoMode) {
+                AIAmmo--;
+                document.getElementById("ai-ammo").innerText = AIAmmo;
+            }
             handleAIBoardLogic(cell); // Lógica para manejar el clic de la IA
             validMove = true; // Salir del bucle al encontrar una celda válida
         }

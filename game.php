@@ -107,7 +107,7 @@ if (isset($_POST["name_landing"])) {
                 if (isset($_POST["limitedAmmo"])) {
                     if ($_POST["limitedAmmo"] == "true") {
                         $infoContent .= "                <div class='ammo'>
-                    <i class='fa-solid fa-bullseye'></i>Munició: <span class='ai-ammo'>40</span>
+                    <i class='fa-solid fa-bullseye'></i>Munició: <span id='ai-ammo'>40</span>
                 </div>\n";
                     }
                 }
@@ -120,7 +120,7 @@ if (isset($_POST["name_landing"])) {
                 if (isset($_POST["limitedAmmo"])) {
                     if ($_POST["limitedAmmo"] == "true") {
                         $infoContent .= "                <div class='ammo'>
-                    <i class='fa-solid fa-bullseye'></i>Munició: <span class='player-ammo'>40</span>
+                    <i class='fa-solid fa-bullseye'></i>Munició: <span id='player-ammo'>40</span>
                 </div>\n";
                     }
                 }
@@ -335,12 +335,12 @@ if (isset($_POST["name_landing"])) {
     <script type="text/javascript">
         const ships = <?php echo json_encode($shipList); ?>;
         const iaShips = <?php echo json_encode($AIshipList); ?>;
-        const limitedAmmo = false;
-        const playerAmmo = 0;
-        const AIAmmo = 0;
+        let limitedAmmoMode = false;
+        let playerAmmo = 0;
+        let AIAmmo = 0;
         <?php if (isset($_POST["limitedAmmo"])) {
             if ($_POST["limitedAmmo"] == "true") { ?>
-                limitedAmmo = false;
+                limitedAmmoMode = true;
                 playerAmmo = 40;
                 AIAmmo = 40;
         <?php }
