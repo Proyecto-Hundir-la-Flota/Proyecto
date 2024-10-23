@@ -10,6 +10,7 @@ audios['hueso'] = new Audio("./sounds/desenterrar_huesos.mp3");
 audios['easter_egg'] = new Audio("./sounds/easter_egg.mp3");
 audios['dino'] = new Audio("./sounds/dino.mp3");
 audios['win'] = new Audio("./sounds/win.mp3");
+audios['cavar'] = new Audio("./sounds/cavar.mp3");
 
 const discoveredFossils = [];
 const iaDiscoveredFossils = [];
@@ -283,6 +284,12 @@ function setIATurn() {
     }, 250); // Tiempo de duración de la animación de salida (250ms)
 }
 
+function sleepSync(milliseconds) {
+    const start = Date.now();
+        while (Date.now() - start < milliseconds) {
+    }
+}
+
 // Función checkStatus
 function checkStatus(event, boardType) {
     const cell = event.target;
@@ -292,11 +299,17 @@ function checkStatus(event, boardType) {
         createAlerts('wait', 'player');
         return; // Salir si el jugador no puede hacer clic
     }
-
-
+    
     // Si la celda está cubierta, se destapa
     if (cell.classList.contains("covered")) {
+        playerCanClick = false;
+        cell.classList.add("cell-selected")
 
+        audios['cavar'].play();
+
+        setTimeout(() => {
+            
+        cell.classList.remove("cell-selected")
         cell.classList.remove("covered");
 
         if (boardType === 'player') {
@@ -342,6 +355,7 @@ function checkStatus(event, boardType) {
                 playerCanClick = true;
             }
         }
+        }, 3000);
     }
 }
 
@@ -580,52 +594,57 @@ function handleAIBoardLogic(cell) {
 }
 
 
-
 function iaTurn() {
     console.log("Turno de la IA");
-    let validMove = false;
 
-    // Mientras la IA no haga una jugada válida
-    while (!validMove) {
+    // Función que intenta hacer un movimiento válido
+    function attemptMove() {
         const randomRow = Math.floor(Math.random() * 10);
         const randomCol = Math.floor(Math.random() * 10);
         const cell = document.getElementById(`ia_cell_${randomRow}_${randomCol}`);
-
+        
         // Verificar si la celda existe y está cubierta
         if (cell && cell.classList.contains("covered")) {
+
+            cell.classList.add("cell-selected")
             // La IA hace su jugada
-            cell.classList.remove("covered"); // Destapar la celda
+            audios['cavar'].play();
+            setTimeout(() => {
+                cell.classList.remove("cell-selected")
+                cell.classList.remove("covered"); // Destapar la celda
+                handleAIBoardLogic(cell); // Lógica para manejar el clic de la IA
 
-            handleAIBoardLogic(cell); // Lógica para manejar el clic de la IA
-            validMove = true; // Salir del bucle al encontrar una celda válida
-            if (limitedAmmoMode) {
-                checkLimitedAmmoModeStatus();
-            }
+                // Si la IA acierta y tiene que repetir turno
+                if (IArepeatTurn) {
+                    if (!limitedAmmoMode || (limitedAmmoMode && AIAmmo > 0)) { // Si el modo de munición limitada no esta activo o esta activo y la IA tiene munición
+                        setTimeout(iaTurn, 2500);  // Espera 2.5 segundos y repite el turno
+                        playerCanClick = false;    // Deshabilitar clics del jugador mientras la IA tiene derecho a otro turno
+                    } else { // Si el modo de munición limitada esta activo y la IA no tiene munición
+                        setTimeout(() => {
+                            setPlayerTurn();  // Cambiar el turno al Jugador
+                            setTimeout(() => {
+                                playerCanClick = true;  // El jugador empieza su turno después de 2.5 segundos
+                            }, 1250);
+                        }, 1250);
+                    }
+                } else {
+                    setTimeout(() => {
+                        setPlayerTurn();  // Cambiar el turno a la IA
+                        setTimeout(() => {
+                            playerCanClick = true;  // Permitir clics del jugador después de 1.25 segundos
+                        }, 1250);
+                    }, 1250);
+                }
+            }, 3000); // Tiempo que toma para descubrir la celda
+        } else {
+            // Si no es un movimiento válido, intenta nuevamente
+            setTimeout(attemptMove, 100); // Espera 100ms antes de intentar de nuevo
         }
     }
 
-    // Si la IA acierta y tiene que repetir turno
-    if (IArepeatTurn) {
-        if (!limitedAmmoMode || (limitedAmmoMode && AIAmmo > 0)) { // Si el modo de munición limitada no esta activo o esta activo y la IA tiene munición
-            setTimeout(iaTurn, 2500);  // Espera 2.5 segundos y repite el turno
-            playerCanClick = false;    // Deshabilitar clics del jugador mientras la IA tiene derecho a otro turno
-        } else { // Si el modo de munición limitada esta activo y la IA no tiene munición
-            setTimeout(() => {
-                setPlayerTurn();  // Cambiar el turno al Jugador
-                setTimeout(() => {
-                    playerCanClick = true;  // El jugador empieza su turno después de 2.5 segundos
-                }, 1250);
-            }, 1250);
-        }
-    } else {
-        setTimeout(() => {
-            setPlayerTurn();  // Cambiar el turno al Jugador
-            setTimeout(() => {
-                playerCanClick = true;  // El jugador empieza su turno después de 2.5 segundos
-            }, 1250);
-        }, 1250);
-    }
+    attemptMove(); // Inicia el intento de movimiento
 }
+
 
 document.addEventListener("DOMContentLoaded", function () {
     const playerCells = document.querySelectorAll("td[id^='cell_']"); // Selecciona las celdas del jugador (IDs que empiezan por 'cell_')
@@ -644,7 +663,7 @@ document.addEventListener("DOMContentLoaded", function () {
     startClock();
 
     ships.forEach(ship => {
-        discoveredFossils.push([false, false]);
+        discoveredFossils.push([false, false]); // Por cada fossil [fossil entero encontrado, hueso parte del fosil seleccionado]
     });
 
     iaShips.forEach(ship => {
