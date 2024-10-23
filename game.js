@@ -309,23 +309,16 @@ function handlePlayerBoardLogic(cell) {
                 // fosil descubierto
                 setTimeout(() => {
                     createAlerts('foundAll', 'player');
-                    audios['dino'].play();
-    
-                   
-                }, 3500);
-                
+                    audios['dino'].play();                   
+                }, 3500);           
             } else {
                 points += 10;
                 // huesso encontrado
                 setTimeout(() => {
                     createAlerts('found', 'player');
-                    audios['hueso'].play();
-    
-                   
-                }, 3500);
-                
+                    audios['hueso'].play();          
+                }, 3500);  
             }
-
         }
     } else {
         accumulatedErrors++;
@@ -339,13 +332,8 @@ function handlePlayerBoardLogic(cell) {
         setTimeout(() => {
             createAlerts('miss', 'player');
             audios['arena'].play();
-
-           
-        }, 3500);
-        
-        
+        }, 3500);  
     }
-
     updatePointsCounter();
 }
 
@@ -419,25 +407,20 @@ function handleAIBoardLogic(cell) {
                 setTimeout(() => {
                     createAlerts('foundAll', 'ia');
                     audios['dino'].play();
-    
                 }, 3500);
             } else {
                 // Mostrar alerta de fósil encontrado
                 setTimeout(() => {
                     createAlerts('found', 'ia');
                     audios['hueso'].play();
-
-                }, 3500);
-                
+                }, 3500);     
             }
         }
     } else {
         // Si no se encontró un fósil, reproducimos el sonido de fallo
         setTimeout(() => {
             createAlerts('miss', 'ia');
-            audios['arena'].play();
-
-           
+            audios['arena'].play();   
         }, 3500);
     }
 }
@@ -449,10 +432,6 @@ function iaTurn() {
     console.log("Turno de la IA");
     
     setTimeout(() => {
-        
-   
-    
-    
     let validMove = false;
 
     // Bucle que busca una celda válida para que la IA juegue
@@ -463,9 +442,7 @@ function iaTurn() {
 
         // Verificar si la celda existe y está cubierta
         if (cell && cell.classList.contains("covered")) {
-             // La IA hace su jugada
-             
-            
+             // La IA hace su jugada   
             setTimeout(() => {
                 cell.classList.remove("covered"); // Destapar la celda
             }, 3000);
@@ -477,7 +454,6 @@ function iaTurn() {
     }
 }, 2000);
 }
-
 
 
 document.addEventListener("DOMContentLoaded", function () {
