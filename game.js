@@ -13,7 +13,6 @@ audios['dino'] = new Audio("./sounds/dino.mp3");
 audios['win'] = new Audio("./sounds/win.mp3");
 
 const discoveredFossils = [];
-const discoveredAIFossils = [];
 
 // Variable para controlar si el jugador puede hacer clic
 let playerCanClick = true;
@@ -295,14 +294,13 @@ function handlePlayerBoardLogic(cell) {
             updatePointsCounter();
 
             createAlerts('win', 'player');
-            audios['win'].play();
-            //document.getElementById("winner").style.display = "flex";
-            stopUpdatePoints();
+                audios['win'].play();
+                document.getElementById("rankingInfo").style.display = "block";
+                document.getElementById("score").innerHTML = points;
+                document.getElementById("winner").style.display = "flex";
+                
 
-            document.getElementById("score-hidden").value = points;
-            let scoreForm = document.getElementById("scoreForm");
-            scoreForm.action = "win.php";
-            scoreForm.submit();
+                stopUpdatePoints();
         } else {
             if (hitAndSink) {
                 points += 15;
@@ -353,7 +351,7 @@ function handleAIBoardLogic(cell) {
 
         // Recorremos los barcos de la IA para verificar si la posición coincide con algún fósil
         for (let index = 0; index < iaShips.length; index++) {
-            discoveredAIFossils[index][0] = true;
+            discoveredFossils[index][0] = true;
 
             for (let indexShip = 0; indexShip < iaShips[index].length; indexShip++) {
                 let position = iaShips[index][indexShip][0];
@@ -361,18 +359,18 @@ function handleAIBoardLogic(cell) {
                 // Comprobar si la posición de la celda corresponde a un fósil del barco
                 if (position[0] == cellPosition[0] && position[1] == cellPosition[1]) {
                     iaShips[index][indexShip][1] = true; // Marcar como descubierto en IA
-                    discoveredAIFossils[index][1] = true; // Marcar fósil como encontrado
+                    discoveredFossils[index][1] = true; // Marcar fósil como encontrado
                 }
 
                 // Si alguna parte del barco no ha sido descubierta, no se completa el fósil
                 if (!iaShips[index][indexShip][1]) {
-                    discoveredAIFossils[index][0] = false;
+                    discoveredFossils[index][0] = false;
                 }
             }
         }
 
-        for (let index = 0; index < discoveredAIFossils.length; index++) {
-            let discoveredFossil = discoveredAIFossils[index];
+        for (let index = 0; index < discoveredFossils.length; index++) {
+            let discoveredFossil = discoveredFossils[index];
             let foundBone = discoveredFossil[0];
 
             if (!foundBone) {
@@ -383,7 +381,7 @@ function handleAIBoardLogic(cell) {
                 }
             }
 
-            discoveredAIFossils[index][1] = false; // Reiniciar la parte encontrada para el próximo clic
+            discoveredFossils[index][1] = false; // Reiniciar la parte encontrada para el próximo clic
         }
 
         if (victory) {
@@ -392,15 +390,10 @@ function handleAIBoardLogic(cell) {
             // Mostrar alerta de victoria para la IA
             createAlerts('win', 'ia');
             audios['win'].play();
-            //document.getElementById("winner").style.display = "flex";
-
+            document.getElementById("rankingInfo").style.display = "block";
+            document.getElementById("winner").style.display = "flex";
+            
             // Lógica de fin del juego aquí, si es necesario
-            stopUpdatePoints();
-
-            document.getElementById("score-hidden").value = points;
-            let scoreForm = document.getElementById("scoreForm");
-            scoreForm.action = "lose.php";
-            scoreForm.submit();
         } else {
             if (hitAndSink) {
                 // Mostrar alerta de fósil completo
@@ -476,13 +469,12 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     document.getElementById("rankingInfo").style.display = "none";
-    //document.getElementById("winner").style.display = "none";
+    document.getElementById("winner").style.display = "none";
     // Iniciar el temporizador al cargar la pÃ¡gina
     startClock();
 
     ships.forEach(ship => {
         discoveredFossils.push([true, false]);
-        discoveredAIFossils.push([true, false]);
     });
 
     // Evento del formulario para enviar puntaje
