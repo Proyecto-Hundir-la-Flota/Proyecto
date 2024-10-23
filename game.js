@@ -12,8 +12,8 @@ audios['dino'] = new Audio("./sounds/dino.mp3");
 audios['win'] = new Audio("./sounds/win.mp3");
 
 const discoveredFossils = [];
-const playerBoard = document.getElementById("playerBoard");
-const aiBoard = document.getElementById("aiBoard");
+const playerBoard = document.querySelector(".turn-overlay");
+const aiBoard = document.querySelector(".turn-overlay-ia");
 
 // Variable para controlar si el jugador puede hacer clic
 let playerCanClick = true;
@@ -168,13 +168,28 @@ function stopUpdatePoints() {
 
 
 function setPlayerTurn() {
-    playerBoard.classList.add('table-player-turn');
-    aiBoard.classList.remove('table-ia-turn');
+    // Añade la animación de salida a la IA
+    aiBoard.classList.add('table-ia-turn-out');
+    
+    // Espera a que termine la animación de salida antes de aplicar la animación de entrada
+    setTimeout(() => {
+        // Elimina la clase de salida y añade la clase de entrada para el jugador
+        aiBoard.classList.remove('table-ia-turn-out');
+        playerBoard.classList.add('table-player-turn');
+        aiBoard.classList.remove('table-ia-turn');
+    }, 250); // Tiempo de duración de la animación de salida (250ms)
 }
 
 function setIATurn() {
-    aiBoard.classList.add('table-ia-turn');
-    playerBoard.classList.remove('table-player-turn');
+    // Añade la animación de salida al jugador
+    playerBoard.classList.add('table-player-turn-out');
+    
+    // Espera a que termine la animación de salida antes de aplicar la animación de entrada para la IA
+    setTimeout(() => {
+        playerBoard.classList.remove('table-player-turn-out');
+        aiBoard.classList.add('table-ia-turn');
+        playerBoard.classList.remove('table-player-turn');
+    }, 250); // Tiempo de duración de la animación de salida (250ms)
 }
 
 // Función checkStatus

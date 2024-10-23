@@ -169,7 +169,9 @@ function generateBoard(&$board_array, $isAI = false) {
         echo "</tr>";
     }
     if ($isAI) {
-        echo "</table></div>
+        echo "</table>
+        <div class='turn-overlay-ia'>Torn de la IA</div>
+        </div>
           <div class='container-info ia-info'>
             <div class='info-item'> 
               <h3>Com aconseguir fama</h3>
@@ -184,7 +186,8 @@ function generateBoard(&$board_array, $isAI = false) {
             </div>
           </div>";
     } else {
-    echo "</table></div>
+    echo "</table>
+        <div class='turn-overlay'>El teu torn</div></div>
           <div class='container-info'>
             <div class='info-item'> 
               <h3>Com aconseguir fama</h3>

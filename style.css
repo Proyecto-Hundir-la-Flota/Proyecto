@@ -261,6 +261,7 @@ html {
 #game_page .container-table {
     display: flex;
     flex-direction: column;
+    position: relative;
 }
 
 #game_page .container-table .timer-fame {
@@ -822,15 +823,73 @@ html {
     height: 386px;
 }
 
-
-/* Estilo para el turno del jugador */
-.table-player-turn {
-    box-shadow: 0 15px 0px #ff0000;
-    transition: 1.25s;
+.turn-overlay-ia {
+    opacity: 0;
+    z-index: -1;
+    position: absolute;
+    bottom: -40px;
+    width: 100%;
+    text-align: center;
+    background-color: var(--primary_div);
+    font-family: var(--secondary_title_font);
+    font-weight: 400;
+    font-size: 1.6em;
+    border-radius: 7.5px;
 }
 
-/* Estilo para el turno de la IA */
+
+
+.turn-overlay {
+    opacity: 0;
+    z-index: -1;
+    position: absolute;
+    bottom: -40px;
+    width: 100%;
+    text-align: center;
+    background-color: var(--primary_div);
+    font-family: var(--secondary_title_font);
+    font-weight: 400;
+    font-size: 1.6em;
+    border-radius: 7.5px;
+}
+
 .table-ia-turn {
-    box-shadow: 0 15px 0px #ff0000;
-    transition: 1.25s;
+    animation: slideTextIn 0.25s forwards;
+}
+
+.table-ia-turn-out {
+    animation: slideTextOut 0.25s forwards;
+}
+
+.table-player-turn{
+    animation: slideTextIn 0.25s forwards;
+}
+
+.table-player-turn-out {
+    animation: slideTextOut 0.25s forwards;
+}
+
+
+
+@keyframes slideTextIn {
+    0% {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Animación de salida */
+@keyframes slideTextOut {
+    0% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
 }
