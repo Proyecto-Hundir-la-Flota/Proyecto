@@ -23,16 +23,16 @@ unset($_SESSION['finishName']);
     </noscript>
 
     <div class="hero">
-        <form id="infoForm" action="game.php" method="POST">
+       
             <input type="text" id="name_landing" name="name_landing" required minlength="3" maxlength="30">
             <input type="button" id="menuBotton" name="menuBotton">
             <ul id="list" class="hiddenClass">
-                <li id="limitedAmmo">Munició limitada</li>
-                <li id="tankShips">Vaixells acorassats</li>
-                <li id="specialAtack">Atacs especials</li>
+                <li ><input type="checkbox" id="limitedAmmo">Munició limitada</li>
+                <li ><input type="checkbox" id="tankShips">Vaixells acorassats</li>
+                <li ><input type="checkbox" id="specialAtack">Atacs especials</li>
             </ul>
             </input>
-        </form>
+       
         <h1>Excavació Juràssica</h1>
         <h3>Desenterra ossos de fa milions d'anys!</h3>
         <p>Explora i excava per trobar ossos de dinosaures ocults sota terra. Tria les coordenades correctes i
@@ -44,7 +44,9 @@ unset($_SESSION['finishName']);
 
             <form class="formBottonSolo" method="POST" action="game.php">
                 <input type="hidden" id="soloName" name="name_landing">
-                <input type="hidden" id="soloMenu" name="menuResult">
+                <input type="hidden" id="soloMenuLimitedAmmo" name="limitedAmmo">
+                <input type="hidden" id="soloMenuTankShips" name="menuTankShips">
+                <input type="hidden" id="soloMenuSpecialAtack" name="menuSpecialAtack">
                 <input type="hidden" name="gamemode" value="training">
                 <button disabled id="bottonSolo" type="submit" class="btn_play disabled"><i
                         class="fa-solid fa-gamepad"></i> Terreny de Proves</button>
@@ -52,7 +54,9 @@ unset($_SESSION['finishName']);
 
             <form id="formBottonIa" method="POST" action="game.php">
                 <input type="hidden" id="iaName" name="name_landing">
-                <input type="hidden" id="iaMenu" name="menuResult">
+                <input type="hidden" id="iaMenuLimitedAmmo" name="limitedAmmo">
+                <input type="hidden" id="iaMenuTankShips" name="menuTankShips">
+                <input type="hidden" id="iaMenuSpecialAtack" name="menuSpecialAtack">
                 <input type="hidden" name="gamemode" value="versus-ia">
                 <button disabled id="bottonIa" type="submit" class="btn_play disabled"><i class="fa-solid fa-robot"></i>
                     Excavació contra IA</button>
@@ -72,9 +76,10 @@ unset($_SESSION['finishName']);
 
 
             // agregar variables para el menu desplegable
-            const lilimitedAmmo = document.getElementById("limitedAmmo");
+            const lilimitedAmmo = document.getElementById("limitedAmmo"); //guardamos la variable para la fucion de click en el li
             const litankShips = document.getElementById("tankShips");
             const lispecialAtack = document.getElementById("specialAtack");
+
             const menuButton = document.getElementById("menuBotton");
             const menuList = document.getElementById("list");
 
@@ -86,25 +91,47 @@ unset($_SESSION['finishName']);
                 menuList.classList.toggle("visible");
             });
 
-            // guardar el id de municion infinita
+            // guardar el id de municion infinita al hacer click
             lilimitedAmmo.addEventListener("click", function () {
-                soloMenu.value = this.id; // Almacena el id del <li> en el menu para training
-                iaMenu.value = this.id; // Almacena el id del <li> en el menu para la ia
+                    if (limitedAmmo.checked == true){
+                        soloMenuLimitedAmmo.value = "limitedAmmo"; // Almacena el id del <li> en el menu para training
+                        iaMenuLimitedAmmo.value = "limitedAmmo"; // Almacena el id del <li> en el menu para la ia
                
+                    } else {
+                        soloMenuLimitedAmmo.value = ""; // en caso de deseleccionar, mandar un valor vacio, en game.php hacemos comprovacion del valor
+                        iaMenuLimitedAmmo.value = ""; 
+               
+                    }
+     
             });
 
-            // guardar el id de municion infinita
+
+
+            // guardar el id de barco acorazado
             litankShips.addEventListener("click", function () {
-                soloMenu.value = this.id;
-                iaMenu.value = this.id; 
+                if (tankShips.checked == true){
+                    soloMenuTankShips.value = "tankShips"; // Almacena el id del <li> en el menu para training
+                    iaMenuTankShips.value = "tankShips"; // Almacena el id del <li> en el menu para la ia
+               
+                    } else {
+                        soloMenuTankShips.value = ""; // en caso de deseleccionar, mandar un valor vacio, en game.php hacemos comprovacion del valor
+                        iaMenuTankShips.value = "" ;
+               
+                    }
               
             });
 
             // guardar el id de municion infinita
             lispecialAtack.addEventListener("click", function () {
-                soloMenu.value = this.id; 
-                iaMenu.value = this.id;
-                
+                if (specialAtack.checked == true){
+                    soloMenuSpecialAtack.value = "specialAtack"; // Almacena el id del <li> en el menu para training
+                    iaMenuSpecialAtack.value = "specialAtack"; // Almacena el id del <li> en el menu para la ia
+               
+                    } else {
+                        soloMenuSpecialAtack.value = ""; // en caso de deseleccionar, mandar un valor vacio, en game.php hacemos comprovacion del valor
+                        iaMenuSpecialAtack.value = "" ;
+               
+                    }
             });
 
 

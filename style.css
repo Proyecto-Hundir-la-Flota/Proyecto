@@ -928,7 +928,7 @@ html {
 }
 
 
-div.hero>form#infoForm>ul {
+div.hero>ul {
     position: absolute; 
     list-style-type: none;
     padding: 0; 
@@ -936,7 +936,7 @@ div.hero>form#infoForm>ul {
     right: 0;
 }
 
-div.hero>form#infoForm>#menuBotton {
+div.hero>#menuBotton {
     position: relative;
     left:400px;
     top:10px;
@@ -947,11 +947,11 @@ div.hero>form#infoForm>#menuBotton {
 
 }
 
-div.hero>form#infoForm>#menuBotton:hover {
+div.hero>#menuBotton:hover {
     background-color: #0056b3; /* Color de fondo al pasar el ratón */
 }
 
-div.hero>form#infoForm>ul li {
+div.hero>ul li {
    
     padding: 10px;
     background-color: gainsboro;
@@ -960,6 +960,6 @@ div.hero>form#infoForm>ul li {
     opacity: 0.8;
 }
 
-div.hero>form#infoForm>ul li:hover {
+div.hero>ul li:hover {
     background-color: burlywood; 
 }
