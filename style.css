@@ -1025,6 +1025,55 @@ html {
 }
 
 
+.cell-selected {
+    animation: colorChange-player 1s ease-in-out infinite;
+}
+
+@keyframes colorChange-player {
+    0% {
+        background-color: rgb(216, 180, 17); /* Color inicial rojo */
+    }
+    50% {
+        background-color: var(--board_covered_cells); /* Color original del alerta o el que uses */
+    }
+    100% {
+        background-color: rgb(216, 180, 17); /* Vuelve a rojo */
+    }
+}
+
+
+.cell-selected {
+    animation: colorChange-player 1s ease-in-out infinite;
+}
+
+@keyframes colorChange-player {
+    0% {
+        background-color: rgb(216, 180, 17); /* Color inicial rojo */
+    }
+    50% {
+        background-color: var(--board_covered_cells); /* Color original del alerta o el que uses */
+    }
+    100% {
+        background-color: rgb(216, 180, 17); /* Vuelve a rojo */
+    }
+}
+
+.ia-table .cell-selected {
+    animation: colorChange-ia 1s ease-in-out infinite;
+}
+
+@keyframes colorChange-ia {
+    0% {
+        background-color: rgb(216, 180, 17); /* Color inicial rojo */
+    }
+    50% {
+        background-color: #8f8a88; /* Color original del alerta o el que uses */
+    }
+    100% {
+        background-color: rgb(216, 180, 17); /* Vuelve a rojo */
+    }
+}
+
 /* estilos menu desplegable */
 .hiddenClass{
     display: none;
