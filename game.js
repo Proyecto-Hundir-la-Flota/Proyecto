@@ -499,12 +499,15 @@ function iaTurn() {
         const randomRow = Math.floor(Math.random() * 10);
         const randomCol = Math.floor(Math.random() * 10);
         const cell = document.getElementById(`ia_cell_${randomRow}_${randomCol}`);
-
+        
         // Verificar si la celda existe y está cubierta
         if (cell && cell.classList.contains("covered")) {
+
+            cell.classList.add("cell-selected")
             // La IA hace su jugada
             audios['cavar'].play();
             setTimeout(() => {
+                cell.classList.remove("cell-selected")
                 cell.classList.remove("covered"); // Destapar la celda
                 handleAIBoardLogic(cell); // Lógica para manejar el clic de la IA
 
@@ -548,11 +551,11 @@ document.addEventListener("DOMContentLoaded", function () {
     startClock();
 
     ships.forEach(ship => {
-        discoveredFossils.push([true, false]);
+        discoveredFossils.push([false, false]);
     });
 
     iaShips.forEach(ship => {
-        iaDiscoveredFossils.push([true, false]); // [barco hundido?, hueso encontrado en este turno?]
+        iaDiscoveredFossils.push([false, false]); // [barco hundido?, hueso encontrado en este turno?]
     });    
 
     // Evento del formulario para enviar puntaje
