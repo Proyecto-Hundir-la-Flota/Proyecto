@@ -656,6 +656,9 @@ document.addEventListener("DOMContentLoaded", function () {
     form.addEventListener("submit", function (event) {
         document.getElementById("score-hidden").value = points;
     });
+
+    document.getElementById("player-ammo").innerText = playerAmmo;
+    document.getElementById("ai-ammo").innerText = AIAmmo;
 });
 
 

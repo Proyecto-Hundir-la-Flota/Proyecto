@@ -7,8 +7,32 @@ if (isset($_POST["name_landing"])) {
     unset($_SESSION['name']); //borrar la sesion de index
 }
 
-?>
+if (isset($_POST["limitedAmmo"])) {
+    if ($_POST["limitedAmmo"] == "limitedAmmo") {
+        //   echo $_POST["limitedAmmo"];
 
+        //  funciona, guardar valor en variable deseada
+    }
+}
+
+
+if (isset($_POST["menuTankShips"])) {
+    if ($_POST["menuTankShips"] == "tankShips") {
+        // echo $_POST["menuTankShips"];
+        //  funciona, guardar valor en variable deseada
+    }
+}
+
+
+if (isset($_POST["menuSpecialAtack"])) {
+    if ($_POST["menuSpecialAtack"] == "specialAtack") {
+        // echo $_POST["menuSpecialAtack"];
+        //  funciona, guardar valor en variable deseada
+    }
+}
+
+
+?>
 
 <!DOCTYPE html>
 <html lang="ca">
@@ -23,16 +47,16 @@ if (isset($_POST["name_landing"])) {
 </head>
 
 <body <?php
-        if (isset($_POST['gamemode'])) {
-            $gamemode = $_POST['gamemode'];
+if (isset($_POST['gamemode'])) {
+    $gamemode = $_POST['gamemode'];
 
-            if ($gamemode == 'training') {
-                echo 'id="game_page" data-gamemode="singlePlayer"';
-            } elseif ($gamemode == 'versus-ia') {
-                echo 'id="game_page" class="versus-ia" data-gamemode="multiPlayer"';
-            }
-        }
-        ?>>
+    if ($gamemode == 'training') {
+        echo 'id="game_page" data-gamemode="singlePlayer"';
+    } elseif ($gamemode == 'versus-ia') {
+        echo 'id="game_page" class="versus-ia" data-gamemode="multiPlayer"';
+    }
+}
+?>>
 
 
     <div class="tape">
@@ -93,7 +117,7 @@ if (isset($_POST["name_landing"])) {
         function generateBoard(&$board_array, $isAI = false)
         {
             ob_start(); // Para almacenar la salida y retornarla luego
-
+        
             // Definir el tamaño del tablero
             $column_board = 10;
             $row_board = 10;
@@ -113,7 +137,7 @@ if (isset($_POST["name_landing"])) {
                 //     </div>
                 // </div>
                 // <table id='aiBoard'>";
-
+        
                 $infoContent = "<div class='container-table ia-table'>
             <div class='timer-fame'>
                 <div class='player_name'>
@@ -121,7 +145,7 @@ if (isset($_POST["name_landing"])) {
                 </div>\n";
 
                 if (isset($_POST["limitedAmmo"])) {
-                    if ($_POST["limitedAmmo"] == "true") {
+                    if ($_POST["limitedAmmo"] == "limitedAmmo") {
                         $infoContent .= "                <div class='ammo'>
                     <i class='fa-solid fa-bullseye'></i>Munició: <span id='ai-ammo'>40</span>
                 </div>\n";
@@ -131,27 +155,27 @@ if (isset($_POST["name_landing"])) {
             <table id='aiBoard'>";
                 echo $infoContent;
             } else {
-            //     echo "<div class='container-table'>
-            // <div class='timer-fame'>
-            //     <div class='player_name'>
-            //         <i class='fa-solid fa-user'></i>" . $_SESSION["finishName"] . "
-            //     </div>
-            //     <div class='fame'>
-            //         <i class='fa-solid fa-bullhorn'></i>Fama: <span class='score'>0</span>
-            //     </div>
-            //     <div class='timer'>
-            //         <i class='fa-solid fa-hourglass-end'></i>Temps: <span id='gameClock'>00:00</span>
-            //     </div>
-            // </div>
-            // <table id='playerBoard'>";
-
+                //     echo "<div class='container-table'>
+                // <div class='timer-fame'>
+                //     <div class='player_name'>
+                //         <i class='fa-solid fa-user'></i>" . $_SESSION["finishName"] . "
+                //     </div>
+                //     <div class='fame'>
+                //         <i class='fa-solid fa-bullhorn'></i>Fama: <span class='score'>0</span>
+                //     </div>
+                //     <div class='timer'>
+                //         <i class='fa-solid fa-hourglass-end'></i>Temps: <span id='gameClock'>00:00</span>
+                //     </div>
+                // </div>
+                // <table id='playerBoard'>";
+        
                 $infoContent = "<div class='container-table'>
             <div class='timer-fame'>
                 <div class='player_name'>
                     <i class='fa-solid fa-user'></i>" . $_SESSION["finishName"] . "
                 </div>\n";
                 if (isset($_POST["limitedAmmo"])) {
-                    if ($_POST["limitedAmmo"] == "true") {
+                    if ($_POST["limitedAmmo"] == "limitedAmmo") {
                         $infoContent .= "                <div class='ammo'>
                     <i class='fa-solid fa-bullseye'></i>Munició: <span id='player-ammo'>40</span>
                 </div>\n";
@@ -257,10 +281,10 @@ if (isset($_POST["name_landing"])) {
             $ship_length = $ship[1];
             $ship_positions = [];
             $attempts = 0; // Puedes seguir contando intentos, pero no limitarás a 1000.
-
+        
             while (true) { // Bucle infinito hasta que se coloque el barco
                 $orientation = rand(0, 1); // 0 = horizontal, 1 = vertical
-
+        
                 if ($orientation == 0) { // Horizontal
                     $start_row = rand(0, $n - 1);
                     $start_col = rand(0, $n - $ship_length);
@@ -332,7 +356,7 @@ if (isset($_POST["name_landing"])) {
         $board_html = generateBoard($board, false);
 
         // Show the generated board
-
+        
         echo $board_html;
 
         // Iniciar el tablero vacío
@@ -375,18 +399,18 @@ if (isset($_POST["name_landing"])) {
         let playerAmmo = 0;
         let AIAmmo = 0;
         <?php if (isset($_POST["limitedAmmo"])) {
-            if ($_POST["limitedAmmo"] == "true") { ?>
+            if ($_POST["limitedAmmo"] == "limitedAmmo") { ?>
                 limitedAmmoMode = true;
-                playerAmmo = 10;
-                AIAmmo = 10;
-        <?php }
+                playerAmmo = 40;
+                AIAmmo = 40;
+            <?php }
         }
-        if (isset($_POST['gamemode'])) { 
+        if (isset($_POST['gamemode'])) {
             $gamemode = $_POST['gamemode'];
 
             if ($gamemode == 'training') { ?>
-            AIAmmo = 0;
-        <?php }
+                AIAmmo = 0;
+            <?php }
         } ?>
     </script>
 
