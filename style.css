@@ -199,6 +199,11 @@ html {
     border: 1px solid #000 !important;
 }
 
+.ia-table {
+    
+    position: relative;
+}
+
 #game_page .tape {
     display: flex;
     align-items: center;
@@ -257,6 +262,7 @@ html {
 #game_page .container-table {
     display: flex;
     flex-direction: column;
+    position: relative;
 }
 
 #game_page .container-table .timer-fame {
@@ -266,7 +272,8 @@ html {
 }
 
 #game_page .container-table .timer-fame .timer,
-#game_page .container-table .timer-fame .fame {
+#game_page .container-table .timer-fame .fame,
+#game_page .container-table .timer-fame .player_name {
     background-color: var(--primary_div);
     font-family: var(--text_font);
     font-size: 1.15em;
@@ -277,8 +284,18 @@ html {
 }
 
 #game_page .container-table .timer-fame .timer i,
-#game_page .container-table .timer-fame .fame i {
+#game_page .container-table .timer-fame .fame i,
+#game_page .container-table .timer-fame .player_name i{
     margin-right: 5px;
+}
+#game_page .container-table .timer-fame .player_name {
+    margin-right: auto;
+}
+
+#game_page .container-table .timer-fame .fame .score {
+    display: inline-block; 
+    width: 30px;
+    text-align: center;
 }
 
 #game_page .container-table .timer-fame .timer #gameClock {
@@ -860,6 +877,11 @@ html {
     background-color: gold;
 }
 
+.player-alert#waitAlert {
+    background-color: rgb(0, 0, 0);
+}
+
+
 .centered-form {
     position: absolute;
     top: 50%;
@@ -929,4 +951,75 @@ html {
     left: 700px;
     width: 305px;
     height: 386px;
+}
+
+.turn-overlay-ia {
+    opacity: 0;
+    z-index: -1;
+    position: absolute;
+    bottom: -40px;
+    width: 100%;
+    text-align: center;
+    background-color: var(--primary_div);
+    font-family: var(--secondary_title_font);
+    font-weight: 400;
+    font-size: 1.6em;
+    border-radius: 7.5px;
+}
+
+
+
+.turn-overlay {
+    opacity: 0;
+    z-index: -1;
+    position: absolute;
+    bottom: -40px;
+    width: 100%;
+    text-align: center;
+    background-color: var(--primary_div);
+    font-family: var(--secondary_title_font);
+    font-weight: 400;
+    font-size: 1.6em;
+    border-radius: 7.5px;
+}
+
+.table-ia-turn {
+    animation: slideTextIn 0.25s forwards;
+}
+
+.table-ia-turn-out {
+    animation: slideTextOut 0.25s forwards;
+}
+
+.table-player-turn{
+    animation: slideTextIn 0.25s forwards;
+}
+
+.table-player-turn-out {
+    animation: slideTextOut 0.25s forwards;
+}
+
+
+
+@keyframes slideTextIn {
+    0% {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Animación de salida */
+@keyframes slideTextOut {
+    0% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
 }
