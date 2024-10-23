@@ -752,6 +752,11 @@ html {
     background-color: gold;
 }
 
+.player-alert#waitAlert {
+    background-color: rgb(0, 0, 0);
+}
+
+
 .centered-form {
     position: absolute;
     top: 50%;

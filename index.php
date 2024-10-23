@@ -23,10 +23,9 @@ unset($_SESSION['finishName']);
     </noscript>
 
     <div class="hero">
-        <form id="infoForm" action="game.php" method="POST">
-            <input type="text" id="name_landing" name="name_landing" required minlength="3" maxlength="30">
+        <input type="text" id="name_landing" name="name_landing" required minlength="3" maxlength="30">
 
-        </form>
+
         <h1>Excavació Juràssica</h1>
         <h3>Desenterra ossos de fa milions d'anys!</h3>
         <p>Explora i excava per trobar ossos de dinosaures ocults sota terra. Tria les coordenades correctes i

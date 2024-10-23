@@ -12,6 +12,8 @@ audios['dino'] = new Audio("./sounds/dino.mp3");
 audios['win'] = new Audio("./sounds/win.mp3");
 
 const discoveredFossils = [];
+const iaDiscoveredFossils = [];
+
 const playerBoard = document.querySelector(".turn-overlay");
 const aiBoard = document.querySelector(".turn-overlay-ia");
 
@@ -79,6 +81,20 @@ function createAlerts(alert_type, playerType) {
 
     // Clase adicional para diferenciar las alertas del jugador y la IA
     const playerClass = playerType === 'player' ? 'player-alert' : 'ia-alert';
+
+    // Crear la alerta de "espera"
+    if (alert_type === 'wait') {
+        alert = document.createElement('div');
+        alert.id = 'waitAlert';
+        alert.className = `alert ${playerClass}`; // Añadimos la clase del jugador/IA
+        document.body.appendChild(alert);
+        elementI = document.createElement('i');
+        elementI.className = emojis['wait']; // Agregamos el icono usando la clase
+        alert.appendChild(elementI); // Añadimos element i como hijo de alert para agregar el emoji
+        const textNode = document.createTextNode("Espera tu turno!");
+        alert.appendChild(textNode); // Añadimos element textNode como hijo de alert para agregar el texto
+        alert.style.display = 'block';
+    }
 
     // Crear la alerta de "encontrado"
     if (alert_type === 'found') {
@@ -198,9 +214,10 @@ function checkStatus(event, boardType) {
 
     // Verificar si es el turno del jugador
     if (!playerCanClick) {
-        console.log("Espera tu turno");
+        createAlerts('wait', 'player');
         return; // Salir si el jugador no puede hacer clic
     }
+    
 
     // Si la celda está cubierta, se destapa
     if (cell.classList.contains("covered")) {
@@ -387,29 +404,30 @@ function handleAIBoardLogic(cell) {
         let cellPosition = cell.id.replace("ia_cell_", "").split("_");
 
         // Recorremos los barcos de la IA para verificar si la posición coincide con algún fósil
-        for (let index = 0; index < iaShips.length; index++) {  
-            discoveredFossils[index][0] = true;
-
+        for (let index = 0; index < iaShips.length; index++) {
+            iaDiscoveredFossils[index][0] = true;
+        
             for (let indexShip = 0; indexShip < iaShips[index].length; indexShip++) {
-                let position = iaShips[index][indexShip][0];  
-
+                let position = iaShips[index][indexShip][0];
+        
                 // Comprobar si la posición de la celda corresponde a un fósil del barco
                 if (position[0] == cellPosition[0] && position[1] == cellPosition[1]) {
                     iaShips[index][indexShip][1] = true; // Marcar como descubierto en IA
-                    discoveredFossils[index][1] = true; // Marcar fósil como encontrado
+                    iaDiscoveredFossils[index][1] = true; // Marcar fósil como encontrado
                 }
-
+        
                 // Si alguna parte del barco no ha sido descubierta, no se completa el fósil
                 if (!iaShips[index][indexShip][1]) {
-                    discoveredFossils[index][0] = false;
+                    iaDiscoveredFossils[index][0] = false;
                 }
             }
         }
-
-        for (let index = 0; index < discoveredFossils.length; index++) {
-            let discoveredFossil = discoveredFossils[index];
+        
+        // Comprobar si la IA ha ganado
+        for (let index = 0; index < iaDiscoveredFossils.length; index++) {
+            let discoveredFossil = iaDiscoveredFossils[index];
             let foundBone = discoveredFossil[0];
-
+        
             if (!foundBone) {
                 victory = false; // Si no se encontró todo el fósil
             } else {
@@ -417,13 +435,13 @@ function handleAIBoardLogic(cell) {
                     hitAndSink = true; // Se descubrió el fósil completo
                 }
             }
-
-            discoveredFossils[index][1] = false; // Reiniciar la parte encontrada para el próximo clic
+        
+            iaDiscoveredFossils[index][1] = false; // Reiniciar la parte encontrada para el próximo clic
         }
-
+        
         if (victory) {
             stopClock();
-
+        
             // Mostrar alerta de victoria para la IA
             createAlerts('win', 'ia');
             audios['win'].play();
@@ -441,7 +459,7 @@ function handleAIBoardLogic(cell) {
                 createAlerts('found', 'ia');
                 audios['hueso'].play();
             }
-        }
+        }        
     } else {
         // Si no se encontró un fósil, reproducimos el sonido de fallo
         IArepeatTurn = false;
@@ -485,11 +503,6 @@ function iaTurn() {
     }
 }
 
-
-
-
-
-
 document.addEventListener("DOMContentLoaded", function () {
     const playerCells = document.querySelectorAll("td[id^='cell_']"); // Selecciona las celdas del jugador (IDs que empiezan por 'cell_')
     const aiCells = document.querySelectorAll("td[id^='ia_cell_']"); // Selecciona las celdas de la IA (IDs que empiezan por 'ia_cell_')
@@ -501,14 +514,6 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Asignar eventos de clic a las celdas del tablero de la IA
-    for (let cell of aiCells) {
-        // cell.addEventListener("click", function (event) {
-        //     checkStatus(event, 'ai'); // Llamamos a checkStatus indicando que es del tablero de la IA
-        // });
-        // cell.removeEventListener("click", checkStatus);
-    }
-
     document.getElementById("rankingInfo").style.display = "none";
     document.getElementById("winner").style.display = "none";
     startClock(); // Iniciar el temporizador
@@ -516,6 +521,10 @@ document.addEventListener("DOMContentLoaded", function () {
     ships.forEach(ship => {
         discoveredFossils.push([true, false]);
     });
+
+    iaShips.forEach(ship => {
+        iaDiscoveredFossils.push([true, false]); // [barco hundido?, hueso encontrado en este turno?]
+    });    
 
     // Evento del formulario para enviar puntaje
     const form = document.getElementById("scoreForm");
