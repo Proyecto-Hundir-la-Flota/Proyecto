@@ -898,3 +898,19 @@ html {
         opacity: 0;
     }
 }
+
+.cell-selected {
+    animation: colorChange 3s infinite; /* Repite infinitamente */
+}
+
+@keyframes colorChange {
+    0% {
+        border: 1px solid #fff;
+    }
+    50% {
+        border: 1px solid #fff;
+    }
+    100% {
+        border: 1px solid #fff;
+    }
+}
