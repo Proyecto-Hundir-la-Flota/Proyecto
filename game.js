@@ -13,7 +13,7 @@ audios['dino'] = new Audio("./sounds/dino.mp3");
 audios['win'] = new Audio("./sounds/win.mp3");
 
 const discoveredFossils = [];
-const iaDiscoveredFossils = [];
+const discoveredAIFossils = [];
 
 // Variable para controlar si el jugador puede hacer clic
 let playerCanClick = true;
@@ -164,32 +164,6 @@ function stopUpdatePoints() {
     pointsFrozen = true;
 }
 
-
-function setPlayerTurn() {
-    // Añade la animación de salida a la IA
-    aiBoard.classList.add('table-ia-turn-out');
-    
-    // Espera a que termine la animación de salida antes de aplicar la animación de entrada
-    setTimeout(() => {
-        // Elimina la clase de salida y añade la clase de entrada para el jugador
-        aiBoard.classList.remove('table-ia-turn-out');
-        playerBoard.classList.add('table-player-turn');
-        aiBoard.classList.remove('table-ia-turn');
-    }, 250); // Tiempo de duración de la animación de salida (250ms)
-}
-
-function setIATurn() {
-    // Añade la animación de salida al jugador
-    playerBoard.classList.add('table-player-turn-out');
-    
-    // Espera a que termine la animación de salida antes de aplicar la animación de entrada para la IA
-    setTimeout(() => {
-        playerBoard.classList.remove('table-player-turn-out');
-        aiBoard.classList.add('table-ia-turn');
-        playerBoard.classList.remove('table-player-turn');
-    }, 250); // Tiempo de duración de la animación de salida (250ms)
-}
-
 // Función checkStatus
 function checkStatus(event, boardType) {
     const cell = event.target;
@@ -220,28 +194,22 @@ function checkStatus(event, boardType) {
             // Solo ejecutar iaTurn si estamos en modo multiPlayer o versus-ia
             if (gameMode === 'multiPlayer' || gameMode === 'versus-ia') {
                 // Esperar 2 segundos antes de que la IA haga su movimiento
-                if (!repeatTurn) {
-                    // Esperar 2.5 segundos antes de que la IA haga su movimiento
+                setTimeout(() => {
+                    iaTurn(); // La IA hace su turno después de 2 segundos
+
+                    // Después del turno de la IA, esperar 1 segundo antes de habilitar los clics del jugador
                     setTimeout(() => {
-                        setIATurn();  // Cambiar el turno a la IA
-                        setTimeout(() => {
-                            iaTurn();  // La IA hace su turno después de 2.5 segundos
-                        }, 1250);
-                    }, 1250);
+                        playerCanClick = true;
+                    }, 2500); // Espera 2.5 segundo antes de permitir al jugador hacer clic de nuevo
+                }, 2500); // 2.5 segundos antes de que la IA haga su movimiento
             } else {
                 // En single player, podemos reactivar los clics inmediatamente si no hay IA
                 playerCanClick = true;
-                /*
-                posible cambio
-                setTimeout(() => {
-                        playerCanClick = true;
-                    }, 2500);
-                    */
             }
         }
     }
 }
-}
+
 
 
 
@@ -271,7 +239,6 @@ function handlePlayerBoardLogic(cell) {
             points += 2;
         }
 
-        repeatTurn = true;
         let hitAndSink = false;
         let victory = true;
 
@@ -356,7 +323,6 @@ function handlePlayerBoardLogic(cell) {
     } else {
         accumulatedErrors++;
         consecutiveAccumulatedHits = 0;
-        repeatTurn = false;
 
         if (accumulatedErrors >= 3) {
             points -= 5;
@@ -373,6 +339,7 @@ function handlePlayerBoardLogic(cell) {
 
 function handleAIBoardLogic(cell) {
 
+
     audios['cavar'].play();
     // Verifica si la celda clicada contiene un hueso
     if (cell.classList.contains("bone")) {
@@ -380,14 +347,13 @@ function handleAIBoardLogic(cell) {
         
         let hitAndSink = false;
         let victory = true;
-        IArepeatTurn = true;
 
         // Obtener la posición de la celda IA
         let cellPosition = cell.id.replace("ia_cell_", "").split("_");
 
         // Recorremos los barcos de la IA para verificar si la posición coincide con algún fósil
         for (let index = 0; index < iaShips.length; index++) {
-            iaDiscoveredFossils[index][0] = true;
+            discoveredAIFossils[index][0] = true;
 
             for (let indexShip = 0; indexShip < iaShips[index].length; indexShip++) {
                 let position = iaShips[index][indexShip][0];
@@ -395,18 +361,18 @@ function handleAIBoardLogic(cell) {
                 // Comprobar si la posición de la celda corresponde a un fósil del barco
                 if (position[0] == cellPosition[0] && position[1] == cellPosition[1]) {
                     iaShips[index][indexShip][1] = true; // Marcar como descubierto en IA
-                    iaDiscoveredFossils[index][1] = true; // Marcar fósil como encontrado
+                    discoveredAIFossils[index][1] = true; // Marcar fósil como encontrado
                 }
 
                 // Si alguna parte del barco no ha sido descubierta, no se completa el fósil
                 if (!iaShips[index][indexShip][1]) {
-                    iaDiscoveredFossils[index][0] = false;
+                    discoveredAIFossils[index][0] = false;
                 }
             }
         }
-        // Comprobar si la IA ha ganado
-        for (let index = 0; index < iaDiscoveredFossils.length; index++) {
-            let discoveredFossil = iaDiscoveredFossils[index];
+
+        for (let index = 0; index < discoveredAIFossils.length; index++) {
+            let discoveredFossil = discoveredAIFossils[index];
             let foundBone = discoveredFossil[0];
 
             if (!foundBone) {
@@ -417,12 +383,12 @@ function handleAIBoardLogic(cell) {
                 }
             }
 
-            iaDiscoveredFossils[index][1] = false; // Reiniciar la parte encontrada para el próximo clic
+            discoveredAIFossils[index][1] = false; // Reiniciar la parte encontrada para el próximo clic
         }
 
         if (victory) {
             stopClock();
-        
+
             // Mostrar alerta de victoria para la IA
             createAlerts('win', 'ia');
             audios['win'].play();
@@ -452,7 +418,6 @@ function handleAIBoardLogic(cell) {
         }
     } else {
         // Si no se encontró un fósil, reproducimos el sonido de fallo
-        IArepeatTurn = false;
         setTimeout(() => {
             createAlerts('miss', 'ia');
             audios['arena'].play();   
@@ -487,30 +452,27 @@ function iaTurn() {
             validMove = true; // Salir del bucle al encontrar una celda válida
         }
     }
-     // Si la IA acierta y tiene que repetir turno
-     if (IArepeatTurn) {
-        setTimeout(iaTurn, 2500);  // Espera 2.5 segundos y repite el turno
-        playerCanClick = false;    // Deshabilitar clics del jugador mientras la IA tiene derecho a otro turno
-    } else {
-        setTimeout(() => {
-            setPlayerTurn();  // Cambiar el turno a la IA
-            setTimeout(() => {
-                playerCanClick = true;  // La IA hace su turno después de 2.5 segundos
-            }, 1250);
-        }, 1250);
-    }
 }, 2000);
 }
+
 
 document.addEventListener("DOMContentLoaded", function () {
     const playerCells = document.querySelectorAll("td[id^='cell_']"); // Selecciona las celdas del jugador (IDs que empiezan por 'cell_')
     const aiCells = document.querySelectorAll("td[id^='ia_cell_']"); // Selecciona las celdas de la IA (IDs que empiezan por 'ia_cell_')
-    setPlayerTurn();
+
     // Asignar eventos de clic a las celdas del jugador
     for (let cell of playerCells) {
         cell.addEventListener("click", function (event) {
             checkStatus(event, 'player'); // Llamamos a checkStatus indicando que es del tablero del jugador
         });
+    }
+
+    // Asignar eventos de clic a las celdas del tablero de la IA
+    for (let cell of aiCells) {
+        // cell.addEventListener("click", function (event) {
+        //     checkStatus(event, 'ai'); // Llamamos a checkStatus indicando que es del tablero de la IA
+        // });
+        // cell.removeEventListener("click", checkStatus);
     }
 
     document.getElementById("rankingInfo").style.display = "none";
@@ -520,11 +482,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     ships.forEach(ship => {
         discoveredFossils.push([true, false]);
+        discoveredAIFossils.push([true, false]);
     });
-
-    iaShips.forEach(ship => {
-        iaDiscoveredFossils.push([true, false]); // [barco hundido?, hueso encontrado en este turno?]
-    });    
 
     // Evento del formulario para enviar puntaje
     const form = document.getElementById("scoreForm");
