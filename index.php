@@ -25,7 +25,13 @@ unset($_SESSION['finishName']);
     <div class="hero">
         <form id="infoForm" action="game.php" method="POST">
             <input type="text" id="name_landing" name="name_landing" required minlength="3" maxlength="30">
-
+            <input type="button" id="menuBotton" name="menuBotton">
+            <ul id="list" class="hiddenClass">
+                <li id="limitedAmmo">Munició limitada</li>
+                <li id="tankShips">Vaixells acorassats</li>
+                <li id="specialAtack">Atacs especials</li>
+            </ul>
+            </input>
         </form>
         <h1>Excavació Juràssica</h1>
         <h3>Desenterra ossos de fa milions d'anys!</h3>
@@ -38,6 +44,7 @@ unset($_SESSION['finishName']);
 
             <form class="formBottonSolo" method="POST" action="game.php">
                 <input type="hidden" id="soloName" name="name_landing">
+                <input type="hidden" id="soloMenu" name="menuResult">
                 <input type="hidden" name="gamemode" value="training">
                 <button disabled id="bottonSolo" type="submit" class="btn_play disabled"><i
                         class="fa-solid fa-gamepad"></i> Terreny de Proves</button>
@@ -45,6 +52,7 @@ unset($_SESSION['finishName']);
 
             <form id="formBottonIa" method="POST" action="game.php">
                 <input type="hidden" id="iaName" name="name_landing">
+                <input type="hidden" id="iaMenu" name="menuResult">
                 <input type="hidden" name="gamemode" value="versus-ia">
                 <button disabled id="bottonIa" type="submit" class="btn_play disabled"><i class="fa-solid fa-robot"></i>
                     Excavació contra IA</button>
@@ -63,6 +71,45 @@ unset($_SESSION['finishName']);
             const iaName = document.getElementById("iaName");
 
 
+            // agregar variables para el menu desplegable
+            const lilimitedAmmo = document.getElementById("limitedAmmo");
+            const litankShips = document.getElementById("tankShips");
+            const lispecialAtack = document.getElementById("specialAtack");
+            const menuButton = document.getElementById("menuBotton");
+            const menuList = document.getElementById("list");
+
+
+            // funcion para el menu desplegable
+            menuButton.addEventListener("click", function () {
+                // Alternar la visibilidad de la lista
+                menuList.classList.toggle("hidden");
+                menuList.classList.toggle("visible");
+            });
+
+            // guardar el id de municion infinita
+            lilimitedAmmo.addEventListener("click", function () {
+                soloMenu.value = this.id; // Almacena el id del <li> en el menu para training
+                iaMenu.value = this.id; // Almacena el id del <li> en el menu para la ia
+               
+            });
+
+            // guardar el id de municion infinita
+            litankShips.addEventListener("click", function () {
+                soloMenu.value = this.id;
+                iaMenu.value = this.id; 
+              
+            });
+
+            // guardar el id de municion infinita
+            lispecialAtack.addEventListener("click", function () {
+                soloMenu.value = this.id; 
+                iaMenu.value = this.id;
+                
+            });
+
+
+
+            // funcion para pasar parametros del nombre
             nameInput.addEventListener("input", function () {
                 if (nameInput.value.length >= 3 && nameInput.value.length <= 30) {
                     playButtonIa.classList.remove("disabled");

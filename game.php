@@ -6,7 +6,12 @@
         $_SESSION['finishName'] = $_SESSION['name'];//sesion game
                 unset($_SESSION['name']); //borrar la sesion de index
     }
-        
+/*
+     if (isset($_POST["menuResult"])) {
+        echo $_POST["menuResult"];
+    //  funciona, guardar valor en variable deseada
+     }    
+    */
 ?>
 
 

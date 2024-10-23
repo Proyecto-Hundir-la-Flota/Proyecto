@@ -916,3 +916,50 @@ html {
     width: 305px;
     height: 386px;
 }
+
+/* estilos menu desplegable */
+.hiddenClass{
+    display: none;
+}
+
+
+.visible {
+    display: block;
+}
+
+
+div.hero>form#infoForm>ul {
+    position: absolute; 
+    list-style-type: none;
+    padding: 0; 
+    top: 100px;
+    right: 0;
+}
+
+div.hero>form#infoForm>#menuBotton {
+    position: relative;
+    left:400px;
+    top:10px;
+    right:10px;
+    padding: 10px 20px;
+    font-size: 16px;
+ 
+
+}
+
+div.hero>form#infoForm>#menuBotton:hover {
+    background-color: #0056b3; /* Color de fondo al pasar el ratón */
+}
+
+div.hero>form#infoForm>ul li {
+   
+    padding: 10px;
+    background-color: gainsboro;
+    margin: 5px 10px;
+    border: 1px solid black;
+    opacity: 0.8;
+}
+
+div.hero>form#infoForm>ul li:hover {
+    background-color: burlywood; 
+}
