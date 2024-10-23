@@ -48,6 +48,79 @@ easterEggImage.style.display = 'none';
 easterEggImage.className = 'easter-egg-style';
 document.body.appendChild(easterEggImage);
 
+function checkLimitedAmmoModeStatus() {
+    if (AIAmmo <= 0 && playerAmmo <= 0) {
+        let playerFossilsCount = 0;
+        let IAFossilsCount = 0;
+        for (let index = 0; index < discoveredFossils.length; index++) {
+            if (discoveredFossils[index][0]) {
+                playerFossilsCount++;
+            }
+        }
+        for (let index = 0; index < iaDiscoveredFossils.length; index++) {
+            if (iaDiscoveredFossils[index][0]) {
+                IAFossilsCount++;
+            }
+        }
+
+        let playerWin = false
+
+        if (playerFossilsCount == IAFossilsCount) {
+            if (playerHits > AIHits) {
+                playerWin = true;
+            } else {
+                playerWin = false;
+            }
+        } else if (playerFossilsCount > IAFossilsCount) {
+            playerWin = true;
+        } else {
+            playerWin = false;
+        }
+
+        if (playerWin) {
+            stopClock();
+            points += 15;
+
+            if (elapsedTime < 60) {
+                points += 20;
+            } else if (elapsedTime <= 120) {
+                points += 10;
+            } else if (elapsedTime > 180) {
+                points -= 10;
+            }
+
+            points += 200;
+
+            updatePointsCounter();
+
+            createAlerts('win', 'player');
+            audios['win'].play();
+            //document.getElementById("winner").style.display = "flex";
+            stopUpdatePoints();
+
+            document.getElementById("score-hidden").value = points;
+            let scoreForm = document.getElementById("scoreForm");
+            scoreForm.action = "win.php";
+            scoreForm.submit();
+        } else {
+            stopClock();
+
+            // Mostrar alerta de victoria para la IA
+            createAlerts('win', 'ia');
+            audios['win'].play();
+            //document.getElementById("winner").style.display = "flex";
+
+            // Lógica de fin del juego aquí, si es necesario
+            stopUpdatePoints();
+
+            document.getElementById("score-hidden").value = points;
+            let scoreForm = document.getElementById("scoreForm");
+            scoreForm.action = "lose.php";
+            scoreForm.submit();
+        }
+
+    }
+}
 // Mostrar el tiempo formateado en mm:ss
 function displayTime() {
     const minutes = Math.floor(elapsedTime / 60);
@@ -235,6 +308,9 @@ function checkStatus(event, boardType) {
 
                 // Deshabilitar los clics del jugador después de su turno
                 playerCanClick = false;
+                if (limitedAmmoMode) {
+                    checkLimitedAmmoModeStatus();
+                }
             }
 
 
@@ -242,7 +318,6 @@ function checkStatus(event, boardType) {
             if (gameMode === 'multiPlayer' || gameMode === 'versus-ia') {
                 if (!repeatTurn) {
                     if (!limitedAmmoMode || (limitedAmmoMode && AIAmmo > 0)) {
-
                         // Esperar 2.5 segundos antes de que la IA haga su movimiento
                         setTimeout(() => {
                             setIATurn();  // Cambiar el turno a la IA
@@ -251,7 +326,7 @@ function checkStatus(event, boardType) {
                             }, 1250);
                         }, 1250);
                     } else {
-                        // Si es turno del jugador de repetir, habilitar los clics nuevamente después de su turno
+                        // Si la IA no tiene munición, el turno del jugador se repete, habilitar los clics nuevamente después de su turno
                         setTimeout(() => {
                             playerCanClick = true;
                         }, 2500);
@@ -265,79 +340,6 @@ function checkStatus(event, boardType) {
             } else {
                 // En single player, podemos reactivar los clics inmediatamente si no hay IA
                 playerCanClick = true;
-            }
-
-            if (limitedAmmoMode) {
-                if (AIAmmo < 1 && playerAmmo < 1) {
-                    let playerFossilsCount = 0;
-                    let IAFossilsCount = 0;
-                    for (let index = 0; index < discoveredFossils.length; index++) {
-                        if (discoveredFossils[index][0]) {
-                            playerFossilsCount++;
-                        }
-                    }
-                    for (let index = 0; index < iaDiscoveredFossils.length; index++) {
-                        if (iaDiscoveredFossils[index][0]) {
-                            IAFossilsCount++;
-                        }
-                    }
-
-                    let playerWin = false
-
-                    if (playerFossilsCount == IAFossilsCount) {
-                        if (playerHits > AIHits) {
-                            playerWin = true;
-                        } else {
-                            playerWin = false;
-                        }
-                    } else if (playerFossilsCount > IAFossilsCount) {
-                        playerWin = true;
-                    } else {
-                        playerWin = false;
-                    }
-
-                    if (playerWin) {
-                        stopClock();
-                        points += 15;
-
-                        if (elapsedTime < 60) {
-                            points += 20;
-                        } else if (elapsedTime <= 120) {
-                            points += 10;
-                        } else if (elapsedTime > 180) {
-                            points -= 10;
-                        }
-
-                        points += 200;
-
-                        updatePointsCounter();
-
-                        createAlerts('win', 'player');
-                        audios['win'].play();
-                        //document.getElementById("winner").style.display = "flex";
-                        stopUpdatePoints();
-
-                        document.getElementById("score-hidden").value = points;
-                        let scoreForm = document.getElementById("scoreForm");
-                        scoreForm.action = "win.php";
-                        scoreForm.submit();
-                    } else {
-                        stopClock();
-
-                        // Mostrar alerta de victoria para la IA
-                        createAlerts('win', 'ia');
-                        audios['win'].play();
-                        //document.getElementById("winner").style.display = "flex";
-
-                        // Lógica de fin del juego aquí, si es necesario
-                        stopUpdatePoints();
-
-                        document.getElementById("score-hidden").value = points;
-                        let scoreForm = document.getElementById("scoreForm");
-                        scoreForm.action = "lose.php";
-                        scoreForm.submit();
-                    }
-                }
             }
         }
     }
@@ -563,7 +565,15 @@ function handleAIBoardLogic(cell) {
         }
     } else {
         // Si no se encontró un fósil, reproducimos el sonido de fallo
-        IArepeatTurn = false;
+        if (!limitedAmmoMode) { // Si el modo de munición limitada no esta activo
+            IArepeatTurn = false; // No se puede repetir el turno
+        } else {
+            if (playerAmmo <= 0 && AIAmmo > 0) { // Si el jugador no tiene munición pero la IA si
+                IArepeatTurn = true; // Se puede repetir el turno
+            } else { // Si la IA no tiene munición
+                IArepeatTurn = false; // No se puede repetir el turno
+            }
+        }
         createAlerts('miss', 'ia');
         audios['arena'].play();
     }
@@ -588,27 +598,30 @@ function iaTurn() {
 
             handleAIBoardLogic(cell); // Lógica para manejar el clic de la IA
             validMove = true; // Salir del bucle al encontrar una celda válida
+            if (limitedAmmoMode) {
+                checkLimitedAmmoModeStatus();
+            }
         }
     }
 
     // Si la IA acierta y tiene que repetir turno
     if (IArepeatTurn) {
-        if (!limitedAmmoMode || (limitedAmmoMode && AIAmmo > 0)) {
+        if (!limitedAmmoMode || (limitedAmmoMode && AIAmmo > 0)) { // Si el modo de munición limitada no esta activo o esta activo y la IA tiene munición
             setTimeout(iaTurn, 2500);  // Espera 2.5 segundos y repite el turno
             playerCanClick = false;    // Deshabilitar clics del jugador mientras la IA tiene derecho a otro turno
-        } else {
+        } else { // Si el modo de munición limitada esta activo y la IA no tiene munición
             setTimeout(() => {
-                setPlayerTurn();  // Cambiar el turno a la IA
+                setPlayerTurn();  // Cambiar el turno al Jugador
                 setTimeout(() => {
-                    playerCanClick = true;  // La IA hace su turno después de 2.5 segundos
+                    playerCanClick = true;  // El jugador empieza su turno después de 2.5 segundos
                 }, 1250);
             }, 1250);
         }
     } else {
         setTimeout(() => {
-            setPlayerTurn();  // Cambiar el turno a la IA
+            setPlayerTurn();  // Cambiar el turno al Jugador
             setTimeout(() => {
-                playerCanClick = true;  // La IA hace su turno después de 2.5 segundos
+                playerCanClick = true;  // El jugador empieza su turno después de 2.5 segundos
             }, 1250);
         }, 1250);
     }
@@ -631,11 +644,11 @@ document.addEventListener("DOMContentLoaded", function () {
     startClock();
 
     ships.forEach(ship => {
-        discoveredFossils.push([true, false]);
+        discoveredFossils.push([false, false]);
     });
 
     iaShips.forEach(ship => {
-        iaDiscoveredFossils.push([true, false]); // [barco hundido?, hueso encontrado en este turno?]
+        iaDiscoveredFossils.push([false, false]); // Por cada fossil [fossil entero encontrado, hueso parte del fosil seleccionado]
     });
 
     // Evento del formulario para enviar puntaje

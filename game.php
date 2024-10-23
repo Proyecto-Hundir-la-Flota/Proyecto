@@ -377,8 +377,8 @@ if (isset($_POST["name_landing"])) {
         <?php if (isset($_POST["limitedAmmo"])) {
             if ($_POST["limitedAmmo"] == "true") { ?>
                 limitedAmmoMode = true;
-                playerAmmo = 5;
-                AIAmmo = 5;
+                playerAmmo = 10;
+                AIAmmo = 10;
         <?php }
         }
         if (isset($_POST['gamemode'])) { 
