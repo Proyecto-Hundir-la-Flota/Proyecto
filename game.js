@@ -351,10 +351,7 @@ function handlePlayerBoardLogic(cell) {
 
 function handleAIBoardLogic(cell) {
 
-    if (!audios['cavar'].paused) {
-        audios['cavar'].pause(); // Si está reproduciéndose, lo pausamos
-        audios['cavar'].currentTime = 0; // Reiniciamos el audio
-    }
+
     audios['cavar'].play();
     // Verifica si la celda clicada contiene un hueso
     if (cell.classList.contains("bone")) {
