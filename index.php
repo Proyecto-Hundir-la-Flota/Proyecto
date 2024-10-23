@@ -23,10 +23,9 @@ unset($_SESSION['finishName']);
     </noscript>
 
     <div class="hero">
-        <form id="infoForm" action="game.php" method="POST">
-            <input type="text" id="name_landing" name="name_landing" required minlength="3" maxlength="30">
+        <input type="text" id="name_landing" name="name_landing" required minlength="3" maxlength="30">
 
-        </form>
+
         <h1>Excavació Juràssica</h1>
         <h3>Desenterra ossos de fa milions d'anys!</h3>
         <p>Explora i excava per trobar ossos de dinosaures ocults sota terra. Tria les coordenades correctes i
@@ -44,6 +43,7 @@ unset($_SESSION['finishName']);
             </form>
 
             <form id="formBottonIa" method="POST" action="game.php">
+                <input type="hidden" name="limitedAmmo" value="true">
                 <input type="hidden" id="iaName" name="name_landing">
                 <input type="hidden" name="gamemode" value="versus-ia">
                 <button disabled id="bottonIa" type="submit" class="btn_play disabled"><i class="fa-solid fa-robot"></i>
@@ -55,7 +55,7 @@ unset($_SESSION['finishName']);
     </div>
 
     <script type="text/javascript">
-        document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener("DOMContentLoaded", function() {
             const playButtonIa = document.getElementById("bottonIa");
             const playButtonSolo = document.getElementById("bottonSolo");
             const nameInput = document.getElementById("name_landing"); //Guardamos los valores introducidos
@@ -63,16 +63,16 @@ unset($_SESSION['finishName']);
             const iaName = document.getElementById("iaName");
 
 
-            nameInput.addEventListener("input", function () {
+            nameInput.addEventListener("input", function() {
                 if (nameInput.value.length >= 3 && nameInput.value.length <= 30) {
                     playButtonIa.classList.remove("disabled");
                     playButtonSolo.classList.remove("disabled");
-                    playButtonIa.disabled = false;  // Habilitar el botón
-                    playButtonSolo.disabled = false;  // Habilitar el botón
+                    playButtonIa.disabled = false; // Habilitar el botón
+                    playButtonSolo.disabled = false; // Habilitar el botón
                 } else {
                     playButtonIa.classList.add("disabled");
                     playButtonSolo.classList.add("disabled");
-                    playButtonIa.disabled = true;   // Deshabilitar el botón
+                    playButtonIa.disabled = true; // Deshabilitar el botón
                     playButtonSolo.disabled = true; // Deshabilitar el botón
                 }
                 soloName.value = nameInput.value;

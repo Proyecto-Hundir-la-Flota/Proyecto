@@ -12,12 +12,17 @@ audios['dino'] = new Audio("./sounds/dino.mp3");
 audios['win'] = new Audio("./sounds/win.mp3");
 
 const discoveredFossils = [];
-const discoveredAIFossils = [];
-const playerHits = 0;
-const AIHits = 0;
+const iaDiscoveredFossils = [];
+let playerHits = 0;
+let AIHits = 0;
+
+const playerBoard = document.querySelector(".turn-overlay");
+const aiBoard = document.querySelector(".turn-overlay-ia");
 
 // Variable para controlar si el jugador puede hacer clic
 let playerCanClick = true;
+let repeatTurn = false;
+let IArepeatTurn = false;
 
 let elapsedTime = 0; //Tiempo que transcurrido
 let timerId;
@@ -78,6 +83,20 @@ function createAlerts(alert_type, playerType) {
 
     // Clase adicional para diferenciar las alertas del jugador y la IA
     const playerClass = playerType === 'player' ? 'player-alert' : 'ia-alert';
+
+    // Crear la alerta de "espera"
+    if (alert_type === 'wait') {
+        alert = document.createElement('div');
+        alert.id = 'waitAlert';
+        alert.className = `alert ${playerClass}`; // Añadimos la clase del jugador/IA
+        document.body.appendChild(alert);
+        elementI = document.createElement('i');
+        elementI.className = emojis['wait']; // Agregamos el icono usando la clase
+        alert.appendChild(elementI); // Añadimos element i como hijo de alert para agregar el emoji
+        const textNode = document.createTextNode("Espera tu turno!");
+        alert.appendChild(textNode); // Añadimos element textNode como hijo de alert para agregar el texto
+        alert.style.display = 'block';
+    }
 
     // Crear la alerta de "encontrado"
     if (alert_type === 'found') {
@@ -165,73 +184,160 @@ function stopUpdatePoints() {
     pointsFrozen = true;
 }
 
+
+function setPlayerTurn() {
+    // Añade la animación de salida a la IA
+    aiBoard.classList.add('table-ia-turn-out');
+
+    // Espera a que termine la animación de salida antes de aplicar la animación de entrada
+    setTimeout(() => {
+        // Elimina la clase de salida y añade la clase de entrada para el jugador
+        aiBoard.classList.remove('table-ia-turn-out');
+        playerBoard.classList.add('table-player-turn');
+        aiBoard.classList.remove('table-ia-turn');
+    }, 250); // Tiempo de duración de la animación de salida (250ms)
+}
+
+function setIATurn() {
+    // Añade la animación de salida al jugador
+    playerBoard.classList.add('table-player-turn-out');
+
+    // Espera a que termine la animación de salida antes de aplicar la animación de entrada para la IA
+    setTimeout(() => {
+        playerBoard.classList.remove('table-player-turn-out');
+        aiBoard.classList.add('table-ia-turn');
+        playerBoard.classList.remove('table-player-turn');
+    }, 250); // Tiempo de duración de la animación de salida (250ms)
+}
+
 // Función checkStatus
 function checkStatus(event, boardType) {
     const cell = event.target;
 
     // Verificar si es el turno del jugador
     if (!playerCanClick) {
-        console.log("Espera tu turno");
+        createAlerts('wait', 'player');
         return; // Salir si el jugador no puede hacer clic
     }
 
+
     // Si la celda está cubierta, se destapa
     if (cell.classList.contains("covered")) {
+
         cell.classList.remove("covered");
 
         if (boardType === 'player') {
-            // Lógica y sonidos para el tablero del jugador
-            handlePlayerBoardLogic(cell);
 
-            // Deshabilitar los clics del jugador después de su turno
-            playerCanClick = false;
+            if (!limitedAmmoMode || (limitedAmmoMode && playerAmmo > 0)) {
+                // Lógica y sonidos para el tablero del jugador
+
+                handlePlayerBoardLogic(cell);
+
+                // Deshabilitar los clics del jugador después de su turno
+                playerCanClick = false;
+            }
 
 
             // Solo ejecutar iaTurn si estamos en modo multiPlayer o versus-ia
             if (gameMode === 'multiPlayer' || gameMode === 'versus-ia') {
-                // Esperar 2 segundos antes de que la IA haga su movimiento
-                setTimeout(() => {
-                    iaTurn(); // La IA hace su turno después de 2 segundos
+                if (!repeatTurn) {
+                    if (!limitedAmmoMode || (limitedAmmoMode && AIAmmo > 0)) {
 
-                    // Después del turno de la IA, esperar 1 segundo antes de habilitar los clics del jugador
+                        // Esperar 2.5 segundos antes de que la IA haga su movimiento
+                        setTimeout(() => {
+                            setIATurn();  // Cambiar el turno a la IA
+                            setTimeout(() => {
+                                iaTurn();  // La IA hace su turno después de 2.5 segundos
+                            }, 1250);
+                        }, 1250);
+                    } else {
+                        // Si es turno del jugador de repetir, habilitar los clics nuevamente después de su turno
+                        setTimeout(() => {
+                            playerCanClick = true;
+                        }, 2500);
+                    }
+                } else {
+                    // Si es turno del jugador de repetir, habilitar los clics nuevamente después de su turno
                     setTimeout(() => {
                         playerCanClick = true;
-                    }, 2500); // Espera 2.5 segundo antes de permitir al jugador hacer clic de nuevo
-                }, 2500); // 2.5 segundos antes de que la IA haga su movimiento
-
-                if (limitedAmmoMode) {
-                    if (AIAmmo < 1 && playerAmmo < 1) {
-                        let playerFossilsCount = 0;
-                        let IAFossilsCount = 0;
-                        for (let index = 0; index < discoveredFossils.length; index++) {
-                            if (discoveredFossils[index][0]) {
-                                playerFossilsCount++;
-                            }
-                        }
-                        for (let index = 0; index < discoveredAIFossils.length; index++) {
-                            if (discoveredAIFossils[index][0]) {
-                                IAFossilsCount++;
-                            }
-                        }
-
-                        let playerWin = false
-
-                        if (playerFossilsCount == IAFossilsCount) {
-                            if (playerHits > AIHits) {
-                                playerWin = true;
-                            } else {
-                                playerWin = false;
-                            }
-                        } else if (playerFossilsCount > IAFossilsCount) {
-                            playerWin = true;
-                        } else {
-                            playerWin = false;
-                        }
-                    }
+                    }, 2500);
                 }
             } else {
                 // En single player, podemos reactivar los clics inmediatamente si no hay IA
                 playerCanClick = true;
+            }
+
+            if (limitedAmmoMode) {
+                if (AIAmmo < 1 && playerAmmo < 1) {
+                    let playerFossilsCount = 0;
+                    let IAFossilsCount = 0;
+                    for (let index = 0; index < discoveredFossils.length; index++) {
+                        if (discoveredFossils[index][0]) {
+                            playerFossilsCount++;
+                        }
+                    }
+                    for (let index = 0; index < iaDiscoveredFossils.length; index++) {
+                        if (iaDiscoveredFossils[index][0]) {
+                            IAFossilsCount++;
+                        }
+                    }
+
+                    let playerWin = false
+
+                    if (playerFossilsCount == IAFossilsCount) {
+                        if (playerHits > AIHits) {
+                            playerWin = true;
+                        } else {
+                            playerWin = false;
+                        }
+                    } else if (playerFossilsCount > IAFossilsCount) {
+                        playerWin = true;
+                    } else {
+                        playerWin = false;
+                    }
+
+                    if (playerWin) {
+                        stopClock();
+                        points += 15;
+
+                        if (elapsedTime < 60) {
+                            points += 20;
+                        } else if (elapsedTime <= 120) {
+                            points += 10;
+                        } else if (elapsedTime > 180) {
+                            points -= 10;
+                        }
+
+                        points += 200;
+
+                        updatePointsCounter();
+
+                        createAlerts('win', 'player');
+                        audios['win'].play();
+                        //document.getElementById("winner").style.display = "flex";
+                        stopUpdatePoints();
+
+                        document.getElementById("score-hidden").value = points;
+                        let scoreForm = document.getElementById("scoreForm");
+                        scoreForm.action = "win.php";
+                        scoreForm.submit();
+                    } else {
+                        stopClock();
+
+                        // Mostrar alerta de victoria para la IA
+                        createAlerts('win', 'ia');
+                        audios['win'].play();
+                        //document.getElementById("winner").style.display = "flex";
+
+                        // Lógica de fin del juego aquí, si es necesario
+                        stopUpdatePoints();
+
+                        document.getElementById("score-hidden").value = points;
+                        let scoreForm = document.getElementById("scoreForm");
+                        scoreForm.action = "lose.php";
+                        scoreForm.submit();
+                    }
+                }
             }
         }
     }
@@ -269,6 +375,7 @@ function handlePlayerBoardLogic(cell) {
             points += 2;
         }
 
+        repeatTurn = true;
         let hitAndSink = false;
         let victory = true;
 
@@ -308,8 +415,7 @@ function handlePlayerBoardLogic(cell) {
             }
             discoveredFossils[index][1] = false;
         }
-        if (victory && AIAmmo < 1 && playerAmmo < 1) {
-
+        if (victory) {
             stopClock();
             points += 15;
 
@@ -360,6 +466,7 @@ function handlePlayerBoardLogic(cell) {
     } else {
         accumulatedErrors++;
         consecutiveAccumulatedHits = 0;
+        repeatTurn = false;
 
         if (accumulatedErrors >= 3) {
             points -= 5;
@@ -377,18 +484,23 @@ function handlePlayerBoardLogic(cell) {
 }
 
 function handleAIBoardLogic(cell) {
+    if (limitedAmmoMode) {
+        AIAmmo--;
+        document.getElementById("ai-ammo").innerText = AIAmmo;
+    }
     // Verifica si la celda clicada contiene un hueso
     if (cell.classList.contains("bone")) {
 
         let hitAndSink = false;
         let victory = true;
+        IArepeatTurn = true;
 
         // Obtener la posición de la celda IA
         let cellPosition = cell.id.replace("ia_cell_", "").split("_");
 
         // Recorremos los barcos de la IA para verificar si la posición coincide con algún fósil
         for (let index = 0; index < iaShips.length; index++) {
-            discoveredAIFossils[index][0] = true;
+            iaDiscoveredFossils[index][0] = true;
 
             for (let indexShip = 0; indexShip < iaShips[index].length; indexShip++) {
                 let position = iaShips[index][indexShip][0];
@@ -397,18 +509,19 @@ function handleAIBoardLogic(cell) {
                 if (position[0] == cellPosition[0] && position[1] == cellPosition[1]) {
                     AIHits++;
                     iaShips[index][indexShip][1] = true; // Marcar como descubierto en IA
-                    discoveredAIFossils[index][1] = true; // Marcar fósil como encontrado
+                    iaDiscoveredFossils[index][1] = true; // Marcar fósil como encontrado
                 }
 
                 // Si alguna parte del barco no ha sido descubierta, no se completa el fósil
                 if (!iaShips[index][indexShip][1]) {
-                    discoveredAIFossils[index][0] = false;
+                    iaDiscoveredFossils[index][0] = false;
                 }
             }
         }
 
-        for (let index = 0; index < discoveredAIFossils.length; index++) {
-            let discoveredFossil = discoveredAIFossils[index];
+        // Comprobar si la IA ha ganado
+        for (let index = 0; index < iaDiscoveredFossils.length; index++) {
+            let discoveredFossil = iaDiscoveredFossils[index];
             let foundBone = discoveredFossil[0];
 
             if (!foundBone) {
@@ -419,7 +532,7 @@ function handleAIBoardLogic(cell) {
                 }
             }
 
-            discoveredAIFossils[index][1] = false; // Reiniciar la parte encontrada para el próximo clic
+            iaDiscoveredFossils[index][1] = false; // Reiniciar la parte encontrada para el próximo clic
         }
 
         if (victory) {
@@ -450,6 +563,7 @@ function handleAIBoardLogic(cell) {
         }
     } else {
         // Si no se encontró un fósil, reproducimos el sonido de fallo
+        IArepeatTurn = false;
         createAlerts('miss', 'ia');
         audios['arena'].play();
     }
@@ -457,13 +571,11 @@ function handleAIBoardLogic(cell) {
 
 
 
-// Función que maneja el turno de la IA
 function iaTurn() {
     console.log("Turno de la IA");
-
     let validMove = false;
 
-    // Bucle que busca una celda válida para que la IA juegue
+    // Mientras la IA no haga una jugada válida
     while (!validMove) {
         const randomRow = Math.floor(Math.random() * 10);
         const randomCol = Math.floor(Math.random() * 10);
@@ -473,35 +585,44 @@ function iaTurn() {
         if (cell && cell.classList.contains("covered")) {
             // La IA hace su jugada
             cell.classList.remove("covered"); // Destapar la celda
-            if (limitedAmmoMode) {
-                AIAmmo--;
-                document.getElementById("ai-ammo").innerText = AIAmmo;
-            }
+
             handleAIBoardLogic(cell); // Lógica para manejar el clic de la IA
             validMove = true; // Salir del bucle al encontrar una celda válida
         }
     }
+
+    // Si la IA acierta y tiene que repetir turno
+    if (IArepeatTurn) {
+        if (!limitedAmmoMode || (limitedAmmoMode && AIAmmo > 0)) {
+            setTimeout(iaTurn, 2500);  // Espera 2.5 segundos y repite el turno
+            playerCanClick = false;    // Deshabilitar clics del jugador mientras la IA tiene derecho a otro turno
+        } else {
+            setTimeout(() => {
+                setPlayerTurn();  // Cambiar el turno a la IA
+                setTimeout(() => {
+                    playerCanClick = true;  // La IA hace su turno después de 2.5 segundos
+                }, 1250);
+            }, 1250);
+        }
+    } else {
+        setTimeout(() => {
+            setPlayerTurn();  // Cambiar el turno a la IA
+            setTimeout(() => {
+                playerCanClick = true;  // La IA hace su turno después de 2.5 segundos
+            }, 1250);
+        }, 1250);
+    }
 }
-
-
 
 document.addEventListener("DOMContentLoaded", function () {
     const playerCells = document.querySelectorAll("td[id^='cell_']"); // Selecciona las celdas del jugador (IDs que empiezan por 'cell_')
     const aiCells = document.querySelectorAll("td[id^='ia_cell_']"); // Selecciona las celdas de la IA (IDs que empiezan por 'ia_cell_')
-
+    setPlayerTurn();
     // Asignar eventos de clic a las celdas del jugador
     for (let cell of playerCells) {
         cell.addEventListener("click", function (event) {
             checkStatus(event, 'player'); // Llamamos a checkStatus indicando que es del tablero del jugador
         });
-    }
-
-    // Asignar eventos de clic a las celdas del tablero de la IA
-    for (let cell of aiCells) {
-        // cell.addEventListener("click", function (event) {
-        //     checkStatus(event, 'ai'); // Llamamos a checkStatus indicando que es del tablero de la IA
-        // });
-        // cell.removeEventListener("click", checkStatus);
     }
 
     document.getElementById("rankingInfo").style.display = "none";
@@ -511,7 +632,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     ships.forEach(ship => {
         discoveredFossils.push([true, false]);
-        discoveredAIFossils.push([true, false]);
+    });
+
+    iaShips.forEach(ship => {
+        iaDiscoveredFossils.push([true, false]); // [barco hundido?, hueso encontrado en este turno?]
     });
 
     // Evento del formulario para enviar puntaje

@@ -100,9 +100,25 @@ if (isset($_POST["name_landing"])) {
             // Declarar los identificadores
             $letter_id = 65;
             $number_id = 1;
+
             if ($isAI) {
+                // Array con los nombres de los bots
+                $botNames = ['XaviBOT', 'LeandroBOT', 'EnricBOT'];
+                // Seleccionar un nombre aleatorio
+                $randomBotName = $botNames[array_rand($botNames)];
+                //     echo "<div class='container-table ia-table'>
+                // <div class='timer-fame'>
+                //     <div class='player_name'>
+                //         <i class='fa-solid fa-robot'></i>$randomBotName
+                //     </div>
+                // </div>
+                // <table id='aiBoard'>";
+
                 $infoContent = "<div class='container-table ia-table'>
-            <div class='timer-fame'>\n";
+            <div class='timer-fame'>
+                <div class='player_name'>
+                    <i class='fa-solid fa-robot'></i>$randomBotName
+                </div>\n";
 
                 if (isset($_POST["limitedAmmo"])) {
                     if ($_POST["limitedAmmo"] == "true") {
@@ -112,11 +128,28 @@ if (isset($_POST["name_landing"])) {
                     }
                 }
                 $infoContent .= "            </div>
-            <table>";
+            <table id='aiBoard'>";
                 echo $infoContent;
             } else {
+            //     echo "<div class='container-table'>
+            // <div class='timer-fame'>
+            //     <div class='player_name'>
+            //         <i class='fa-solid fa-user'></i>" . $_SESSION["finishName"] . "
+            //     </div>
+            //     <div class='fame'>
+            //         <i class='fa-solid fa-bullhorn'></i>Fama: <span class='score'>0</span>
+            //     </div>
+            //     <div class='timer'>
+            //         <i class='fa-solid fa-hourglass-end'></i>Temps: <span id='gameClock'>00:00</span>
+            //     </div>
+            // </div>
+            // <table id='playerBoard'>";
+
                 $infoContent = "<div class='container-table'>
-            <div class='timer-fame'>\n";
+            <div class='timer-fame'>
+                <div class='player_name'>
+                    <i class='fa-solid fa-user'></i>" . $_SESSION["finishName"] . "
+                </div>\n";
                 if (isset($_POST["limitedAmmo"])) {
                     if ($_POST["limitedAmmo"] == "true") {
                         $infoContent .= "                <div class='ammo'>
@@ -125,13 +158,13 @@ if (isset($_POST["name_landing"])) {
                     }
                 }
                 $infoContent .= "                <div class='fame'>
-                    <i class='fa-solid fa-bullhorn'></i>Fama: <span class='score'>-</span>
+                    <i class='fa-solid fa-bullhorn'></i>Fama: <span class='score'>0</span>
                 </div>
                 <div class='timer'>
                     <i class='fa-solid fa-hourglass-end'></i>Temps: <span id='gameClock'>00:00</span>
                 </div>
             </div>
-            <table>";
+            <table id='playerBoard'>";
                 echo $infoContent;
             }
             for ($i = 0; $i <= $column_board; $i++) {
@@ -174,7 +207,9 @@ if (isset($_POST["name_landing"])) {
                 echo "</tr>";
             }
             if ($isAI) {
-                echo "</table></div>
+                echo "</table>
+        <div class='turn-overlay-ia'>Torn de la IA</div>
+        </div>
           <div class='container-info ia-info'>
             <div class='info-item'> 
               <h3>Com aconseguir fama</h3>
@@ -189,7 +224,8 @@ if (isset($_POST["name_landing"])) {
             </div>
           </div>";
             } else {
-                echo "</table></div>
+                echo "</table>
+        <div class='turn-overlay'>El teu torn</div></div>
           <div class='container-info'>
             <div class='info-item'> 
               <h3>Com aconseguir fama</h3>
@@ -341,11 +377,17 @@ if (isset($_POST["name_landing"])) {
         <?php if (isset($_POST["limitedAmmo"])) {
             if ($_POST["limitedAmmo"] == "true") { ?>
                 limitedAmmoMode = true;
-                playerAmmo = 40;
-                AIAmmo = 40;
+                playerAmmo = 5;
+                AIAmmo = 5;
         <?php }
         }
-        ?>
+        if (isset($_POST['gamemode'])) { 
+            $gamemode = $_POST['gamemode'];
+
+            if ($gamemode == 'training') { ?>
+            AIAmmo = 0;
+        <?php }
+        } ?>
     </script>
 
 
