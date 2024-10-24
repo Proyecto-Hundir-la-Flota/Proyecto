@@ -1294,3 +1294,7 @@ input[type="checkbox"]:checked{
     font-size: 2em;
     font-weight: 400;
 }
+
+#player  {
+    border: 2px solid red;
+}

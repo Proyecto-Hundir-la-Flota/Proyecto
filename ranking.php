@@ -69,7 +69,8 @@ if (!file_exists($file)) {
 // Verifica si los datos han sido enviados por POST
 if (isset($_POST['score']) && isset($_POST['name'])) {
     $score = $_POST['score'];
-    $name = $_POST['name'];
+    $name = trim($_POST['name']);  // Limpiar el nombre de espacios en blanco
+    $holder = $name;  // Almacenar el nombre del jugador actual
     $timestamp = date('Y-m-d H:i:s'); // Generar timestamp
 
     // Guardar los datos en el archivo
@@ -79,7 +80,8 @@ if (isset($_POST['score']) && isset($_POST['name'])) {
 // Cargar el contenido del archivo
 $content = file_get_contents($file);
 $lines = explode('#', $content);
-$filtered_lines = array_filter($lines, 'trim');
+$filtered_lines = array_filter($lines, 'trim');  // Limpiar las líneas de espacios en blanco
+
 
 // Comprobar si hay registros
 if (empty($filtered_lines)) {
@@ -101,32 +103,38 @@ if (empty($filtered_lines)) {
     $end_index = min($start_index + $records_per_page, $total_records);
 
     // Mostrar la tabla
-    echo '<table>
-        <tr>
-            <th>#</th>
-            <th>Nom del Paleontòleg</th>
-            <th>Fama Adquirida</th>
-            <th>Data i Hora de l\'Excavació</th>
-        </tr>';
+// Mostrar la tabla
+echo '<table>
+    <tr>
+        <th>#</th>
+        <th>Nom del Paleontòleg</th>
+        <th>Fama Adquirida</th>
+        <th>Data i Hora de l\'Excavació</th>
+    </tr>';
 
-    for ($i = $start_index; $i < $end_index; $i++) {
-        if (!empty(trim($filtered_lines[$i]))) {
-            list($name, $points, $dateTime) = explode('/', $filtered_lines[$i]);
-            $row_index = $i + 1;
+for ($i = $start_index; $i < $end_index; $i++) {
+    if (!empty(trim($filtered_lines[$i]))) {
+        list($name, $points, $dateTime) = explode('/', $filtered_lines[$i]);
+        $name = trim($name);  // Limpiar el nombre de la línea actual
+        $row_index = $i + 1;
 
-            // Clase podium para los primeros tres registros
-            $class = ($i < 3) ? ' class="podium"' : '';
+        // Clase podium para los primeros tres registros
+        $class = ($i < 3) ? ' class="podium"' : '';
+        
+        // Clase para el registro del usuario que acaba de jugar
+        $class2 = ($name === $holder) ? ' id="player"' : '';
 
-            echo "<tr{$class}>
-                <td>$row_index</td>
-                <td>$name</td>
-                <td>$points</td>
-                <td>$dateTime</td>
-              </tr>";
-        }
+        echo "<tr{$class}{$class2}>
+            <td>$row_index</td>
+            <td>$name</td>
+            <td>$points</td>
+            <td>$dateTime</td>
+        </tr>";
     }
+}
 
-    echo '</table>';
+echo '</table>';
+
 
     // Paginación
     echo '<div class="navigation-container">';
