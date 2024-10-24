@@ -150,7 +150,7 @@ if (isset($_POST['gamemode'])) {
                 if (isset($_POST["limitedAmmo"])) {
                     if ($_POST["limitedAmmo"] == "limitedAmmo") {
                         $infoContent .= "<div class='ammo'>
-                    <i class='fa-solid fa-bullseye'></i>Munició: <span id='ai-ammo'>40</span>
+                    <i class='fa-solid fa-bullseye'></i>Palades: <span id='ai-ammo'>40</span>
                 </div>\n";
                     }
                 }
@@ -183,7 +183,7 @@ if (isset($_POST['gamemode'])) {
 
             if (isset($_POST["limitedAmmo"]) && $_POST["limitedAmmo"] == "limitedAmmo") {
                 $infoContent .= "<div class='ammo'>
-                    <i class='fa-solid fa-bullseye'></i>Munició: <span id='player-ammo'>40</span>
+                    <i class='fa-solid fa-bullseye'></i>Palades: <span id='player-ammo'>40</span>
                 </div>\n";
             }
 
