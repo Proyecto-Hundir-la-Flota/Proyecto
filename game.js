@@ -342,13 +342,13 @@ function checkStatus(event, boardType) {
                         // Si la IA no tiene munición, el turno del jugador se repete, habilitar los clics nuevamente después de su turno
                         setTimeout(() => {
                             playerCanClick = true;
-                        }, 2500);
+                        }, 2400);
                     }
                 } else {
                     // Si es turno del jugador de repetir, habilitar los clics nuevamente después de su turno
                     setTimeout(() => {
                         playerCanClick = true;
-                    }, 2500);
+                    }, 2400);
                 }
             } else {
                 // En single player, podemos reactivar los clics inmediatamente si no hay IA
@@ -632,8 +632,8 @@ function iaTurn() {
                         setPlayerTurn();  // Cambiar el turno a la IA
                         setTimeout(() => {
                             playerCanClick = true;  // Permitir clics del jugador después de 1.25 segundos
-                        }, 1250);
-                    }, 1250);
+                        }, 1200);
+                    }, 1200);
                 }
             }, 3000); // Tiempo que toma para descubrir la celda
         } else {
