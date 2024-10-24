@@ -151,6 +151,37 @@ html {
     min-height: 100vh;
 }
 
+#game_page .timer {
+    background-color: var(--primary_div);
+    font-family: var(--text_font);
+    font-size: 1.15em;
+    padding: 7px 14px 7px;
+    margin: 20px;
+    text-align: end;
+    border-radius: 18px;
+}
+
+#game_page .timer i {
+    margin-right: 5px;
+}
+
+#game_page .fame .score {
+    display: inline-block;
+    width: 30px;
+    text-align: center;
+}
+
+#game_page .timer #gameClock {
+    display: inline-block;
+    width: 50px;
+    text-align: center;
+}
+
+#game_page .timer {
+    align-self: center;
+    
+}
+
 #game_page table {
     border-collapse: collapse;
     border: 2px solid var(--text_color);
@@ -255,7 +286,7 @@ html {
 }
 
 #game_page .container {
-    margin: 25px 0 0;
+    margin: 0px 0 0;
     display: flex;
     justify-content: center;
     gap: 100px;

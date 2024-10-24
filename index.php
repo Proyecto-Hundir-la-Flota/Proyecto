@@ -94,8 +94,6 @@ unset($_SESSION['finishName']);
             const lilimitedAmmo = document.getElementById("limitedAmmo"); //guardamos la variable para la fucion de click en el li
             const litankShips = document.getElementById("tankShips");
             const lispecialAtack = document.getElementById("specialAtack");
-
-            const menuButton = document.getElementById("menuBotton");
             const menuList = document.getElementById("list");
 
             // Selecciona todos los elementos <li> dentro de la lista
@@ -124,7 +122,7 @@ unset($_SESSION['finishName']);
             });
 
             // guardar el id de municion infinita al hacer click
-            lilimitedAmmo.addEventListener("click", function () {
+            lilimitedAmmo.addEventListener("change", function () {
                     if (limitedAmmo.checked == true){
                         soloMenuLimitedAmmo.value = "limitedAmmo"; // Almacena el id del <li> en el menu para training
                         iaMenuLimitedAmmo.value = "limitedAmmo"; // Almacena el id del <li> en el menu para la ia
