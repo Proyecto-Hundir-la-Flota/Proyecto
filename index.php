@@ -36,15 +36,15 @@ unset($_SESSION['finishName']);
         <ul id="list" class="hiddenClass">
             <li>
                 <input type="checkbox" id="limitedAmmo">
-                <label for="limitedAmmo">Munició limitada</label>
+                <label for="limitedAmmo">Palades limitades</label>
             </li>
             <li>
                 <input type="checkbox" id="tankShips">
-                <label for="tankShips">Vaixells acorassats</label>
+                <label for="tankShips">Terreny rocós</label>
             </li>
             <li>
                 <input type="checkbox" id="specialAtack">
-                <label for="specialAtack">Atacs especials</label>
+                <label for="specialAtack">Palades especials</label>
             </li>
         </ul>
 
