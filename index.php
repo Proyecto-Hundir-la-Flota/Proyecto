@@ -124,7 +124,7 @@ unset($_SESSION['finishName']);
             });
 
             // guardar el id de municion infinita al hacer click
-            lilimitedAmmo.addEventListener("click", function () {
+            lilimitedAmmo.addEventListener("change", function () {
                     if (limitedAmmo.checked == true){
                         soloMenuLimitedAmmo.value = "limitedAmmo"; // Almacena el id del <li> en el menu para training
                         iaMenuLimitedAmmo.value = "limitedAmmo"; // Almacena el id del <li> en el menu para la ia
@@ -138,7 +138,7 @@ unset($_SESSION['finishName']);
             });
 
             // guardar el id de barco acorazado
-            litankShips.addEventListener("click", function () {
+            litankShips.addEventListener("change", function () {
                 if (tankShips.checked == true){
                     soloMenuTankShips.value = "tankShips"; // Almacena el id del <li> en el menu para training
                     iaMenuTankShips.value = "tankShips"; // Almacena el id del <li> en el menu para la ia
@@ -152,7 +152,7 @@ unset($_SESSION['finishName']);
             });
 
             // guardar el id de municion infinita
-            lispecialAtack.addEventListener("click", function () {
+            lispecialAtack.addEventListener("change", function () {
                 if (specialAtack.checked == true){
                     soloMenuSpecialAtack.value = "specialAtack"; // Almacena el id del <li> en el menu para training
                     iaMenuSpecialAtack.value = "specialAtack"; // Almacena el id del <li> en el menu para la ia
