@@ -639,8 +639,8 @@ function iaTurn() {
                             setPlayerTurn();  // Cambiar el turno al Jugador
                             setTimeout(() => {
                                 playerCanClick = true;  // El jugador empieza su turno después de 2.5 segundos
-                            }, 1250);
-                        }, 1250);
+                            }, 1200);
+                        }, 1200);
                     }
                 } else {
                     setTimeout(() => {
