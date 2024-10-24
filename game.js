@@ -16,7 +16,6 @@ const discoveredFossils = [];
 const iaDiscoveredFossils = [];
 let playerHits = 0;
 let AIHits = 0;
-
 const playerBoard = document.querySelector(".turn-overlay");
 const aiBoard = document.querySelector(".turn-overlay-ia");
 
@@ -306,68 +305,132 @@ function checkStatus(event, boardType) {
         playerCanClick = false;
         cell.classList.add("cell-selected")
 
-        audios['cavar'].play();
+        if (gameMode === 'multiPlayer' || gameMode === 'versus-ia') { 
+            audios['cavar'].play();
+            setTimeout(() => {
 
-        setTimeout(() => {
-
-            cell.classList.remove("cell-selected")
-            cell.classList.remove("covered");
-
-            if (boardType === 'player') {
-
-                if (!limitedAmmoMode || (limitedAmmoMode && playerAmmo > 0)) {
-                    // Lógica y sonidos para el tablero del jugador
-
-                    handlePlayerBoardLogic(cell);
-
-                    // Deshabilitar los clics del jugador después de su turno
-                    playerCanClick = false;
-                    if (limitedAmmoMode) {
-                        checkLimitedAmmoModeStatus();
+                cell.classList.remove("cell-selected")
+                cell.classList.remove("covered");
+    
+                if (boardType === 'player') {
+    
+                    if (!limitedAmmoMode || (limitedAmmoMode && playerAmmo > 0)) {
+                        // Lógica y sonidos para el tablero del jugador
+    
+                        handlePlayerBoardLogic(cell);
+    
+                        // Deshabilitar los clics del jugador después de su turno
+                        playerCanClick = false;
+                        if (limitedAmmoMode) {
+                            checkLimitedAmmoModeStatus();
+                        }
                     }
-                }
-
-
-                // Solo ejecutar iaTurn si estamos en modo multiPlayer o versus-ia
-                if (gameMode === 'multiPlayer' || gameMode === 'versus-ia') {
-                    if (!repeatTurn) {
-                        if (!limitedAmmoMode || (limitedAmmoMode && AIAmmo > 0)) {
-                            // Esperar 2.5 segundos antes de que la IA haga su movimiento
-                            setTimeout(() => {
-                                setIATurn();  // Cambiar el turno a la IA
+    
+    
+                    // Solo ejecutar iaTurn si estamos en modo multiPlayer o versus-ia
+                    if (gameMode === 'multiPlayer' || gameMode === 'versus-ia') {
+                        if (!repeatTurn) {
+                            if (!limitedAmmoMode || (limitedAmmoMode && AIAmmo > 0)) {
+                                // Esperar 2.5 segundos antes de que la IA haga su movimiento
                                 setTimeout(() => {
-                                    iaTurn();  // La IA hace su turno después de 2.5 segundos
+                                    setIATurn();  // Cambiar el turno a la IA
+                                    setTimeout(() => {
+                                        iaTurn();  // La IA hace su turno después de 2.5 segundos
+                                    }, 1200);
                                 }, 1200);
-                            }, 1200);
+                            } else {
+                                // Si la IA no tiene munición, el turno del jugador se repete, habilitar los clics nuevamente después de su turno
+                                setTimeout(() => {
+                                    playerCanClick = true;
+                                }, 2400);
+                            }
                         } else {
-                            // Si la IA no tiene munición, el turno del jugador se repete, habilitar los clics nuevamente después de su turno
-                            setTimeout(() => {
-                                playerCanClick = true;
-                            }, 2400);
+                            // Si es turno del jugador de repetir, habilitar los clics nuevamente después de su turno
+                            if (!limitedAmmoMode || (limitedAmmoMode && playerAmmo > 0)) { // Si el modo de munición limitada no esta activo o esta activo y el jugador tiene munición
+                                // Si es turno del jugador de repetir y el jugado tiene munición o no esta habitado el modo de munición limitada, habilitar los clics nuevamente después de su turno
+                                setTimeout(() => {
+                                    playerCanClick = true;
+                                }, 2400);
+                            } else { // Si el modo de munición limitada esta activo y el jugador no tiene munición
+                                // Esperar 2.5 segundos antes de que la IA haga su movimiento
+                                setTimeout(() => {
+                                    setIATurn();  // Cambiar el turno a la IA
+                                    setTimeout(() => {
+                                        iaTurn();  // La IA hace su turno después de 2.5 segundos
+                                    }, 1200);
+                                }, 1200);
+                            }
                         }
                     } else {
-                        // Si es turno del jugador de repetir, habilitar los clics nuevamente después de su turno
-                        if (!limitedAmmoMode || (limitedAmmoMode && playerAmmo > 0)) { // Si el modo de munición limitada no esta activo o esta activo y el jugador tiene munición
-                            // Si es turno del jugador de repetir y el jugado tiene munición o no esta habitado el modo de munición limitada, habilitar los clics nuevamente después de su turno
-                            setTimeout(() => {
-                                playerCanClick = true;
-                            }, 2400);
-                        } else { // Si el modo de munición limitada esta activo y el jugador no tiene munición
-                            // Esperar 2.5 segundos antes de que la IA haga su movimiento
-                            setTimeout(() => {
-                                setIATurn();  // Cambiar el turno a la IA
-                                setTimeout(() => {
-                                    iaTurn();  // La IA hace su turno después de 2.5 segundos
-                                }, 1200);
-                            }, 1200);
+                        // En single player, podemos reactivar los clics inmediatamente si no hay IA
+                        playerCanClick = true;
+                    }
+                }
+            }, 3000);
+        } else {
+            
+
+
+                cell.classList.remove("cell-selected")
+                cell.classList.remove("covered");
+    
+                if (boardType === 'player') {
+    
+                    if (!limitedAmmoMode || (limitedAmmoMode && playerAmmo > 0)) {
+                        // Lógica y sonidos para el tablero del jugador
+    
+                        handlePlayerBoardLogic(cell);
+    
+                        // Deshabilitar los clics del jugador después de su turno
+                        playerCanClick = false;
+                        if (limitedAmmoMode) {
+                            checkLimitedAmmoModeStatus();
                         }
                     }
-                } else {
-                    // En single player, podemos reactivar los clics inmediatamente si no hay IA
-                    playerCanClick = true;
+    
+    
+                    // Solo ejecutar iaTurn si estamos en modo multiPlayer o versus-ia
+                    if (gameMode === 'multiPlayer' || gameMode === 'versus-ia') {
+                        if (!repeatTurn) {
+                            if (!limitedAmmoMode || (limitedAmmoMode && AIAmmo > 0)) {
+                                // Esperar 2.5 segundos antes de que la IA haga su movimiento
+                                setTimeout(() => {
+                                    setIATurn();  // Cambiar el turno a la IA
+                                    setTimeout(() => {
+                                        iaTurn();  // La IA hace su turno después de 2.5 segundos
+                                    }, 1200);
+                                }, 1200);
+                            } else {
+                                // Si la IA no tiene munición, el turno del jugador se repete, habilitar los clics nuevamente después de su turno
+                                setTimeout(() => {
+                                    playerCanClick = true;
+                                }, 2400);
+                            }
+                        } else {
+                            // Si es turno del jugador de repetir, habilitar los clics nuevamente después de su turno
+                            if (!limitedAmmoMode || (limitedAmmoMode && playerAmmo > 0)) { // Si el modo de munición limitada no esta activo o esta activo y el jugador tiene munición
+                                // Si es turno del jugador de repetir y el jugado tiene munición o no esta habitado el modo de munición limitada, habilitar los clics nuevamente después de su turno
+                                setTimeout(() => {
+                                    playerCanClick = true;
+                                }, 2400);
+                            } else { // Si el modo de munición limitada esta activo y el jugador no tiene munición
+                                // Esperar 2.5 segundos antes de que la IA haga su movimiento
+                                setTimeout(() => {
+                                    setIATurn();  // Cambiar el turno a la IA
+                                    setTimeout(() => {
+                                        iaTurn();  // La IA hace su turno después de 2.5 segundos
+                                    }, 1200);
+                                }, 1200);
+                            }
+                        }
+                    } else {
+                        // En single player, podemos reactivar los clics inmediatamente si no hay IA
+                        playerCanClick = true;
+                    }
                 }
-            }
-        }, 3000);
+        }
+
+        
     }
 }
 

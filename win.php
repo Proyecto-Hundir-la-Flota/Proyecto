@@ -1,46 +1,55 @@
+<?php
+session_start(); // Coloca session_start() en la primera línea
+
+// Verifica el HTTP_REFERER para la protección de acceso
+if (empty($_SERVER['HTTP_REFERER'])) {
+    header('HTTP/1.0 403 Forbidden');
+    // Salida de la página 403 directamente desde PHP
+    echo "
+    <!DOCTYPE html>
+    <html lang='ca'>
+    <head>
+        <meta charset='UTF-8'>
+        <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+        <link rel='stylesheet' href='style.css'>
+        <script src='https://kit.fontawesome.com/9c44094610.js' crossorigin='anonymous'></script>
+        <title>Error 403 - Excavació Juràssica</title>
+    </head>
+    <body class='forbidden-page'>
+        <div class='hero'>
+            <h1>Error 403 - Forbidden</h1>
+            <p>No pots accedir a aquesta pàgina perquè no tens els permisos necessaris. Si creus que això és un error, contacta amb l'administrador del lloc web.</p>
+        </div>
+    </body>
+    </html>";
+    exit; // Asegúrate de terminar la ejecución para evitar que el resto del código corra
+}
+
+// Resto del código de la página
+$userName = "";
+$score = 0;
+
+if (isset($_SESSION['finishName'])) {
+    $userName = $_SESSION['finishName'];
+}
+
+if (isset($_POST['score'])) {
+    $score = $_POST['score'];
+}
+?>
+
 <!DOCTYPE html>
 <html lang="ca">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
     <script src="https://kit.fontawesome.com/9c44094610.js" crossorigin="anonymous"></script>
-    <?php
-    if ($_SERVER['HTTP_REFERER'] == '') {
-        header('HTTP/1.0 403 Forbidden');
-    ?> 
-        <title>Error 403 - Excavació Juràssica</title>
-</head>
-
-<body class="forbidden-page">
-    <div class="hero">
-        <h1>Error 403 - Forbidden</h1>
-        <p>No pots accedir a aquesta pàgina perquè no tens els permisos necessaris. Si creus que això és un error, contacta amb l'administrador del lloc web.</p>
-    </div>
-</body>
-
-</html>
-<?php
-        exit;
-    }
-    // Resta del codi de la pàgina
-
-    session_start();
-    $userName = "";
-    $score = 0;
-    if (isset($_SESSION['finishName'])) {
-        $userName = $_SESSION['finishName'];
-    }
-    if (isset($_POST['score'])) {
-        $score = $_POST['score'];
-    }
-
-?>
-<title>Excavació Juràssica</title>
+    <title>Excavació Juràssica</title>
 </head>
 
 <body id="result_page" class="win">
+
     <div class="hero">
         <h1>Has guanyat !</h1>
         <div id="rankingInfo">
@@ -64,8 +73,6 @@
             const nameInput = document.getElementById("nameInput"); //Guardamos los valores introducidos
             const scoreForm = document.getElementById("scoreForm"); //Guardamos el formato de formulario para poder hacer un submit
 
-
-
             nameInput.addEventListener("input", function() {
                 // Comprobar la longitud del nombre
                 if (nameInput.value.length > 3 && nameInput.value.length < 30) {
@@ -84,6 +91,9 @@
                     scoreForm.submit();
                 }
             });
+            
+            
+
         });
     </script>
 </body>
