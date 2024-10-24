@@ -79,7 +79,10 @@ html {
 #landing_page .button_container {
     display: flex;
     gap: 20px;
+    justify-content: center;
+    align-items: center;
     width: 100%;
+    
 }
 
 #landing_page h1 {
@@ -403,11 +406,6 @@ html {
 
 /* VERSUS IA */
 
-
-.versus-ia .container {
-    /* flex-direction: row-reverse; */
-}
-
 .versus-ia .container-info {
     display: none !important;
 }
@@ -431,19 +429,48 @@ html {
     justify-content: center;
 }
 
+.hold-name-result {
+    display: flex;
+    font-family: var(--text_font);
+    font-size: 1em;
+    font-weight: 500;
+    color: var(--text_color);
+    height: 36px;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 30px 0 30px;
+}
+
+.hold-name-result input {
+    border: 2px solid var(--button);
+    border-radius: 6px;
+    box-shadow: rgba(0, 0, 0, 0.33) 0px 1px 4px;
+    width: 240px;
+    height: 30px;
+    font-family: var(--text_font);
+    font-size: 16px;
+    cursor: text;
+}
+
+
 #result_page.win {
     background: url(./images/result_page_win_bg.png);
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 #result_page.lose {
     background: url(./images/result_page_lose_bg.png);
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 #result_page .hero {
     background-color: #ffffff6e;
     width: 1000px;
     height: auto;
-    padding: 50px 0 50px;
+    padding: 50px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -453,7 +480,7 @@ html {
     backdrop-filter: blur(17px);
     -webkit-backdrop-filter: blur(6.8px);
     border-radius: 16px;
-    animation: slideInFromTop 1s forwards;
+    animation: slideInFromTop 3s forwards;
 }
 
 @keyframes slideInFromTop {
@@ -480,17 +507,17 @@ html {
     font-size: 6em;
 }
 
-#result_page h3 {
+#result_page h2 {
+    margin-top: 0;
     color: var(--text_color);
     font-family: var(--secondary_title_font);
     font-size: 2em;
     font-weight: 400;
 }
 
-#result_page p {
+#result_page h3 {
     color: var(--text_color);
     font-family: var(--text_font);
-    padding: 30px 10% 30px;
     font-size: 1.2em;
     font-weight: 400;
 }
@@ -1072,50 +1099,162 @@ html {
         background-color: rgb(216, 180, 17); /* Vuelve a rojo */
     }
 }
+.hold-name {
+    display: flex;
+    font-family: var(--text_font);
+    font-size: 1em;
+    font-weight: 500;
+    color: var(--button);
+    position: absolute;
+    height: 36px;
+    left: 25px;
+    top: 25px;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+#name_landing {
+    border: 2px solid var(--button);
+    border-radius: 6px;
+    box-shadow: rgba(0, 0, 0, 0.33) 0px 1px 4px;
+    width: 240px;
+    height: 30px;
+    font-family: var(--text_font);
+    font-size: 16px;
+    cursor: text;
+}
+
 
 /* estilos menu desplegable */
-.hiddenClass{
-    display: none;
-}
 
 
 .visible {
     display: block;
 }
 
-
 div.hero>ul {
-    position: absolute; 
+    position: absolute;
     list-style-type: none;
-    padding: 0; 
-    top: 100px;
+    top: 66px;
+    right: 25px;
+    z-index: 1;
+    width: 220px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    border-radius: 16px;
+    padding: 15px;
+    gap: 15px;
+    background-color: white;
+    box-shadow: rgba(0, 0, 0, 0.33) 0px 5px 20px;
+}
+
+div.hero>#menuButton {
+    position: absolute;
+    height: 36px;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--text_font);
+    font-size: 1em;
+    font-weight: 500;
+    color: var(--button);
+    background: #00000000;
+    border: 2px solid var(--button);
+    border-radius: 18px;
+    gap: 6px;
+    text-decoration: none;
+    cursor: pointer;
+    box-shadow: rgba(0, 0, 0, 0.33) 0px 1px 4px;
     right: 0;
+    top: 0;
+    margin: 25px 25px 0;
+    width: auto;
 }
 
-div.hero>#menuBotton {
-    position: relative;
-    left:400px;
-    top:10px;
-    right:10px;
-    padding: 10px 20px;
-    font-size: 16px;
- 
-
-}
-
-div.hero>#menuBotton:hover {
-    background-color: #0056b3; /* Color de fondo al pasar el ratón */
+div.hero>#menuButton:hover {
+    background-color: var(--button);
+    color: #fff;
+    transition-duration: .33s;
 }
 
 div.hero>ul li {
-   
-    padding: 10px;
-    background-color: gainsboro;
-    margin: 5px 10px;
-    border: 1px solid black;
-    opacity: 0.8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 36px;
+    padding: 0 20px;
+    font-family: var(--text_font);
+    font-size: 1em;
+    font-weight: 500;
+    color: var(--button);
+    background: #00000000;
+    border: 2px solid var(--button);
+    border-radius: 8px;
+    text-decoration: none;
+    cursor: pointer;
+    box-shadow: rgba(0, 0, 0, 0.33) 0px 1px 4px;
+    width: auto;
+    align-items: center;
+    justify-content: start;
 }
 
 div.hero>ul li:hover {
-    background-color: burlywood; 
+    background-color: var(--button);
+    color: #fff;
+    transition-duration: .33s;
+}
+
+div.hero>ul li input {
+    margin-right: 5px;
+}
+div.hero>ul li label {
+    cursor: pointer;
+}
+.hiddenClass {
+    display: none !important;
+}
+
+input[type="checkbox"]:checked{
+    accent-color: var(--button);
+}
+
+.forbidden-page {
+    background: var(--background);
+    margin: 0;
+    display: flex;
+    height: 100vh;
+    align-items: center;
+    justify-content: center;
+}
+
+.forbidden-page .hero {
+    background-color: #ffffff6e;
+    width: 1500px;
+    height: auto;
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    box-shadow: rgba(0, 0, 0, 0.33) 0px 5px 20px;
+    backdrop-filter: blur(17px);
+    -webkit-backdrop-filter: blur(6.8px);
+    border-radius: 16px;
+}
+
+.forbidden-page h1 {
+    color: var(--text_color);
+    font-family: var(--primary_title_font);
+    font-size: 6em;
+}
+
+.forbidden-page p {
+    color: var(--text_color);
+    font-family: var(--secondary_title_font);
+    font-size: 2em;
+    font-weight: 400;
 }
