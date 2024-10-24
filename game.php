@@ -111,6 +111,9 @@ if (isset($_POST['gamemode'])) {
         </div>
     </noscript>
 
+    <div class='timer'>
+            <i class='fa-solid fa-hourglass-end'></i>Temps: <span id='gameClock'>00:00</span>
+        </div>
     <div class='container'>
 
         <?php
@@ -146,7 +149,7 @@ if (isset($_POST['gamemode'])) {
 
                 if (isset($_POST["limitedAmmo"])) {
                     if ($_POST["limitedAmmo"] == "limitedAmmo") {
-                        $infoContent .= "                <div class='ammo'>
+                        $infoContent .= "<div class='ammo'>
                     <i class='fa-solid fa-bullseye'></i>Munició: <span id='ai-ammo'>40</span>
                 </div>\n";
                     }
@@ -170,26 +173,25 @@ if (isset($_POST['gamemode'])) {
                 // <table id='playerBoard'>";
         
                 $infoContent = "<div class='container-table'>
-            <div class='timer-fame'>
-                <div class='player_name'>
-                    <i class='fa-solid fa-user'></i>" . $_SESSION["finishName"] . "
-                </div>\n";
-                if (isset($_POST["limitedAmmo"])) {
-                    if ($_POST["limitedAmmo"] == "limitedAmmo") {
-                        $infoContent .= "                <div class='ammo'>
+                <div class='timer-fame'>
+                    <div class='player_name'>
+                        <i class='fa-solid fa-user'></i>" . $_SESSION["finishName"] . "
+                    </div>\n
+                    <div class='fame'>
+                        <i class='fa-solid fa-bullhorn'></i>Fama: <span class='score'>0</span>
+                    </div>\n";
+
+            if (isset($_POST["limitedAmmo"]) && $_POST["limitedAmmo"] == "limitedAmmo") {
+                $infoContent .= "<div class='ammo'>
                     <i class='fa-solid fa-bullseye'></i>Munició: <span id='player-ammo'>40</span>
                 </div>\n";
-                    }
-                }
-                $infoContent .= "                <div class='fame'>
-                    <i class='fa-solid fa-bullhorn'></i>Fama: <span class='score'>0</span>
-                </div>
-                <div class='timer'>
-                    <i class='fa-solid fa-hourglass-end'></i>Temps: <span id='gameClock'>00:00</span>
-                </div>
-            </div>
-            <table id='playerBoard'>";
-                echo $infoContent;
+            }
+
+            $infoContent .= "</div> <!-- End of timer-fame -->
+                <table id='playerBoard'>";
+                
+            echo $infoContent;
+
             }
             for ($i = 0; $i <= $column_board; $i++) {
                 echo "<tr>";

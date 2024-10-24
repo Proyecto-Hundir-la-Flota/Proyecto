@@ -94,8 +94,6 @@ unset($_SESSION['finishName']);
             const lilimitedAmmo = document.getElementById("limitedAmmo"); //guardamos la variable para la fucion de click en el li
             const litankShips = document.getElementById("tankShips");
             const lispecialAtack = document.getElementById("specialAtack");
-
-            const menuButton = document.getElementById("menuBotton");
             const menuList = document.getElementById("list");
 
             // Selecciona todos los elementos <li> dentro de la lista
