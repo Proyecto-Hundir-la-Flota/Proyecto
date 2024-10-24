@@ -39,11 +39,11 @@ unset($_SESSION['finishName']);
                 <label for="limitedAmmo">Palades limitades</label>
             </li>
             <li>
-                <input type="checkbox" id="tankShips" disabled>
-                <label for="tankShips">Terra dura</label>
+                <input type="checkbox" id="tankShips">
+                <label for="tankShips">Terreny rocós</label>
             </li>
             <li>
-                <input type="checkbox" id="specialAtack" disabled>
+                <input type="checkbox" id="specialAtack">
                 <label for="specialAtack">Palades especials</label>
             </li>
         </ul>

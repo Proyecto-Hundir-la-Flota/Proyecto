@@ -18,7 +18,7 @@ if (isset($_POST["limitedAmmo"])) {
 
 if (isset($_POST["menuTankShips"])) {
     if ($_POST["menuTankShips"] == "tankShips") {
-        // echo $_POST["menuTankShips"];
+         echo $_POST["menuTankShips"];
         //  funciona, guardar valor en variable deseada
     }
 }
@@ -47,16 +47,16 @@ if (isset($_POST["menuSpecialAtack"])) {
 </head>
 
 <body <?php
-if (isset($_POST['gamemode'])) {
-    $gamemode = $_POST['gamemode'];
+        if (isset($_POST['gamemode'])) {
+            $gamemode = $_POST['gamemode'];
 
-    if ($gamemode == 'training') {
-        echo 'id="game_page" data-gamemode="singlePlayer"';
-    } elseif ($gamemode == 'versus-ia') {
-        echo 'id="game_page" class="versus-ia" data-gamemode="multiPlayer"';
-    }
-}
-?>>
+            if ($gamemode == 'training') {
+                echo 'id="game_page" data-gamemode="singlePlayer"';
+            } elseif ($gamemode == 'versus-ia') {
+                echo 'id="game_page" class="versus-ia" data-gamemode="multiPlayer"';
+            }
+        }
+        ?>>
 
 
     <div class="tape">
@@ -112,15 +112,15 @@ if (isset($_POST['gamemode'])) {
     </noscript>
 
     <div class='timer'>
-            <i class='fa-solid fa-hourglass-end'></i>Temps: <span id='gameClock'>00:00</span>
-        </div>
+        <i class='fa-solid fa-hourglass-end'></i>Temps: <span id='gameClock'>00:00</span>
+    </div>
     <div class='container'>
 
         <?php
         function generateBoard(&$board_array, $isAI = false)
         {
             ob_start(); // Para almacenar la salida y retornarla luego
-        
+
             // Definir el tamaño del tablero
             $column_board = 10;
             $row_board = 10;
@@ -133,14 +133,7 @@ if (isset($_POST['gamemode'])) {
                 $botNames = ['XaviBOT', 'LeandroBOT', 'EnricBOT'];
                 // Seleccionar un nombre aleatorio
                 $randomBotName = $botNames[array_rand($botNames)];
-                //     echo "<div class='container-table ia-table'>
-                // <div class='timer-fame'>
-                //     <div class='player_name'>
-                //         <i class='fa-solid fa-robot'></i>$randomBotName
-                //     </div>
-                // </div>
-                // <table id='aiBoard'>";
-        
+
                 $infoContent = "<div class='container-table ia-table'>
             <div class='timer-fame'>
                 <div class='player_name'>
@@ -158,20 +151,6 @@ if (isset($_POST['gamemode'])) {
             <table id='aiBoard'>";
                 echo $infoContent;
             } else {
-                //     echo "<div class='container-table'>
-                // <div class='timer-fame'>
-                //     <div class='player_name'>
-                //         <i class='fa-solid fa-user'></i>" . $_SESSION["finishName"] . "
-                //     </div>
-                //     <div class='fame'>
-                //         <i class='fa-solid fa-bullhorn'></i>Fama: <span class='score'>0</span>
-                //     </div>
-                //     <div class='timer'>
-                //         <i class='fa-solid fa-hourglass-end'></i>Temps: <span id='gameClock'>00:00</span>
-                //     </div>
-                // </div>
-                // <table id='playerBoard'>";
-        
                 $infoContent = "<div class='container-table'>
                 <div class='timer-fame'>
                     <div class='player_name'>
@@ -181,17 +160,16 @@ if (isset($_POST['gamemode'])) {
                         <i class='fa-solid fa-bullhorn'></i>Fama: <span class='score'>0</span>
                     </div>\n";
 
-            if (isset($_POST["limitedAmmo"]) && $_POST["limitedAmmo"] == "limitedAmmo") {
-                $infoContent .= "<div class='ammo'>
+                if (isset($_POST["limitedAmmo"]) && $_POST["limitedAmmo"] == "limitedAmmo") {
+                    $infoContent .= "<div class='ammo'>
                     <i class='fa-solid fa-bullseye'></i>Palades: <span id='player-ammo'>40</span>
                 </div>\n";
-            }
+                }
 
-            $infoContent .= "</div> <!-- End of timer-fame -->
+                $infoContent .= "</div> <!-- End of timer-fame -->
                 <table id='playerBoard'>";
-                
-            echo $infoContent;
 
+                echo $infoContent;
             }
             for ($i = 0; $i <= $column_board; $i++) {
                 echo "<tr>";
@@ -213,7 +191,15 @@ if (isset($_POST['gamemode'])) {
                         if (!$isAI) {
                             // Si la celda tiene un valor en $board_array, es un "bone"
                             if (isset($board_array[$i - 1][$j - 1])) {
-                                echo "<td id='{$cell_prefix}{$cell_id}' class='bone covered'></td>";
+                                $cellText = "<td id='{$cell_prefix}{$cell_id}' class='bone ";
+                                if (isset($_POST["menuTankShips"])) {
+                                    if ($_POST["menuTankShips"] == "tankShips") {
+                                        $cellText .= "bone2 ";
+                                    }
+                                }
+                                $cellText .= " covered'></td>";
+
+                                echo $cellText;
                             } else {
                                 // Si la celda no tiene valor, es "ground"
                                 echo "<td id='{$cell_prefix}{$cell_id}' class='ground covered'></td>";
@@ -221,7 +207,15 @@ if (isset($_POST['gamemode'])) {
                         } else {
                             // Si la celda tiene un valor en $board_array, es un "bone"
                             if (isset($board_array[$i - 1][$j - 1])) {
-                                echo "<td id='{$cell_prefix}{$cell_id}' class='bone covered'></td>";
+                                $cellText = "<td id='{$cell_prefix}{$cell_id}' class='bone ";
+                                if (isset($_POST["menuTankShips"])) {
+                                    if ($_POST["menuTankShips"] == "tankShips") {
+                                        $cellText .= "bone2 ";
+                                    }
+                                }
+                                $cellText .= " covered'></td>";
+
+                                echo $cellText;
                             } else {
                                 // Si la celda no tiene valor, es "ground"
                                 echo "<td id='{$cell_prefix}{$cell_id}' class='ground covered'></td>";
@@ -283,10 +277,10 @@ if (isset($_POST['gamemode'])) {
             $ship_length = $ship[1];
             $ship_positions = [];
             $attempts = 0; // Puedes seguir contando intentos, pero no limitarás a 1000.
-        
+
             while (true) { // Bucle infinito hasta que se coloque el barco
                 $orientation = rand(0, 1); // 0 = horizontal, 1 = vertical
-        
+
                 if ($orientation == 0) { // Horizontal
                     $start_row = rand(0, $n - 1);
                     $start_col = rand(0, $n - $ship_length);
@@ -358,7 +352,7 @@ if (isset($_POST['gamemode'])) {
         $board_html = generateBoard($board, false);
 
         // Show the generated board
-        
+
         echo $board_html;
 
         // Iniciar el tablero vacío
@@ -398,6 +392,7 @@ if (isset($_POST['gamemode'])) {
         const ships = <?php echo json_encode($shipList); ?>;
         const iaShips = <?php echo json_encode($AIshipList); ?>;
         let limitedAmmoMode = false;
+        let tankShipsMode = false;
         let playerAmmo = 0;
         let AIAmmo = 0;
         <?php if (isset($_POST["limitedAmmo"])) {
@@ -413,6 +408,12 @@ if (isset($_POST['gamemode'])) {
             if ($gamemode == 'training') { ?>
                 AIAmmo = 0;
             <?php }
+        }
+
+        if (isset($_POST["menuTankShips"])) {
+            if ($_POST["menuTankShips"] == "tankShips") { ?>
+                tankShipsMode = true;
+        <?php }
         } ?>
     </script>
 
