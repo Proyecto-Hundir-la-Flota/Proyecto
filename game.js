@@ -347,9 +347,20 @@ function checkStatus(event, boardType) {
                         }
                     } else {
                         // Si es turno del jugador de repetir, habilitar los clics nuevamente después de su turno
-                        setTimeout(() => {
-                            playerCanClick = true;
-                        }, 2500);
+                        if (!limitedAmmoMode || (limitedAmmoMode && playerAmmo > 0)) { // Si el modo de munición limitada no esta activo o esta activo y el jugador tiene munición
+                            // Si es turno del jugador de repetir y el jugado tiene munición o no esta habitado el modo de munición limitada, habilitar los clics nuevamente después de su turno
+                            setTimeout(() => {
+                                playerCanClick = true;
+                            }, 2500);
+                        } else { // Si el modo de munición limitada esta activo y el jugador no tiene munición
+                            // Esperar 2.5 segundos antes de que la IA haga su movimiento
+                            setTimeout(() => {
+                                setIATurn();  // Cambiar el turno a la IA
+                                setTimeout(() => {
+                                    iaTurn();  // La IA hace su turno después de 2.5 segundos
+                                }, 1250);
+                            }, 1250);
+                        }
                     }
                 } else {
                     // En single player, podemos reactivar los clics inmediatamente si no hay IA
