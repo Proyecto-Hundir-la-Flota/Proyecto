@@ -200,7 +200,7 @@ html {
 }
 
 .ia-table {
-    
+
     position: relative;
 }
 
@@ -273,7 +273,8 @@ html {
 
 #game_page .container-table .timer-fame .timer,
 #game_page .container-table .timer-fame .fame,
-#game_page .container-table .timer-fame .player_name {
+#game_page .container-table .timer-fame .player_name,
+#game_page .container-table .timer-fame .ammo {
     background-color: var(--primary_div);
     font-family: var(--text_font);
     font-size: 1.15em;
@@ -285,15 +286,17 @@ html {
 
 #game_page .container-table .timer-fame .timer i,
 #game_page .container-table .timer-fame .fame i,
-#game_page .container-table .timer-fame .player_name i{
+#game_page .container-table .timer-fame .player_name i,
+#game_page .container-table .timer-fame .ammo i {
     margin-right: 5px;
 }
+
 #game_page .container-table .timer-fame .player_name {
     margin-right: auto;
 }
 
 #game_page .container-table .timer-fame .fame .score {
-    display: inline-block; 
+    display: inline-block;
     width: 30px;
     text-align: center;
 }
@@ -991,7 +994,7 @@ html {
     animation: slideTextOut 0.25s forwards;
 }
 
-.table-player-turn{
+.table-player-turn {
     animation: slideTextIn 0.25s forwards;
 }
 
@@ -1006,6 +1009,7 @@ html {
         transform: translateY(-100%);
         opacity: 0;
     }
+
     100% {
         transform: translateY(0);
         opacity: 1;
@@ -1018,6 +1022,7 @@ html {
         transform: translateY(0);
         opacity: 1;
     }
+
     100% {
         transform: translateY(-100%);
         opacity: 0;

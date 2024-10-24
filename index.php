@@ -68,15 +68,12 @@ unset($_SESSION['finishName']);
     </div>
 
     <script type="text/javascript">
-        document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener("DOMContentLoaded", function() {
             const playButtonIa = document.getElementById("bottonIa");
             const playButtonSolo = document.getElementById("bottonSolo");
             const nameInput = document.getElementById("name_landing"); //Guardamos los valores introducidos
             const soloName = document.getElementById("soloName");
             const iaName = document.getElementById("iaName");
-
-
-
             
             // agregar variables para el menu desplegable
             const lilimitedAmmo = document.getElementById("limitedAmmo"); //guardamos la variable para la fucion de click en el li
@@ -107,8 +104,6 @@ unset($_SESSION['finishName']);
                     }
      
             });
-
-
 
             // guardar el id de barco acorazado
             litankShips.addEventListener("click", function () {
@@ -141,12 +136,12 @@ unset($_SESSION['finishName']);
                 if (nameInput.value.length >= 3 && nameInput.value.length <= 30) {
                     playButtonIa.classList.remove("disabled");
                     playButtonSolo.classList.remove("disabled");
-                    playButtonIa.disabled = false;  // Habilitar el botón
-                    playButtonSolo.disabled = false;  // Habilitar el botón
+                    playButtonIa.disabled = false; // Habilitar el botón
+                    playButtonSolo.disabled = false; // Habilitar el botón
                 } else {
                     playButtonIa.classList.add("disabled");
                     playButtonSolo.classList.add("disabled");
-                    playButtonIa.disabled = true;   // Deshabilitar el botón
+                    playButtonIa.disabled = true; // Deshabilitar el botón
                     playButtonSolo.disabled = true; // Deshabilitar el botón
                 }
                 soloName.value = nameInput.value;
