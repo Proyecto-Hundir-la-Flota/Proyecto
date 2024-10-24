@@ -23,15 +23,30 @@ unset($_SESSION['finishName']);
     </noscript>
 
     <div class="hero">
+       <div class="hold-name">Introdueix el teu nom:   
+           <input type="text" id="name_landing" name="name_landing" required minlength="3" maxlength="30" placeholder="3-30 caràcters">
+       </div>
        
-       <input type="text" id="name_landing" name="name_landing" required minlength="3" maxlength="30">
-       <input type="button" id="menuBotton" name="menuBotton">
-       <ul id="list" class="hiddenClass">
-           <li ><input type="checkbox" id="limitedAmmo">Munició limitada</li>
-           <li ><input type="checkbox" id="tankShips">Vaixells acorassats</li>
-           <li ><input type="checkbox" id="specialAtack">Atacs especials</li>
-       </ul>
-       </input>
+        <button id="menuButton">
+            <i class="fas fa-cog"></i>
+            Opcions
+        </button>
+
+        <ul id="list" class="hiddenClass">
+            <li>
+                <input type="checkbox" id="limitedAmmo"> 
+                <label for="limitedAmmo">Munició limitada</label>
+            </li>
+            <li>
+                <input type="checkbox" id="tankShips"> 
+                <label for="tankShips">Vaixells acorassats</label>
+            </li>
+            <li>
+                <input type="checkbox" id="specialAtack"> 
+                <label for="specialAtack">Atacs especials</label>
+            </li>
+        </ul>
+
   
 
         <h1>Excavació Juràssica</h1>
@@ -83,12 +98,29 @@ unset($_SESSION['finishName']);
             const menuButton = document.getElementById("menuBotton");
             const menuList = document.getElementById("list");
 
+            // Selecciona todos los elementos <li> dentro de la lista
+            const listItems = document.querySelectorAll("#list li");
+
+            listItems.forEach(item => {
+                item.addEventListener("click", function() {
+                    const checkbox = this.querySelector("input[type='checkbox']");
+                    
+                    // Cambia el estado del checkbox
+                    checkbox.checked = !checkbox.checked; // Alterna el estado
+                });
+            });
+
 
             // funcion para el menu desplegable
-            menuButton.addEventListener("click", function () {
-                // Alternar la visibilidad de la lista
-                menuList.classList.toggle("hidden");
-                menuList.classList.toggle("visible");
+            document.getElementById("menuButton").addEventListener("click", function() {
+            
+            if (menuList.classList.contains("hiddenClass")) {
+                menuList.classList.remove("hiddenClass");
+                menuList.classList.add("visible");
+            } else {
+                menuList.classList.remove("visible");
+                menuList.classList.add("hiddenClass");
+            }
             });
 
             // guardar el id de municion infinita al hacer click

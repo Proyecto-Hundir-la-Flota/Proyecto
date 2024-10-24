@@ -9,14 +9,17 @@
     <?php
     if ($_SERVER['HTTP_REFERER'] == '') {
         header('HTTP/1.0 403 Forbidden');
-    ?>
+    ?> 
         <title>Error 403 - Excavació Juràssica</title>
 </head>
 
-<body>
-    <h1>Error 403 - Forbidden</h1>
-    <p>No pots accedir a aquesta pàgina perquè no tens els permisos necessaris. Si creus que això és un error, contacta amb l'administrador del lloc web.</p>
+<body class="forbidden-page">
+    <div class="hero">
+        <h1>Error 403 - Forbidden</h1>
+        <p>No pots accedir a aquesta pàgina perquè no tens els permisos necessaris. Si creus que això és un error, contacta amb l'administrador del lloc web.</p>
+    </div>
 </body>
+
 
 </html>
 <?php
@@ -40,17 +43,19 @@
 
 <body id="result_page" class="lose">
     <div class="hero">
-        <h1>Has perdut</h1>
+        <h1>Has perdut...</h1>
         <div id="rankingInfo">
             <h2>Has aconseguit <span id="score"><?php echo $score ?></span> punts de fama</h2>
-            <h3>Entra el teu nom</h3>
+            <div class="hold-name-result">Entra el teu nom: 
             <form id="scoreForm" action="ranking.php" method="POST">
                 <input type="text" id="nameInput" name="name" required minlength="3" value="<?php echo $userName ?>"> <!-- Cambiado a "name" -->
                 <input type="hidden" id="scoreHidden" name="score" value="<?php echo $score ?>"> <!-- Campo oculto para puntaje -->
             </form>
+            </div>
+            
             <div class="button_container">
                 <a id="btnReturn" href="index.php"><i class="fa-solid fa-chevron-left"></i>Inici</a>
-                <a id="btnSaveRecord" href="#">Guardar</a>
+                <a id="btnSaveRecord" href="#"><i class="fa-solid fa-floppy-disk"></i>Guardar</a>
             </div>
         </div>
     </div>
