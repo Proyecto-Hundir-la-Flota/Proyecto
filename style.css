@@ -1266,6 +1266,9 @@ input[type="checkbox"]:checked{
     accent-color: var(--button);
 }
 
+/* NOT FOUND PAGE AND FORBIDDEN PAGE */
+
+.not-found-page,
 .forbidden-page {
     background: var(--background);
     margin: 0;
@@ -1275,6 +1278,7 @@ input[type="checkbox"]:checked{
     justify-content: center;
 }
 
+.not-found-page .hero,
 .forbidden-page .hero {
     background-color: #ffffff6e;
     width: 1500px;
@@ -1291,12 +1295,14 @@ input[type="checkbox"]:checked{
     border-radius: 16px;
 }
 
+.not-found-page h1,
 .forbidden-page h1 {
     color: var(--text_color);
     font-family: var(--primary_title_font);
     font-size: 6em;
 }
 
+.not-found-page p,
 .forbidden-page p {
     color: var(--text_color);
     font-family: var(--secondary_title_font);
