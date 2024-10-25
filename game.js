@@ -837,18 +837,18 @@ function iaTurn() {
                             setPlayerTurn();  // Cambiar el turno al Jugador
                             setTimeout(() => {
                                 playerCanClick = true;  // El jugador empieza su turno después de 2.5 segundos
-                            }, 200);
-                        }, 200);
+                            }, 1200);
+                        }, 1200);
                     }
                 } else {
                     setTimeout(() => {
                         setPlayerTurn();  // Cambiar el turno a la IA
                         setTimeout(() => {
                             playerCanClick = true;  // Permitir clics del jugador después de 1.25 segundos
-                        }, 200);
-                    }, 200);
+                        }, 1200);
+                    }, 1200);
                 }
-            }, 1000); // Tiempo que toma para descubrir la celda
+            }, 3000); // Tiempo que toma para descubrir la celda
         } else {
             // Si no es un movimiento válido, intenta nuevamente
             if (iaLastTriedDirection != null && iaLastTriedMovement != null) {
