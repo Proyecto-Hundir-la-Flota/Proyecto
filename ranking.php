@@ -58,129 +58,129 @@
     </div>
 
     <?php
-    $file = 'ranking.txt';
-    $records_per_page = 25;
+$file = 'ranking.txt';
+$records_per_page = 25;
 
-    // Si el archivo no existe, crearlo vacío
-    if (!file_exists($file)) {
-        file_put_contents('ranking.txt', '');
+// Declara $holder y $timestamp como nulos por defecto
+$holder = null;
+$timestamp = null;
+
+// Si el archivo no existe, crearlo vacío
+if (!file_exists($file)) {
+    file_put_contents('ranking.txt', '');
+}
+
+// Verifica si los datos han sido enviados por POST
+if (isset($_POST['score']) && isset($_POST['name'])) {
+    $score = $_POST['score'];
+    $name = trim($_POST['name']);  // Limpiar el nombre de espacios en blanco
+    $holder = $name;  // Almacenar el nombre del jugador actual
+    $timestamp = date('Y-m-d H:i:s'); // Generar timestamp
+
+    // Guardar los datos en el archivo
+    file_put_contents($file, $name . "/" . $score . '/' . $timestamp . "#\n", FILE_APPEND);
+}
+
+// Cargar el contenido del archivo
+$content = file_get_contents($file);
+$lines = explode('#', $content);
+$filtered_lines = array_filter($lines, 'trim');  // Limpiar las líneas de espacios en blanco
+
+// Comprobar si hay registros
+if (empty($filtered_lines)) {
+    echo "<p class='empty-txt'>No hi ha cap paleontòleg registrat</p>";
+} else {
+    // Ordenar registros
+    usort($filtered_lines, function ($a, $b) {
+        list(, $pointsA) = explode('/', $a);
+        list(, $pointsB) = explode('/', $b);
+        return $pointsB - $pointsA;
+    });
+
+    // Encontrar la posición del usuario en la lista ordenada
+    $user_position = null;
+    foreach ($filtered_lines as $index => $line) {
+        list($nameLine, , $dateTimeLine) = explode('/', $line);
+        if ($holder && $timestamp && trim($nameLine) === $holder && trim($dateTimeLine) === $timestamp) {
+            $user_position = $index + 1; // +1 para que la posición empiece en 1
+            break;
+        }
     }
 
-    // Verifica si los datos han sido enviados por POST
-    if (isset($_POST['score']) && isset($_POST['name'])) {
-        $score = $_POST['score'];
-        $name = trim($_POST['name']);  // Limpiar el nombre de espacios en blanco
-        $holder = $name;  // Almacenar el nombre del jugador actual
-        $timestamp = date('Y-m-d H:i:s'); // Generar timestamp
-    
-        // Guardar los datos en el archivo
-        file_put_contents($file, $name . "/" . $score . '/' . $timestamp . "#\n", FILE_APPEND);
-    }
-
-    // Cargar el contenido del archivo
-    $content = file_get_contents($file);
-    $lines = explode('#', $content);
-    $filtered_lines = array_filter($lines, 'trim');  // Limpiar las líneas de espacios en blanco
-    
-    // Comprobar si hay registros
-    if (empty($filtered_lines)) {
-        echo "<p class='empty-txt'>No hi ha cap paleontòleg registrat</p>";
+    // Si encontramos la posición del usuario, calcular la página correspondiente
+    if ($user_position !== null) {
+        $current_page = ceil($user_position / $records_per_page); // Calcula la página donde está el usuario
     } else {
-        // Ordenar registros
-        usort($filtered_lines, function ($a, $b) {
-            list(, $pointsA) = explode('/', $a);
-            list(, $pointsB) = explode('/', $b);
-            return $pointsB - $pointsA;
-        });
+        // Predeterminado a la primera página si no se encuentra el registro
+        $current_page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
+    }
 
-        // Encontrar la posición del usuario en la lista ordenada
-        $user_position = null;
-        foreach ($filtered_lines as $index => $line) {
-            list($nameLine, , $dateTimeLine) = explode('/', $line);
-            if (trim($nameLine) === $holder && trim($dateTimeLine) === $timestamp) {
-                $user_position = $index + 1; // +1 para que la posición empiece en 1
-                break;
-            }
-        }
+    $total_records = count($filtered_lines);
+    $total_pages = ceil($total_records / $records_per_page);
 
-        // Si encontramos la posición del usuario, calcular la página correspondiente
-        if ($user_position !== null) {
-            $current_page = ceil($user_position / $records_per_page); // Calcula la página donde está el usuario
-        } else {
-            // Predeterminado a la primera página si no se encuentra el registro
-            $current_page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
-        }
+    // Control de límites de página
+    if ($current_page < 1) $current_page = 1;
+    if ($current_page > $total_pages) $current_page = $total_pages;
 
-        $total_records = count($filtered_lines);
-        $total_pages = ceil($total_records / $records_per_page);
+    // Mostrar la tabla
+    echo '<table>
+    <tr>
+        <th>#</th>
+        <th>Nom del Paleontòleg</th>
+        <th>Fama Adquirida</th>
+        <th>Data i Hora de l\'Excavació</th>
+    </tr>';
 
-        // Control de límites de página
-        if ($current_page < 1)
-            $current_page = 1;
-        if ($current_page > $total_pages)
-            $current_page = $total_pages;
+    // Mostrar registros de la página actual
+    $start_index = ($current_page - 1) * $records_per_page;
+    $end_index = min($start_index + $records_per_page, $total_records);
 
-        // Mostrar la tabla
-        echo '<table>
-        <tr>
-            <th>#</th>
-            <th>Nom del Paleontòleg</th>
-            <th>Fama Adquirida</th>
-            <th>Data i Hora de l\'Excavació</th>
-        </tr>';
+    // Dentro del bucle donde generas cada fila de la tabla
+    for ($i = $start_index; $i < $end_index; $i++) {
+        if (!empty(trim($filtered_lines[$i]))) {
+            list($name, $points, $dateTime) = explode('/', $filtered_lines[$i]);
+            $name = trim($name);
+            $row_index = $i + 1;
 
-        // Mostrar registros de la página actual
-        $start_index = ($current_page - 1) * $records_per_page;
-        $end_index = min($start_index + $records_per_page, $total_records);
+            // Clase podium para los primeros tres registros
+            $class = ($i < 3) ? ' class="podium"' : '';
 
-        // Dentro del bucle donde generas cada fila de la tabla
-        for ($i = $start_index; $i < $end_index; $i++) {
-            if (!empty(trim($filtered_lines[$i]))) {
-                list($name, $points, $dateTime) = explode('/', $filtered_lines[$i]);
-                $name = trim($name);
-                $row_index = $i + 1;
+            // Clase para el registro del usuario que acaba de jugar
+            $class2 = ($holder && $timestamp && $name === $holder && $dateTime === $timestamp) ? ' id="player"' : '';
 
-                // Clase podium para los primeros tres registros
-                $class = ($i < 3) ? ' class="podium"' : '';
-
-                // Clase para el registro del usuario que acaba de jugar
-                $class2 = ($name === $holder && $dateTime === $timestamp) ? ' id="player"' : '';
-
-                // Aquí se agrega el valor de --index como estilo en línea
-                echo "<tr{$class}{$class2} style='--index: " . ($i - $start_index + 1) . "'>
-            <td>$row_index</td>
-            <td>$name</td>
-            <td>$points</td>
-            <td>$dateTime</td>
-        </tr>";
-            }
-        }
-
-
-        echo '</table>';
-
-        // Paginación
-        echo '<div class="navigation-container">';
-        echo '<a href="in   dex.php" class="nav-button home-button"><i class="fa-solid fa-chevron-left icon"></i>Inici</a>';
-        if ($total_pages > 1) {
-            echo '<div class="pagination">';
-
-            if ($current_page > 1) {
-                echo '<a href="?page=' . ($current_page - 1) . '" class="fa-solid fa-chevron-left"></a>';
-            }
-
-            for ($page = 1; $page <= $total_pages; $page++) {
-                if ($page == $current_page) {
-                    echo '<span class="current-page">' . $page . '</span>';
-                } else {
-                    echo '<a class="page" href="?page=' . $page . '">' . $page . '</a>';
-                }
-            }
-
-            if ($current_page < $total_pages) {
-                echo '<a href="?page=' . ($current_page + 1) . '" class="fa-solid fa-chevron-right"></a>';
-            }
+            // Aquí se agrega el valor de --index como estilo en línea
+            echo "<tr{$class}{$class2} style='--index: " . ($i - $start_index + 1) . "'>
+                <td>$row_index</td>
+                <td>$name</td>
+                <td>$points</td>
+                <td>$dateTime</td>
+            </tr>";
         }
     }
 
-    ?>
+    echo '</table>';
+
+    // Paginación
+    echo '<div class="navigation-container">';
+    echo '<a href="index.php" class="nav-button home-button"><i class="fa-solid fa-chevron-left icon"></i>Inici</a>';
+    if ($total_pages > 1) {
+        echo '<div class="pagination">';
+
+        if ($current_page > 1) {
+            echo '<a href="?page=' . ($current_page - 1) . '" class="fa-solid fa-chevron-left"></a>';
+        }
+
+        for ($page = 1; $page <= $total_pages; $page++) {
+            if ($page == $current_page) {
+                echo '<span class="current-page">' . $page . '</span>';
+            } else {
+                echo '<a class="page" href="?page=' . $page . '">' . $page . '</a>';
+            }
+        }
+
+        if ($current_page < $total_pages) {
+            echo '<a href="?page=' . ($current_page + 1) . '" class="fa-solid fa-chevron-right"></a>';
+        }
+    }
+}
+?>
