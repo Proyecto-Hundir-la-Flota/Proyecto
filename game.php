@@ -18,15 +18,15 @@ if (isset($_POST["limitedAmmo"])) {
 
 if (isset($_POST["menuTankShips"])) {
     if ($_POST["menuTankShips"] == "tankShips") {
-         echo $_POST["menuTankShips"];
+        echo $_POST["menuTankShips"];
         //  funciona, guardar valor en variable deseada
     }
 }
 
 
-if (isset($_POST["menuSpecialAtack"])) {
-    if ($_POST["menuSpecialAtack"] == "specialAtack") {
-        // echo $_POST["menuSpecialAtack"];
+if (isset($_POST["menuSpecialAttack"])) {
+    if ($_POST["menuSpecialAttack"] == "specialAttack") {
+        // echo $_POST["menuSpecialAttack"];
         //  funciona, guardar valor en variable deseada
     }
 }
@@ -393,6 +393,7 @@ if (isset($_POST["menuSpecialAtack"])) {
         const iaShips = <?php echo json_encode($AIshipList); ?>;
         let limitedAmmoMode = false;
         let tankShipsMode = false;
+        let specialAttackMode = false;
         let playerAmmo = 0;
         let AIAmmo = 0;
         <?php if (isset($_POST["limitedAmmo"])) {
@@ -413,6 +414,11 @@ if (isset($_POST["menuSpecialAtack"])) {
         if (isset($_POST["menuTankShips"])) {
             if ($_POST["menuTankShips"] == "tankShips") { ?>
                 tankShipsMode = true;
+            <?php }
+        }
+        if (isset($_POST["menuSpecialAttack"])) {
+            if ($_POST["menuSpecialAttack"] == "specialAttack") { ?>
+                specialAttackMode = true;
         <?php }
         } ?>
     </script>
