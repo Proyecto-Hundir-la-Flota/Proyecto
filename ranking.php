@@ -61,6 +61,10 @@
 $file = 'ranking.txt';
 $records_per_page = 25;
 
+// Declara $holder y $timestamp como nulos por defecto
+$holder = null;
+$timestamp = null;
+
 // Si el archivo no existe, crearlo vacío
 if (!file_exists($file)) {
     file_put_contents('ranking.txt', '');
@@ -69,7 +73,8 @@ if (!file_exists($file)) {
 // Verifica si los datos han sido enviados por POST
 if (isset($_POST['score']) && isset($_POST['name'])) {
     $score = $_POST['score'];
-    $name = $_POST['name'];
+    $name = trim($_POST['name']);  // Limpiar el nombre de espacios en blanco
+    $holder = $name;  // Almacenar el nombre del jugador actual
     $timestamp = date('Y-m-d H:i:s'); // Generar timestamp
 
     // Guardar los datos en el archivo
@@ -79,7 +84,7 @@ if (isset($_POST['score']) && isset($_POST['name'])) {
 // Cargar el contenido del archivo
 $content = file_get_contents($file);
 $lines = explode('#', $content);
-$filtered_lines = array_filter($lines, 'trim');
+$filtered_lines = array_filter($lines, 'trim');  // Limpiar las líneas de espacios en blanco
 
 // Comprobar si hay registros
 if (empty($filtered_lines)) {
@@ -92,37 +97,64 @@ if (empty($filtered_lines)) {
         return $pointsB - $pointsA;
     });
 
+    // Encontrar la posición del usuario en la lista ordenada
+    $user_position = null;
+    foreach ($filtered_lines as $index => $line) {
+        list($nameLine, , $dateTimeLine) = explode('/', $line);
+        if ($holder && $timestamp && trim($nameLine) === $holder && trim($dateTimeLine) === $timestamp) {
+            $user_position = $index + 1; // +1 para que la posición empiece en 1
+            break;
+        }
+    }
+
+    // Si encontramos la posición del usuario, calcular la página correspondiente
+    if ($user_position !== null) {
+        $current_page = ceil($user_position / $records_per_page); // Calcula la página donde está el usuario
+    } else {
+        // Predeterminado a la primera página si no se encuentra el registro
+        $current_page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
+    }
+
     $total_records = count($filtered_lines);
     $total_pages = ceil($total_records / $records_per_page);
-    $current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+
+    // Control de límites de página
     if ($current_page < 1) $current_page = 1;
-    
-    $start_index = ($current_page - 1) * $records_per_page;
-    $end_index = min($start_index + $records_per_page, $total_records);
+    if ($current_page > $total_pages) $current_page = $total_pages;
 
     // Mostrar la tabla
     echo '<table>
-        <tr>
-            <th>#</th>
-            <th>Nom del Paleontòleg</th>
-            <th>Fama Adquirida</th>
-            <th>Data i Hora de l\'Excavació</th>
-        </tr>';
+    <tr>
+        <th>#</th>
+        <th>Nom del Paleontòleg</th>
+        <th>Fama Adquirida</th>
+        <th>Data i Hora de l\'Excavació</th>
+    </tr>';
 
+    // Mostrar registros de la página actual
+    $start_index = ($current_page - 1) * $records_per_page;
+    $end_index = min($start_index + $records_per_page, $total_records);
+
+    // Dentro del bucle donde generas cada fila de la tabla
     for ($i = $start_index; $i < $end_index; $i++) {
         if (!empty(trim($filtered_lines[$i]))) {
             list($name, $points, $dateTime) = explode('/', $filtered_lines[$i]);
+            $name = trim($name);
             $row_index = $i + 1;
 
             // Clase podium para los primeros tres registros
             $class = ($i < 3) ? ' class="podium"' : '';
 
-            echo "<tr{$class}>
+            // Clase para el registro del usuario que acaba de jugar
+            $class2 = ($holder && $timestamp && $name === $holder && $dateTime === $timestamp) ? ' id="player"' : '';
+
+            // Aquí se agrega el valor de --index como estilo en línea
+            echo "<tr{$class}{$class2} style='--index: " . ($i - $start_index + 1) . "'>
                 <td>$row_index</td>
                 <td>$name</td>
                 <td>$points</td>
                 <td>$dateTime</td>
-              </tr>";
+            </tr>";
         }
     }
 
@@ -151,3 +183,4 @@ if (empty($filtered_lines)) {
         }
     }
 }
+?>

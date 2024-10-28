@@ -25,7 +25,7 @@ unset($_SESSION['finishName']);
     <div class="hero">
         <div class="hold-name">Introdueix el teu nom:
             <input type="text" id="name_landing" name="name_landing" required minlength="3" maxlength="30"
-                placeholder="3-30 caràcters">
+                placeholder=" 3-30 caràcters">
         </div>
 
         <button id="menuButton">
