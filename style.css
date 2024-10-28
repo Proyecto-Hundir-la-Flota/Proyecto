@@ -1248,7 +1248,7 @@ div.hero>ul li {
     border: 2px solid var(--button);
     border-radius: 8px;
     text-decoration: none;
-    cursor: pointer;
+    cursor: default;
     box-shadow: rgba(0, 0, 0, 0.33) 0px 1px 4px;
     width: auto;
     align-items: center;
@@ -1263,6 +1263,7 @@ div.hero>ul li:hover {
 
 div.hero>ul li input {
     margin-right: 5px;
+    cursor: pointer;
 }
 div.hero>ul li label {
     cursor: pointer;
