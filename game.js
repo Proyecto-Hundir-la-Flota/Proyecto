@@ -714,95 +714,99 @@ function iaTurn() {
                 randomCol = parseInt(iaLastCorrectPosition['col']);
             }
 
-            let correctSelection = false;
-            let selectDirection = Math.floor(Math.random() * 2);
-            let selectMovement = Math.floor(Math.random() * 2);
-
-            if (iaLastTriedDirection != null && iaLastTriedMovement != null) {
-                selectDirection = iaLastTriedDirection;
-                selectMovement = iaLastTriedMovement;
-            }
-
-            let tempRow = randomRow;
-            let tempCol = randomCol;
-
-            while (!correctSelection) {
-                if (iaCheckPositions[selectDirection][selectMovement] == false) {
-                    iaLastTriedDirection = selectDirection;
-                    iaLastTriedMovement = selectMovement;
-
-                    if (selectDirection == 0) {
-                        if (selectMovement == 0) {
-                            correctSelection = true;
-                            tempRow--;
-                            if (tempRow < 0) {
-                                tempRow--;
-                                correctSelection = false;
-                                iaCheckPositions[selectDirection][selectMovement] = true;
-                            }
-                        } else {
-                            correctSelection = true;
-                            tempRow++;
-                            if (tempRow > 9) {
-                                tempRow++;
-                                correctSelection = false;
-                                iaCheckPositions[selectDirection][selectMovement] = true;
-                            }
-                        }
-                    } else {
-                        if (selectMovement == 0) {
-                            correctSelection = true;
-                            tempCol--;
-                            if (tempCol < 0) {
-                                tempCol++;
-                                correctSelection = false;
-                                iaCheckPositions[selectDirection][selectMovement] = true;
-                            }
-                        } else {
-                            correctSelection = true;
-                            tempCol++;
-                            if (tempCol > 9) {
-                                tempCol--;
-                                correctSelection = false;
-                                iaCheckPositions[selectDirection][selectMovement] = true;
-                            }
-                        }
-                    }
-                } else {
-                    if (selectDirection == 0) {
-                        if (selectMovement == 0) {
-                            selectMovement = 1;
-                        } else if (selectMovement == 1) {
-                            selectMovement = 0;
-                        }
-                        if (iaCheckPositions[selectDirection][selectMovement] == true) {
-                            selectDirection = 1;
-                        }
-                    } else {
-                        if (selectMovement == 0) {
-                            selectMovement = 1;
-                        } else if (selectMovement == 1) {
-                            selectMovement = 0;
-                        }
-                        if (iaCheckPositions[selectDirection][selectMovement] == true) {
-                            selectDirection = 0;
-                        }
-                    }
-                }
-                if (iaCheckPositions[0][0] && iaCheckPositions[0][1] && iaCheckPositions[1][0] && iaCheckPositions[1][1]) {
-                    iaCheckPositions = [[false, false], [false, false]];
-                    iaLastTriedDirection = null;
-                    iaLastTriedMovement = null;
-                    iaLastCorrectPosition = iaOriginalCorrectPosition;
-                    if (!isNaN(iaLastCorrectPosition['row']) && !isNaN(iaLastCorrectPosition['col'])) {
-                        tempRow = parseInt(iaLastCorrectPosition['row']);
-                        tempCol = parseInt(iaLastCorrectPosition['col']);
-                    }
-                }
-            }
-            randomRow = tempRow;
-            randomCol = tempCol;
             cell = document.getElementById(`ia_cell_${randomRow}_${randomCol}`);
+
+            if (!cell.classList.contains("bone2")) {
+                let correctSelection = false;
+                let selectDirection = Math.floor(Math.random() * 2);
+                let selectMovement = Math.floor(Math.random() * 2);
+
+                if (iaLastTriedDirection != null && iaLastTriedMovement != null) {
+                    selectDirection = iaLastTriedDirection;
+                    selectMovement = iaLastTriedMovement;
+                }
+
+                let tempRow = randomRow;
+                let tempCol = randomCol;
+
+                while (!correctSelection) {
+                    if (iaCheckPositions[selectDirection][selectMovement] == false) {
+                        iaLastTriedDirection = selectDirection;
+                        iaLastTriedMovement = selectMovement;
+
+                        if (selectDirection == 0) {
+                            if (selectMovement == 0) {
+                                correctSelection = true;
+                                tempRow--;
+                                if (tempRow < 0) {
+                                    tempRow--;
+                                    correctSelection = false;
+                                    iaCheckPositions[selectDirection][selectMovement] = true;
+                                }
+                            } else {
+                                correctSelection = true;
+                                tempRow++;
+                                if (tempRow > 9) {
+                                    tempRow++;
+                                    correctSelection = false;
+                                    iaCheckPositions[selectDirection][selectMovement] = true;
+                                }
+                            }
+                        } else {
+                            if (selectMovement == 0) {
+                                correctSelection = true;
+                                tempCol--;
+                                if (tempCol < 0) {
+                                    tempCol++;
+                                    correctSelection = false;
+                                    iaCheckPositions[selectDirection][selectMovement] = true;
+                                }
+                            } else {
+                                correctSelection = true;
+                                tempCol++;
+                                if (tempCol > 9) {
+                                    tempCol--;
+                                    correctSelection = false;
+                                    iaCheckPositions[selectDirection][selectMovement] = true;
+                                }
+                            }
+                        }
+                    } else {
+                        if (selectDirection == 0) {
+                            if (selectMovement == 0) {
+                                selectMovement = 1;
+                            } else if (selectMovement == 1) {
+                                selectMovement = 0;
+                            }
+                            if (iaCheckPositions[selectDirection][selectMovement] == true) {
+                                selectDirection = 1;
+                            }
+                        } else {
+                            if (selectMovement == 0) {
+                                selectMovement = 1;
+                            } else if (selectMovement == 1) {
+                                selectMovement = 0;
+                            }
+                            if (iaCheckPositions[selectDirection][selectMovement] == true) {
+                                selectDirection = 0;
+                            }
+                        }
+                    }
+                    if (iaCheckPositions[0][0] && iaCheckPositions[0][1] && iaCheckPositions[1][0] && iaCheckPositions[1][1]) {
+                        iaCheckPositions = [[false, false], [false, false]];
+                        iaLastTriedDirection = null;
+                        iaLastTriedMovement = null;
+                        iaLastCorrectPosition = iaOriginalCorrectPosition;
+                        if (!isNaN(iaLastCorrectPosition['row']) && !isNaN(iaLastCorrectPosition['col'])) {
+                            tempRow = parseInt(iaLastCorrectPosition['row']);
+                            tempCol = parseInt(iaLastCorrectPosition['col']);
+                        }
+                    }
+                }
+                randomRow = tempRow;
+                randomCol = tempCol;
+                cell = document.getElementById(`ia_cell_${randomRow}_${randomCol}`);
+            }
         }
 
 
