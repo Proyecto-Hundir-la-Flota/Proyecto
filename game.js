@@ -16,7 +16,6 @@ const discoveredFossils = [];
 const iaDiscoveredFossils = [];
 let playerHits = 0;
 let AIHits = 0;
-
 const playerBoard = document.querySelector(".turn-overlay");
 const aiBoard = document.querySelector(".turn-overlay-ia");
 
@@ -48,6 +47,13 @@ easterEggImage.alt = 'Easter Egg';
 easterEggImage.style.display = 'none';
 easterEggImage.className = 'easter-egg-style';
 document.body.appendChild(easterEggImage);
+
+// Definir variables para inteligencia IA
+let iaOriginalCorrectPosition = null;
+let iaLastCorrectPosition = null;
+let iaLastTriedDirection = null;
+let iaLastTriedMovement = null;
+let iaCheckPositions = [[false, false], [false, false]]
 
 function checkLimitedAmmoModeStatus() {
     if (AIAmmo <= 0 && playerAmmo <= 0) {
@@ -286,7 +292,7 @@ function setIATurn() {
 
 function sleepSync(milliseconds) {
     const start = Date.now();
-        while (Date.now() - start < milliseconds) {
+    while (Date.now() - start < milliseconds) {
     }
 }
 
@@ -299,63 +305,109 @@ function checkStatus(event, boardType) {
         createAlerts('wait', 'player');
         return; // Salir si el jugador no puede hacer clic
     }
-    
+
     // Si la celda está cubierta, se destapa
-    if (cell.classList.contains("covered")) {
-        playerCanClick = false;
-        cell.classList.add("cell-selected")
+    if (cell.classList.contains("covered") || cell.classList.contains("bone2")) {
+        if (gameMode === 'multiPlayer' || gameMode === 'versus-ia') {
+            playerCanClick = false;
+            cell.classList.add("cell-selected");
 
-        audios['cavar'].play();
+            audios['cavar'].play();
+            setTimeout(() => {
+                cell.classList.remove("cell-selected");
 
-        setTimeout(() => {
-            
-        cell.classList.remove("cell-selected")
-        cell.classList.remove("covered");
-
-        if (boardType === 'player') {
-
-            if (!limitedAmmoMode || (limitedAmmoMode && playerAmmo > 0)) {
-                // Lógica y sonidos para el tablero del jugador
-
-                handlePlayerBoardLogic(cell);
-
-                // Deshabilitar los clics del jugador después de su turno
-                playerCanClick = false;
-                if (limitedAmmoMode) {
-                    checkLimitedAmmoModeStatus();
-                }
-            }
-
-
-            // Solo ejecutar iaTurn si estamos en modo multiPlayer o versus-ia
-            if (gameMode === 'multiPlayer' || gameMode === 'versus-ia') {
-                if (!repeatTurn) {
-                    if (!limitedAmmoMode || (limitedAmmoMode && AIAmmo > 0)) {
-                        // Esperar 2.5 segundos antes de que la IA haga su movimiento
-                        setTimeout(() => {
-                            setIATurn();  // Cambiar el turno a la IA
-                            setTimeout(() => {
-                                iaTurn();  // La IA hace su turno después de 2.5 segundos
-                            }, 1250);
-                        }, 1250);
+                if (tankShipsMode) {
+                    if (cell.classList.contains("covered")) {
+                        cell.classList.remove("covered");
                     } else {
-                        // Si la IA no tiene munición, el turno del jugador se repete, habilitar los clics nuevamente después de su turno
-                        setTimeout(() => {
-                            playerCanClick = true;
-                        }, 2500);
+                        cell.classList.remove("bone2"); // Destapar la celda
                     }
                 } else {
-                    // Si es turno del jugador de repetir, habilitar los clics nuevamente después de su turno
-                    setTimeout(() => {
+                    cell.classList.remove("covered"); // Destapar la celda
+                }
+
+                if (boardType === 'player') {
+
+                    if (!limitedAmmoMode || (limitedAmmoMode && playerAmmo > 0)) {
+                        // Lógica y sonidos para el tablero del jugador
+
+                        handlePlayerBoardLogic(cell);
+
+                        // Deshabilitar los clics del jugador después de su turno
+                        playerCanClick = false;
+                        if (limitedAmmoMode) {
+                            checkLimitedAmmoModeStatus();
+                        }
+                    }
+
+
+                    // Solo ejecutar iaTurn si estamos en modo multiPlayer o versus-ia
+                    if (gameMode === 'multiPlayer' || gameMode === 'versus-ia') {
+                        if (!repeatTurn) {
+                            if (!limitedAmmoMode || (limitedAmmoMode && AIAmmo > 0)) {
+                                // Esperar 2.5 segundos antes de que la IA haga su movimiento
+                                setTimeout(() => {
+                                    setIATurn();  // Cambiar el turno a la IA
+                                    setTimeout(() => {
+                                        iaTurn();  // La IA hace su turno después de 2.5 segundos
+                                    }, 1200);
+                                }, 1200);
+                            } else {
+                                // Si la IA no tiene munición, el turno del jugador se repete, habilitar los clics nuevamente después de su turno
+                                setTimeout(() => {
+                                    playerCanClick = true;
+                                }, 2400);
+                            }
+                        } else {
+                            // Si es turno del jugador de repetir, habilitar los clics nuevamente después de su turno
+                            if (!limitedAmmoMode || (limitedAmmoMode && playerAmmo > 0)) { // Si el modo de munición limitada no esta activo o esta activo y el jugador tiene munición
+                                // Si es turno del jugador de repetir y el jugado tiene munición o no esta habitado el modo de munición limitada, habilitar los clics nuevamente después de su turno
+                                setTimeout(() => {
+                                    playerCanClick = true;
+                                }, 2400);
+                            } else { // Si el modo de munición limitada esta activo y el jugador no tiene munición
+                                // Esperar 2.5 segundos antes de que la IA haga su movimiento
+                                setTimeout(() => {
+                                    setIATurn();  // Cambiar el turno a la IA
+                                    setTimeout(() => {
+                                        iaTurn();  // La IA hace su turno después de 2.5 segundos
+                                    }, 1200);
+                                }, 1200);
+                            }
+                        }
+                    } else {
+                        // En single player, podemos reactivar los clics inmediatamente si no hay IA
                         playerCanClick = true;
-                    }, 2500);
+                    }
+                }
+            }, 3000);
+        } else {
+            // Destapar la celda
+            cell.classList.remove("covered");
+
+            if (tankShipsMode) {
+                if (cell.classList.contains("covered")) {
+                    cell.classList.remove("covered");
+                } else {
+                    cell.classList.remove("bone2"); // Destapar la celda
                 }
             } else {
-                // En single player, podemos reactivar los clics inmediatamente si no hay IA
-                playerCanClick = true;
+                cell.classList.remove("covered"); // Destapar la celda
+            }
+
+            if (boardType === 'player') {
+                if (!limitedAmmoMode || (limitedAmmoMode && playerAmmo > 0)) {
+                    // Lógica y sonidos para el tablero del jugador
+
+                    handlePlayerBoardLogic(cell);
+                    if (limitedAmmoMode) {
+                        checkLimitedAmmoModeStatus();
+                    }
+                }
             }
         }
-        }, 3000);
+
+
     }
 }
 
@@ -392,6 +444,10 @@ function handlePlayerBoardLogic(cell) {
         }
 
         repeatTurn = true;
+        let halfFound = false;
+        if (tankShipsMode) {
+            halfFound = true;
+        }
         let hitAndSink = false;
         let victory = true;
 
@@ -406,9 +462,18 @@ function handlePlayerBoardLogic(cell) {
 
 
                 if (position[0] == cellPosition[0] && position[1] == cellPosition[1]) {
-                    playerHits++;
-                    ships[index][indexShip][1] = true;
-                    discoveredFossils[index][1] = true;
+                    if (tankShipsMode) {
+                        if (!cell.classList.contains("bone2")) {
+                            halfFound = false;
+                            playerHits++;
+                            ships[index][indexShip][1] = true;
+                            discoveredFossils[index][1] = true;
+                        }
+                    } else {
+                        playerHits++;
+                        ships[index][indexShip][1] = true;
+                        discoveredFossils[index][1] = true;
+                    }
                 }
 
                 if (!ships[index][indexShip][1]) {
@@ -457,25 +522,32 @@ function handlePlayerBoardLogic(cell) {
             scoreForm.action = "win.php";
             scoreForm.submit();
         } else {
-            if (hitAndSink) {
-                points += 15;
-                // fosil descubierto
-                if (!audios['dino'].paused) {
-                    audios['dino'].pause(); // Si está reproduciéndose, lo pausamos
-                    audios['dino'].currentTime = 0; // Reiniciamos el audio
+            if (halfFound) {
+                if (!limitedAmmoMode || (limitedAmmoMode && AIAmmo > 0)) {
+                    repeatTurn = false;
                 }
-                createAlerts('foundAll', 'player');
-                audios['dino'].play();
-
-            } else {
-                points += 10;
-                // huesso encontrado
-                if (!audios['hueso'].paused) {
-                    audios['hueso'].pause(); // Si está reproduciéndose, lo pausamos
-                    audios['hueso'].currentTime = 0; // Reiniciamos el audio
-                }
-                createAlerts('found', 'player');
                 audios['hueso'].play();
+            } else {
+                if (hitAndSink) {
+                    points += 15;
+                    // fosil descubierto
+                    if (!audios['dino'].paused) {
+                        audios['dino'].pause(); // Si está reproduciéndose, lo pausamos
+                        audios['dino'].currentTime = 0; // Reiniciamos el audio
+                    }
+                    createAlerts('foundAll', 'player');
+                    audios['dino'].play();
+
+                } else {
+                    points += 10;
+                    // huesso encontrado
+                    if (!audios['hueso'].paused) {
+                        audios['hueso'].pause(); // Si está reproduciéndose, lo pausamos
+                        audios['hueso'].currentTime = 0; // Reiniciamos el audio
+                    }
+                    createAlerts('found', 'player');
+                    audios['hueso'].play();
+                }
             }
 
         }
@@ -506,6 +578,22 @@ function handleAIBoardLogic(cell) {
     }
     // Verifica si la celda clicada contiene un hueso
     if (cell.classList.contains("bone")) {
+        iaLastCorrectPosition = {
+            "row": cell.id.replace("ia_cell_", "").split("_")[0],
+            "col": cell.id.replace("ia_cell_", "").split("_")[1]
+        }
+        if (iaOriginalCorrectPosition == null) {
+            iaOriginalCorrectPosition = iaLastCorrectPosition;
+        }
+        if (iaLastTriedDirection != null && iaLastTriedMovement != null) {
+            for (let direction = 0; direction < iaCheckPositions.length; direction++) {
+                for (let movement = 0; movement < iaCheckPositions[direction].length; movement++) {
+                    if (direction != iaLastTriedDirection && movement != iaLastTriedMovement) {
+                        iaCheckPositions[direction][movement] = true;
+                    }
+                }
+            }
+        }
 
         let hitAndSink = false;
         let victory = true;
@@ -567,17 +655,31 @@ function handleAIBoardLogic(cell) {
             scoreForm.action = "lose.php";
             scoreForm.submit();
         } else {
+
+
+
             if (hitAndSink) {
                 // Mostrar alerta de fósil completo
                 createAlerts('foundAll', 'ia');
                 audios['dino'].play();
+                iaLastCorrectPosition = null;
+                iaOriginalCorrectPosition = null;
+                iaCheckPositions = [[false, false], [false, false]];
+                iaLastTriedDirection = null;
+                iaLastTriedMovement = null;
             } else {
                 // Mostrar alerta de fósil encontrado
                 createAlerts('found', 'ia');
                 audios['hueso'].play();
+                iaAccert = true;
+                searchDirection = true;
+
             }
         }
     } else {
+        if (iaLastTriedDirection != null && iaLastTriedMovement != null) {
+            iaCheckPositions[iaLastTriedDirection][iaLastTriedMovement] = true;
+        }
         // Si no se encontró un fósil, reproducimos el sonido de fallo
         if (!limitedAmmoMode) { // Si el modo de munición limitada no esta activo
             IArepeatTurn = false; // No se puede repetir el turno
@@ -590,29 +692,140 @@ function handleAIBoardLogic(cell) {
         }
         createAlerts('miss', 'ia');
         audios['arena'].play();
+        searchDirection = false;
+        console.log('falla');
     }
 }
-
 
 function iaTurn() {
     console.log("Turno de la IA");
 
     // Función que intenta hacer un movimiento válido
     function attemptMove() {
-        const randomRow = Math.floor(Math.random() * 10);
-        const randomCol = Math.floor(Math.random() * 10);
-        const cell = document.getElementById(`ia_cell_${randomRow}_${randomCol}`);
-        
-        // Verificar si la celda existe y está cubierta
-        if (cell && cell.classList.contains("covered")) {
 
-            cell.classList.add("cell-selected")
+        let randomRow = Math.floor(Math.random() * 10);
+        let randomCol = Math.floor(Math.random() * 10);
+
+        let cell = document.getElementById(`ia_cell_${randomRow}_${randomCol}`);
+
+        if (iaLastCorrectPosition != null) {
+            if (!isNaN(iaLastCorrectPosition['row']) && !isNaN(iaLastCorrectPosition['col'])) {
+                randomRow = parseInt(iaLastCorrectPosition['row']);
+                randomCol = parseInt(iaLastCorrectPosition['col']);
+            }
+
+            let correctSelection = false;
+            let selectDirection = Math.floor(Math.random() * 2);
+            let selectMovement = Math.floor(Math.random() * 2);
+
+            if (iaLastTriedDirection != null && iaLastTriedMovement != null) {
+                selectDirection = iaLastTriedDirection;
+                selectMovement = iaLastTriedMovement;
+            }
+
+            let tempRow = randomRow;
+            let tempCol = randomCol;
+
+            while (!correctSelection) {
+                if (iaCheckPositions[selectDirection][selectMovement] == false) {
+                    iaLastTriedDirection = selectDirection;
+                    iaLastTriedMovement = selectMovement;
+
+                    if (selectDirection == 0) {
+                        if (selectMovement == 0) {
+                            correctSelection = true;
+                            tempRow--;
+                            if (tempRow < 0) {
+                                tempRow--;
+                                correctSelection = false;
+                                iaCheckPositions[selectDirection][selectMovement] = true;
+                            }
+                        } else {
+                            correctSelection = true;
+                            tempRow++;
+                            if (tempRow > 9) {
+                                tempRow++;
+                                correctSelection = false;
+                                iaCheckPositions[selectDirection][selectMovement] = true;
+                            }
+                        }
+                    } else {
+                        if (selectMovement == 0) {
+                            correctSelection = true;
+                            tempCol--;
+                            if (tempCol < 0) {
+                                tempCol++;
+                                correctSelection = false;
+                                iaCheckPositions[selectDirection][selectMovement] = true;
+                            }
+                        } else {
+                            correctSelection = true;
+                            tempCol++;
+                            if (tempCol > 9) {
+                                tempCol--;
+                                correctSelection = false;
+                                iaCheckPositions[selectDirection][selectMovement] = true;
+                            }
+                        }
+                    }
+                } else {
+                    if (selectDirection == 0) {
+                        if (selectMovement == 0) {
+                            selectMovement = 1;
+                        } else if (selectMovement == 1) {
+                            selectMovement = 0;
+                        }
+                        if (iaCheckPositions[selectDirection][selectMovement] == true) {
+                            selectDirection = 1;
+                        }
+                    } else {
+                        if (selectMovement == 0) {
+                            selectMovement = 1;
+                        } else if (selectMovement == 1) {
+                            selectMovement = 0;
+                        }
+                        if (iaCheckPositions[selectDirection][selectMovement] == true) {
+                            selectDirection = 0;
+                        }
+                    }
+                }
+                if (iaCheckPositions[0][0] && iaCheckPositions[0][1] && iaCheckPositions[1][0] && iaCheckPositions[1][1]) {
+                    iaCheckPositions = [[false, false], [false, false]];
+                    iaLastTriedDirection = null;
+                    iaLastTriedMovement = null;
+                    iaLastCorrectPosition = iaOriginalCorrectPosition;
+                    if (!isNaN(iaLastCorrectPosition['row']) && !isNaN(iaLastCorrectPosition['col'])) {
+                        tempRow = parseInt(iaLastCorrectPosition['row']);
+                        tempCol = parseInt(iaLastCorrectPosition['col']);
+                    }
+                }
+            }
+            randomRow = tempRow;
+            randomCol = tempCol;
+            cell = document.getElementById(`ia_cell_${randomRow}_${randomCol}`);
+        }
+
+
+
+        if (cell && (cell.classList.contains("covered") || cell.classList.contains("bone2"))) {
+            cell.classList.add("cell-selected");
             // La IA hace su jugada
             audios['cavar'].play();
             setTimeout(() => {
-                cell.classList.remove("cell-selected")
-                cell.classList.remove("covered"); // Destapar la celda
+                cell.classList.remove("cell-selected");
+                if (tankShipsMode) {
+                    if (cell.classList.contains("covered")) {
+                        cell.classList.remove("covered"); // Destapar la celda
+                    } else {
+                        cell.classList.remove("bone2");
+                    }
+                } else {
+                    cell.classList.remove("covered"); // Destapar la celda
+                }
                 handleAIBoardLogic(cell); // Lógica para manejar el clic de la IA
+                if (limitedAmmoMode) {
+                    checkLimitedAmmoModeStatus();
+                }
 
                 // Si la IA acierta y tiene que repetir turno
                 if (IArepeatTurn) {
@@ -624,20 +837,23 @@ function iaTurn() {
                             setPlayerTurn();  // Cambiar el turno al Jugador
                             setTimeout(() => {
                                 playerCanClick = true;  // El jugador empieza su turno después de 2.5 segundos
-                            }, 1250);
-                        }, 1250);
+                            }, 1200);
+                        }, 1200);
                     }
                 } else {
                     setTimeout(() => {
                         setPlayerTurn();  // Cambiar el turno a la IA
                         setTimeout(() => {
                             playerCanClick = true;  // Permitir clics del jugador después de 1.25 segundos
-                        }, 1250);
-                    }, 1250);
+                        }, 1200);
+                    }, 1200);
                 }
             }, 3000); // Tiempo que toma para descubrir la celda
         } else {
             // Si no es un movimiento válido, intenta nuevamente
+            if (iaLastTriedDirection != null && iaLastTriedMovement != null) {
+                iaCheckPositions[iaLastTriedDirection][iaLastTriedMovement] = true;
+            }
             setTimeout(attemptMove, 100); // Espera 100ms antes de intentar de nuevo
         }
     }
@@ -676,8 +892,9 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("score-hidden").value = points;
     });
 
-    document.getElementById("player-ammo").innerText = playerAmmo;
-    document.getElementById("ai-ammo").innerText = AIAmmo;
+    if (limitedAmmoMode) {
+        document.getElementById("player-ammo").innerText = playerAmmo;
+        document.getElementById("ai-ammo").innerText = AIAmmo;
+    }
 });
-
 
