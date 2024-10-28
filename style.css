@@ -656,7 +656,7 @@ html {
     border:  var(--board_header_row) !important;
 }
 
-#ranking_page tr:not(:first-child) {
+#ranking_page tr:not(:first-child) td{
     opacity: 0;
     animation: fadeIn 1s ease forwards;
     /* Retraso en cascada */
