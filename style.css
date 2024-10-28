@@ -190,10 +190,9 @@ html {
 
 #game_page td {
     border: 1px solid var(--board_borders);
-    height: 40px;
     text-align: center;
     font-family: var(--text_font);
-    font-size: 1em;
+    font-size: 1.15em;
 }
 
 
@@ -1108,10 +1107,6 @@ html {
         transform: translateY(-100%);
         opacity: 0;
     }
-}
-
-.cell-selected {
-    animation: colorChange-player 1s ease-in-out infinite;
 }
 
 @keyframes colorChange-player {
