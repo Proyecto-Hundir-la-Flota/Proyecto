@@ -331,7 +331,30 @@ function checkStatus(event, boardType) {
                     if (!limitedAmmoMode || (limitedAmmoMode && playerAmmo > 0)) {
                         // Lógica y sonidos para el tablero del jugador
 
-                        handlePlayerBoardLogic(cell);
+                        if (specialAttackMode) {
+                            if (checkbox1.checked || checkbox2.checked) {
+                                let explosiveCells = explosiveHit(cell);
+                                if (limitedAmmoMode) {
+                                    playerAmmo -= explosiveCells.length;
+                                }
+
+                                explosiveCells.forEach(explosiveCell => {
+                                    handlePlayerBoardLogic(explosiveCell);
+                                });
+
+                                if (checkbox1.checked) {
+                                    checkbox1.checked = false;
+                                    checkbox1.disabled = true;
+                                }
+
+                                if (checkbox2.checked) {
+                                    checkbox2.checked = false;
+                                    checkbox2.disabled = true;
+                                }
+                            }
+                        } else {
+                            handlePlayerBoardLogic(cell);
+                        }
 
                         // Deshabilitar los clics del jugador después de su turno
                         playerCanClick = false;
@@ -398,8 +421,30 @@ function checkStatus(event, boardType) {
             if (boardType === 'player') {
                 if (!limitedAmmoMode || (limitedAmmoMode && playerAmmo > 0)) {
                     // Lógica y sonidos para el tablero del jugador
+                    if (specialAttackMode) {
+                        if (checkbox1.checked || checkbox2.checked) {
+                            let explosiveCells = explosiveHit(cell);
+                            if (limitedAmmoMode) {
+                                playerAmmo -= explosiveCells.length;
+                            }
 
-                    handlePlayerBoardLogic(cell);
+                            explosiveCells.forEach(explosiveCell => {
+                                handlePlayerBoardLogic(explosiveCell);
+                            });
+
+                            if (checkbox1.checked) {
+                                checkbox1.checked = false;
+                                checkbox1.disabled = true;
+                            }
+
+                            if (checkbox2.checked) {
+                                checkbox2.checked = false;
+                                checkbox2.disabled = true;
+                            }
+                        }
+                    } else {
+                        handlePlayerBoardLogic(cell);
+                    }
                     if (limitedAmmoMode) {
                         checkLimitedAmmoModeStatus();
                     }
@@ -697,6 +742,86 @@ function handleAIBoardLogic(cell) {
     }
 }
 
+function explosiveHit(originalCell) {
+    let explosivesCells = [];
+    explosivesCells.push(originalCell);
+
+    let originalRow = cell.id.replace("ia_cell_", "").split("_")[0];
+    let originalCol = cell.id.replace("ia_cell_", "").split("_")[1];
+    let newCell;
+    let newRow = 0;
+    let newCol = 0;
+    if (!isNaN(originalRow - 1) && !isNaN(originalCol - 1)) {
+        originalRow = parseInt(originalRow);
+        originalCol = parseInt(originalCol);
+    }
+
+    
+
+
+    newRow = originalRow - 1;
+    newCol = originalCol - 1;
+    newCell = document.getElementById(`ia_cell_${newRow}_${newRow}`);
+    if (newCell.classList.contains("bone") || newCell.classList.contains("ground")) {
+        explosivesCells.push(newCell);
+    }
+
+    newRow = originalRow - 1;
+    newCol = originalCol;
+    newCell = document.getElementById(`ia_cell_${newRow}_${newRow}`);
+    if (newCell.classList.contains("bone") || newCell.classList.contains("ground")) {
+        explosivesCells.push(newCell);
+    }
+
+    newRow = originalRow - 1;
+    newCol = originalCol + 1;
+    newCell = document.getElementById(`ia_cell_${newRow}_${newRow}`);
+    if (newCell.classList.contains("bone") || newCell.classList.contains("ground")) {
+        explosivesCells.push(newCell);
+    }
+
+    newRow = originalRow;
+    newCol = originalCol - 1;
+    newCell = document.getElementById(`ia_cell_${newRow}_${newRow}`);
+    if (newCell.classList.contains("bone") || newCell.classList.contains("ground")) {
+        explosivesCells.push(newCell);
+    }
+
+    newRow = originalRow;
+    newCol = originalCol + 1;
+    newCell = document.getElementById(`ia_cell_${newRow}_${newRow}`);
+    if (newCell.classList.contains("bone") || newCell.classList.contains("ground")) {
+        explosivesCells.push(newCell);
+    }
+
+    newRow = originalRow + 1;
+    newCol = originalCol - 1;
+    newCell = document.getElementById(`ia_cell_${newRow}_${newRow}`);
+    if (newCell.classList.contains("bone") || newCell.classList.contains("ground")) {
+        explosivesCells.push(newCell);
+    }
+
+    newRow = originalRow + 1;
+    newCol = originalCol;
+    newCell = document.getElementById(`ia_cell_${newRow}_${newRow}`);
+    if (newCell.classList.contains("bone") || newCell.classList.contains("ground")) {
+        explosivesCells.push(newCell);
+    }
+
+    newRow = originalRow + 1;
+    newCol = originalCol + 1;
+    newCell = document.getElementById(`ia_cell_${newRow}_${newRow}`);
+    if (newCell.classList.contains("bone") || newCell.classList.contains("ground")) {
+        explosivesCells.push(newCell);
+    }
+
+    document.getElementById(`ia_cell_${randomRow}_${randomCol}`);
+
+    explosivesCells.push(newCell);
+
+    return explosivesCells;
+}
+
 function iaTurn() {
     console.log("Turno de la IA");
 
@@ -826,6 +951,7 @@ function iaTurn() {
                 } else {
                     cell.classList.remove("covered"); // Destapar la celda
                 }
+
                 handleAIBoardLogic(cell); // Lógica para manejar el clic de la IA
                 if (limitedAmmoMode) {
                     checkLimitedAmmoModeStatus();
