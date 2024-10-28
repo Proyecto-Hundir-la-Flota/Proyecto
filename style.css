@@ -156,10 +156,15 @@ html {
     background-color: var(--primary_div);
     font-family: var(--text_font);
     font-size: 1.15em;
-    padding: 7px 14px 7px;
+    padding: 7px 0 7px;
     margin: 20px;
     text-align: end;
     border-radius: 18px;
+    align-self: center;
+    width: 1268px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 #game_page .timer i {
@@ -176,11 +181,7 @@ html {
     display: inline-block;
     width: 50px;
     text-align: center;
-}
-
-#game_page .timer {
-    align-self: center;
-    
+    margin-left: 5px;
 }
 
 #game_page table {
@@ -359,8 +360,8 @@ html {
 
 #game_page .container-info {
     background-color: var(--primary_div);
-    width: 500px;
-    height: 180px;
+    width: 554px;
+    height: auto;
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -384,7 +385,7 @@ html {
     font-family: var(--secondary_title_font);
     font-size: 2em;
     font-weight: 400;
-    margin: 0 0 3px;
+    margin: 0 0 13px;
 }
 
 #game_page .container-info .info-item .secondary-info {
@@ -396,6 +397,12 @@ html {
     background-color: var(--secondary_div);
     border-radius: 5px;
     padding: 5px;
+}
+
+#game_page .container-info .info-item .secondary-info ul {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
 
@@ -459,6 +466,45 @@ html {
 #game_page .ia-info {
     display: none;
 }
+
+#game_page .torpedo_container {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    left: 0;
+    background-color: var(--primary_div);
+    padding: 15px;
+    border-radius: 0 18px 18px 0;
+    font-family: var(--secondary_title_font);
+    font-size: 1.6em;
+    transition: transform 0.4s ease; /* Animación de deslizamiento */
+}
+
+#game_page .torpedo {
+    font-family: var(--text_font);
+    font-size: 18.4px;
+}
+
+.torpedo_container.hidden {
+    transform: translateX(-100%); /* Oculta el contenedor desplazándolo a la izquierda */
+}
+
+/* Estilos del botón */
+.toggle-button {
+    cursor: pointer;
+    padding: 5px 10px;
+    margin-left: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.2s ease;
+}
+
+.toggle-button:hover {
+    background-color: #0056b3;
+}
+
 
 /* RESULT PAGE (WIN AND LOSE) */
 
