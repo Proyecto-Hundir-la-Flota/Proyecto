@@ -25,7 +25,7 @@ unset($_SESSION['finishName']);
     <div class="hero">
         <div class="hold-name">Introdueix el teu nom:
             <input type="text" id="name_landing" name="name_landing" required minlength="3" maxlength="30"
-                placeholder="3-30 caràcters">
+                placeholder=" 3-30 caràcters">
         </div>
 
         <button id="menuButton">
@@ -88,9 +88,9 @@ unset($_SESSION['finishName']);
             //Variables del formulario al que usuario tiene que añadir valores (nombre y modos activos)
             const nameInput = document.getElementById("name_landing"); //Guardamos los valores introducidos
             // agregar variables para el menu desplegable
-            const lilimitedAmmo = document.getElementById("limitedAmmo"); //guardamos la variable para la fucion de click en el li
-            const litankShips = document.getElementById("tankShips");
-            const lispecialAtack = document.getElementById("specialAtack");
+            const limitedAmmo = document.getElementById("limitedAmmo"); //guardamos la variable para la fucion de click en el li
+            const tankShips = document.getElementById("tankShips");
+            const specialAtack = document.getElementById("specialAtack");
             const menuList = document.getElementById("list");
 
             //Variables para los formularios que envian datos al juego
@@ -108,24 +108,6 @@ unset($_SESSION['finishName']);
             const iaMenuLimitedAmmo = document.getElementById("iaMenuLimitedAmmo");
             const iaMenuTankShips = document.getElementById("iaMenuTankShips");
             const iaMenuSpecialAtack = document.getElementById("iaMenuSpecialAtack");
-            
-            
-            
-
-            
-
-            // Selecciona todos los elementos <li> dentro de la lista
-            const listItems = document.querySelectorAll("#list li");
-
-            listItems.forEach(item => {
-                item.addEventListener("click", function () {
-                    const checkbox = this.querySelector("input[type='checkbox']");
-
-                    // Cambia el estado del checkbox
-                    checkbox.checked = !checkbox.checked; // Alterna el estado
-                });
-            });
-
 
             // funcion para el menu desplegable
             document.getElementById("menuButton").addEventListener("click", function () {
@@ -139,7 +121,7 @@ unset($_SESSION['finishName']);
             });
 
             // guardar el id de municion infinita al hacer click
-            lilimitedAmmo.addEventListener("change", function () {
+            limitedAmmo.addEventListener("change", function () {
                 if (limitedAmmo.checked == true) {
                     soloMenuLimitedAmmo.value = "limitedAmmo"; // Almacena el id del <li> en el menu para training
                     iaMenuLimitedAmmo.value = "limitedAmmo"; // Almacena el id del <li> en el menu para la ia
@@ -152,7 +134,7 @@ unset($_SESSION['finishName']);
             });
 
             // guardar el id de barco acorazado
-            litankShips.addEventListener("change", function () {
+            tankShips.addEventListener("change", function () {
                 if (tankShips.checked == true) {
                     soloMenuTankShips.value = "tankShips"; // Almacena el id del <li> en el menu para training
                     iaMenuTankShips.value = "tankShips"; // Almacena el id del <li> en el menu para la ia
@@ -165,7 +147,7 @@ unset($_SESSION['finishName']);
             });
 
             // guardar el id de municion infinita
-            lispecialAtack.addEventListener("change", function () {
+            specialAtack.addEventListener("change", function () {
                 if (specialAtack.checked == true) {
                     soloMenuSpecialAtack.value = "specialAtack"; // Almacena el id del <li> en el menu para training
                     iaMenuSpecialAtack.value = "specialAtack"; // Almacena el id del <li> en el menu para la ia
