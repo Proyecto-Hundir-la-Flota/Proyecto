@@ -190,10 +190,9 @@ html {
 
 #game_page td {
     border: 1px solid var(--board_borders);
-    height: 40px;
     text-align: center;
     font-family: var(--text_font);
-    font-size: 1em;
+    font-size: 1.15em;
 }
 
 
@@ -614,7 +613,7 @@ html {
     background-color: var(--title-tape);
     color: var(--title_color);
     font-family: var(--primary_title_font);
-    margin: 15px 0 15px;
+    margin: 15px 0 30px;
     padding: 10px
 }
 
@@ -654,16 +653,42 @@ html {
     margin: 0 auto auto auto;
     box-shadow: rgba(0, 0, 0, 0.33) 0px 2px 8px;
     width: 50%;
+    border:  var(--board_header_row) !important;
 }
+
+#ranking_page tr:not(:first-child) {
+    opacity: 0;
+    animation: fadeIn 1s ease forwards;
+    /* Retraso en cascada */
+    animation-delay: calc(0.1s * var(--index));
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
 
 #ranking_page th,
 #ranking_page td {
-    border: 1px solid var(--board_borders);
     height: 40px;
     text-align: center;
     font-family: var(--text_font);
     font-size: 1em;
     background-color: var(--board_header_row);
+}
+
+#ranking_page th,
+#ranking_page tr:not(:last-child) td {
+    border-bottom: 1px solid var(--board_borders);
+}
+
+#ranking_page td:first-child, #ranking_page th:first-child  {
+    border-right: 1px solid var(--board_borders);
 }
 
 
@@ -712,18 +737,6 @@ html {
 #ranking_page .podium:nth-child(4) td {
     background-color: #df9b33;
     font-weight: 600;
-}
-
-#ranking_page .podium:nth-child(2) td:first-child {
-    background-image: radial-gradient(circle at 120.71% 50%, #ffe81e 0, #fdd015 25%, #efb80f 50%, #dfa00c 75%, #d08b0c 100%);
-}
-
-#ranking_page .podium:nth-child(3) td:first-child {
-    background-image: radial-gradient(circle at 120.71% 50%, #f8dfe1 0, #e6d5d7 16.67%, #d3cacb 33.33%, #bebebe 50%, #aab2b0 66.67%, #99a7a2 83.33%, #899e95 100%);
-}
-
-#ranking_page .podium:nth-child(4) td:first-child {
-    background-image: radial-gradient(circle at 120.71% 50%, #e7ab34 0, #e19d33 16.67%, #d88e33 33.33%, #cd7f32 50%, #c17031 66.67%, #b56330 83.33%, #aa5830 100%);
 }
 
 #ranking_page .navigation-container {
@@ -1096,10 +1109,6 @@ html {
     }
 }
 
-.cell-selected {
-    animation: colorChange-player 1s ease-in-out infinite;
-}
-
 @keyframes colorChange-player {
     0% {
         background-color: rgb(216, 180, 17); /* Color inicial rojo */
@@ -1308,4 +1317,32 @@ input[type="checkbox"]:checked{
     font-family: var(--secondary_title_font);
     font-size: 2em;
     font-weight: 400;
+}
+
+#player td:first-child  {
+    position: relative;
+}
+
+#player td:first-child::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 6px; /* Ancho del borde simulado */
+    background-color: red;
+    animation: pulse-border 1s linear;
+    animation-iteration-count: 3;
+}
+
+@keyframes pulse-border {
+    0% {
+        background-color: red;
+    }
+    50% {
+        background-color: transparent;
+    }
+    100% {
+        background-color: red;
+    }
 }
