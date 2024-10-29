@@ -40,6 +40,7 @@ if (isset($_POST['score'])) {
 
 <!DOCTYPE html>
 <html lang="ca">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -49,17 +50,22 @@ if (isset($_POST['score'])) {
 </head>
 
 <body id="result_page" class="lose">
+    <div id="audioContainer">
+
+    </div>
     <div class="hero">
         <h1>Has perdut...</h1>
         <div id="rankingInfo">
             <h2>Has aconseguit <span id="score"><?php echo $score ?></span> punts de fama</h2>
-            <div class="hold-name-result">Entra el teu nom: 
-            <form id="scoreForm" action="ranking.php" method="POST">
-                <input type="text" id="nameInput" name="name" required minlength="3" value="<?php echo $userName ?>"> <!-- Cambiado a "name" -->
-                <input type="hidden" id="scoreHidden" name="score" value="<?php echo $score ?>"> <!-- Campo oculto para puntaje -->
-            </form>
+            <div class="hold-name-result">Entra el teu nom:
+                <form id="scoreForm" action="ranking.php" method="POST">
+                    <input type="text" id="nameInput" name="name" required minlength="3"
+                        value="<?php echo $userName ?>"> <!-- Cambiado a "name" -->
+                    <input type="hidden" id="scoreHidden" name="score" value="<?php echo $score ?>">
+                    <!-- Campo oculto para puntaje -->
+                </form>
             </div>
-            
+
             <div class="button_container">
                 <a id="btnReturn" href="index.php"><i class="fa-solid fa-chevron-left"></i>Inici</a>
                 <a id="btnSaveRecord" href="#"><i class="fa-solid fa-floppy-disk"></i>Guardar</a>
@@ -67,12 +73,39 @@ if (isset($_POST['score'])) {
         </div>
     </div>
     <script type="text/javascript">
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
+            const className = document.body.className;
+            let audioSrc;
+
+            switch (className) {
+                case "lose":
+                    audioSrc = "/sounds/lose.mp3";
+                    break;
+                case "win":
+                    audioSrc = "/sounds/win.mp3";
+                    break;
+                default:
+                    console.error('No audio source found for this page.');
+                    return;
+            }
+
+            const audioContainer = document.getElementById('audioContainer');
+            let audio = document.getElementById('backgroundSound');
+
+            if (!audio) {
+                audio = document.createElement('audio');
+                audio.id = 'backgroundSound';
+                audio.autoplay = true;
+                audioContainer.appendChild(audio);
+            }
+
+            audio.src = audioSrc;
+
             const saveRecord = document.getElementById("btnSaveRecord");
             const nameInput = document.getElementById("nameInput"); //Guardamos los valores introducidos
             const scoreForm = document.getElementById("scoreForm"); //Guardamos el formato de formulario para poder hacer un submit
 
-            nameInput.addEventListener("input", function() {
+            nameInput.addEventListener("input", function () {
                 // Comprobar la longitud del nombre
                 if (nameInput.value.length > 3 && nameInput.value.length < 30) {
                     saveRecord.classList.remove("disabled");
@@ -84,7 +117,7 @@ if (isset($_POST['score'])) {
             });
 
             // AÃ±adir el evento click solo una vez
-            saveRecord.addEventListener("click", function(event) {
+            saveRecord.addEventListener("click", function (event) {
                 if (!saveRecord.classList.contains("disabled")) {
                     // Enviar el formulario cuando el boton esta habilitado y se haga click
                     scoreForm.submit();

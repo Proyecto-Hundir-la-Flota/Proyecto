@@ -820,9 +820,18 @@ function handleAIBoardLogic(cell) {
 
                 // Comprobar si la posición de la celda corresponde a un fósil del barco
                 if (position[0] == cellPosition[0] && position[1] == cellPosition[1]) {
-                    AIHits++;
-                    iaShips[index][indexShip][1] = true; // Marcar como descubierto en IA
-                    iaDiscoveredFossils[index][1] = true; // Marcar fósil como encontrado
+                    if (tankShipsMode) {
+                        if (!cell.classList.contains("bone2")) {
+                            halfFound = false;
+                            AIHits++;
+                            iaShips[index][indexShip][1] = true; // Marcar como descubierto en IA
+                            iaDiscoveredFossils[index][1] = true; // Marcar fósil como encontrado
+                        }
+                    } else {
+                        AIHits++;
+                        iaShips[index][indexShip][1] = true; // Marcar como descubierto en IA
+                        iaDiscoveredFossils[index][1] = true; // Marcar fósil como encontrado
+                    }
                 }
 
                 // Si alguna parte del barco no ha sido descubierta, no se completa el fósil
@@ -1035,7 +1044,7 @@ function iaTurn() {
                                 correctSelection = true;
                                 tempRow--;
                                 if (tempRow < 0) {
-                                    tempRow--;
+                                    tempRow++;
                                     correctSelection = false;
                                     iaCheckPositions[selectDirection][selectMovement] = true;
                                 }
@@ -1043,7 +1052,7 @@ function iaTurn() {
                                 correctSelection = true;
                                 tempRow++;
                                 if (tempRow > 9) {
-                                    tempRow++;
+                                    tempRow--;
                                     correctSelection = false;
                                     iaCheckPositions[selectDirection][selectMovement] = true;
                                 }
