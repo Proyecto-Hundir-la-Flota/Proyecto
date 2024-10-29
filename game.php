@@ -115,18 +115,19 @@ if (isset($_POST['gamemode'])) {
         <i class='fa-solid fa-hourglass-end'></i>Temps: <span id='gameClock'>00:00</span>
     </div>
     <div class="container">
-        <div class="torpedo_container">
+        <div class="dinamita_container">
             Cartutxos de dinamita
-            <div class="torpedo">
-                <input type="checkbox" id="torpedo1" class="exclusive-checkbox">
-                <label for="torpedo1">Cartutx 1</label>
+            <div class="dinamita">
+                <input type="checkbox" id="dinamita1" class="exclusive-checkbox">
+                <label for="dinamita1">Cartutx 1</label>
             </div>
-            <div class="torpedo">
-                <input type="checkbox" id="torpedo2" class="exclusive-checkbox">
-                <label for="torpedo2">Cartutx 2</label>
+            <div class="dinamita">
+                <input type="checkbox" id="dinamita2" class="exclusive-checkbox">
+                <label for="dinamita2">Cartutx 2</label>
             </div>
+            <i class='fa-solid fa-chevron-left toggle-button' onclick="toggleContainer()"></i>
         </div>
-        
+
 
 
         <?php
@@ -432,12 +433,12 @@ if (isset($_POST['gamemode'])) {
         if (isset($_POST["menuSpecialAttack"])) {
             if ($_POST["menuSpecialAttack"] == "specialAttack") { ?>
                 specialAttackMode = true;
-        <?php }
+            <?php }
         } ?>
 
         // Seleccionamos todos los checkboxes con la clase `exclusive-checkbox`
-        const checkbox1 = document.getElementById("torpedo1");
-        const checkbox2 = document.getElementById("torpedo2");
+        const checkbox1 = document.getElementById("dinamita1");
+        const checkbox2 = document.getElementById("dinamita2");
 
         // Función para añadir el comportamiento exclusivo a cada checkbox
         function radiusCheckBoxes(checkbox, otherCheckbox) {
@@ -457,8 +458,20 @@ if (isset($_POST['gamemode'])) {
         let bomba2 = false;
 
         function toggleContainer() {
-            const torpedoContainer = document.querySelector('.torpedo_container');
-            torpedoContainer.classList.toggle('hidden'); // Añade o quita la clase 'hidden'
+            const dinamitaContainer = document.querySelector('.dinamita_container');
+            const icon = document.querySelector('.toggle-button');
+
+            // Cambiamos la clase 'hidden' del contenedor
+            dinamitaContainer.classList.toggle('hidden');
+
+            // Cambiar las clases del icono
+            if (dinamitaContainer.classList.contains('hidden')) {
+                icon.classList.remove('fa-chevron-left');  // Quitar el icono de chevron izquierdo
+                icon.classList.add('fa-chevron-right');     // Añadir el icono de chevron derecho
+            } else {
+                icon.classList.remove('fa-chevron-right'); // Quitar el icono de chevron derecho
+                icon.classList.add('fa-chevron-left');      // Añadir el icono de chevron izquierdo
+            }
         }
     </script>
 
