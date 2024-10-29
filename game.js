@@ -724,14 +724,14 @@ function handlePlayerBoardLogic(cell) {
                 if (!limitedAmmoMode || (limitedAmmoMode && AIAmmo > 0)) {
                     repeatTurn = false;
                 }
-                if (!specialAttackMode && (specialAttackMode && (!checkbox1.checked || !checkbox2.checked))) {
+                if (!specialAttackMode || (specialAttackMode && (!checkbox1.checked || !checkbox2.checked))) {
                     audios['hueso'].play();
                 }
             } else {
                 if (hitAndSink) {
                     points += 15;
                     // fosil descubierto
-                    if (!specialAttackMode && (specialAttackMode && (!checkbox1.checked || !checkbox2.checked))) {
+                    if (!specialAttackMode || (specialAttackMode && (!checkbox1.checked || !checkbox2.checked))) {
                         if (!audios['dino'].paused) {
                             audios['dino'].pause(); // Si está reproduciéndose, lo pausamos
                             audios['dino'].currentTime = 0; // Reiniciamos el audio
@@ -742,7 +742,7 @@ function handlePlayerBoardLogic(cell) {
                 } else {
                     points += 10;
                     // huesso encontrado
-                    if (!specialAttackMode && (specialAttackMode && (!checkbox1.checked || !checkbox2.checked))) {
+                    if (!specialAttackMode || (specialAttackMode && (!checkbox1.checked || !checkbox2.checked))) {
                         if (!audios['hueso'].paused) {
                             audios['hueso'].pause(); // Si está reproduciéndose, lo pausamos
                             audios['hueso'].currentTime = 0; // Reiniciamos el audio
@@ -764,7 +764,7 @@ function handlePlayerBoardLogic(cell) {
             accumulatedErrors = 0;
         }
         // fallo al buscar
-        if (!specialAttackMode && (specialAttackMode && (!checkbox1.checked || !checkbox2.checked))) {
+        if (!specialAttackMode || (specialAttackMode && (!checkbox1.checked || !checkbox2.checked))) {
             if (!audios['arena'].paused) {
                 audios['arena'].pause(); // Si está reproduciéndose, lo pausamos
                 audios['arena'].currentTime = 0; // Reiniciamos el audio
