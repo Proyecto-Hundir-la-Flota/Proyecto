@@ -43,8 +43,8 @@ unset($_SESSION['finishName']);
                 <label for="tankShips">Terreny rocós</label>
             </li>
             <li>
-                <input type="checkbox" id="specialAtack">
-                <label for="specialAtack">Palades especials</label>
+                <input type="checkbox" id="specialAttack">
+                <label for="specialAttack">Permís d'explosius</label>
             </li>
         </ul>
 
@@ -63,7 +63,7 @@ unset($_SESSION['finishName']);
                 <input type="hidden" id="soloName" name="name_landing">
                 <input type="hidden" id="soloMenuLimitedAmmo" name="limitedAmmo">
                 <input type="hidden" id="soloMenuTankShips" name="menuTankShips">
-                <input type="hidden" id="soloMenuSpecialAtack" name="menuSpecialAtack">
+                <input type="hidden" id="soloMenuSpecialAttack" name="menuSpecialAttack">
                 <input type="hidden" name="gamemode" value="training">
                 <button disabled id="bottonSolo" type="submit" class="btn_play disabled"><i
                         class="fa-solid fa-gamepad"></i> Terreny de Proves</button>
@@ -73,7 +73,7 @@ unset($_SESSION['finishName']);
                 <input type="hidden" id="iaName" name="name_landing">
                 <input type="hidden" id="iaMenuLimitedAmmo" name="limitedAmmo">
                 <input type="hidden" id="iaMenuTankShips" name="menuTankShips">
-                <input type="hidden" id="iaMenuSpecialAtack" name="menuSpecialAtack">
+                <input type="hidden" id="iaMenuSpecialAttack" name="menuSpecialAttack">
                 <input type="hidden" name="gamemode" value="versus-ia">
                 <button disabled id="bottonIa" type="submit" class="btn_play disabled"><i class="fa-solid fa-robot"></i>
                     Excavació contra IA</button>
@@ -90,7 +90,7 @@ unset($_SESSION['finishName']);
             // agregar variables para el menu desplegable
             const limitedAmmo = document.getElementById("limitedAmmo"); //guardamos la variable para la fucion de click en el li
             const tankShips = document.getElementById("tankShips");
-            const specialAtack = document.getElementById("specialAtack");
+            const specialAttack = document.getElementById("specialAttack");
             const menuList = document.getElementById("list");
 
             //Variables para los formularios que envian datos al juego
@@ -100,14 +100,14 @@ unset($_SESSION['finishName']);
             const soloName = document.getElementById("soloName");
             const soloMenuLimitedAmmo = document.getElementById("soloMenuLimitedAmmo");
             const soloMenuTankShips = document.getElementById("soloMenuTankShips");
-            const soloMenuSpecialAtack = document.getElementById("soloMenuSpecialAtack");
+            const soloMenuSpecialAttack = document.getElementById("soloMenuSpecialAttack");
 
             //Variables para los formularios que envian datos al modo contra la IA
             const playButtonIa = document.getElementById("bottonIa");
             const iaName = document.getElementById("iaName");
             const iaMenuLimitedAmmo = document.getElementById("iaMenuLimitedAmmo");
             const iaMenuTankShips = document.getElementById("iaMenuTankShips");
-            const iaMenuSpecialAtack = document.getElementById("iaMenuSpecialAtack");
+            const iaMenuSpecialAttack = document.getElementById("iaMenuSpecialAttack");
 
             // funcion para el menu desplegable
             document.getElementById("menuButton").addEventListener("click", function () {
@@ -147,13 +147,13 @@ unset($_SESSION['finishName']);
             });
 
             // guardar el id de municion infinita
-            specialAtack.addEventListener("change", function () {
-                if (specialAtack.checked == true) {
-                    soloMenuSpecialAtack.value = "specialAtack"; // Almacena el id del <li> en el menu para training
-                    iaMenuSpecialAtack.value = "specialAtack"; // Almacena el id del <li> en el menu para la ia
+            specialAttack.addEventListener("change", function () {
+                if (specialAttack.checked == true) {
+                    soloMenuSpecialAttack.value = "specialAttack"; // Almacena el id del <li> en el menu para training
+                    iaMenuSpecialAttack.value = "specialAttack"; // Almacena el id del <li> en el menu para la ia
                 } else {
-                    soloMenuSpecialAtack.value = ""; // en caso de deseleccionar, mandar un valor vacio, en game.php hacemos comprovacion del valor
-                    iaMenuSpecialAtack.value = "";
+                    soloMenuSpecialAttack.value = ""; // en caso de deseleccionar, mandar un valor vacio, en game.php hacemos comprovacion del valor
+                    iaMenuSpecialAttack.value = "";
 
                 }
             });
