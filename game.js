@@ -571,6 +571,144 @@ function handlePlayerBoardLogic(cell) {
     updatePointsCounter();
 }
 
+function explosiveHit(cell) {
+    let returnCell = [];
+    returnCell.push(cell);
+    let proofRow = cell.id.replace("cell_", "").split("_")[0];
+    let proofCol = cell.id.replace("cell_", "").split("_")[1];
+
+    if ((proofRow != 0 && proofRow != 9) && (proofCol != 0 && proofCol != 9)) {
+        returnCell.push(document.getElementById(`cell_${proofRow - 1}_${proofCol - 1}`));
+        returnCell.push(document.getElementById(`cell_${proofRow - 1}_${proofCol}`));
+        returnCell.push(document.getElementById(`cell_${proofRow - 1}_${proofCol + 1}`));
+        returnCell.push(document.getElementById(`cell_${proofRow}_${proofCol - 1}`));
+        returnCell.push(document.getElementById(`cell_${proofRow}_${proofCol + 1}`));
+        returnCell.push(document.getElementById(`cell_${proofRow + 1}_${proofCol - 1}`));
+        returnCell.push(document.getElementById(`cell_${proofRow + 1}_${proofCol}`));
+        returnCell.push(document.getElementById(`cell_${proofRow + 1}_${proofCol + 1}`));
+
+    }
+    else {
+        let proofLimitRow = proofRow;
+        let proofLimitCol = proofCol;
+        
+      
+        if (proofLimitRow == 0) { 
+    
+            if (proofLimitCol <= 0) {
+            
+                returnCell.push(document.getElementById(`cell_${proofLimitRow +1}_${proofLimitCol }`));
+                returnCell.push(document.getElementById(`cell_${proofLimitRow }_${proofLimitCol + 1}`));
+                returnCell.push(document.getElementById(`cell_${proofLimitRow + 1}_${proofLimitCol + 1}`));
+
+
+            }
+      
+            if (proofLimitCol >= 9) {
+             
+                returnCell.push(document.getElementById(`cell_${proofLimitRow }_${proofLimitCol -1}`));
+                returnCell.push(document.getElementById(`cell_${proofLimitRow  +1}_${proofLimitCol - 1}`));
+                returnCell.push(document.getElementById(`cell_${proofLimitRow + 1}_${proofLimitCol }`));
+
+
+            }
+            else{
+                returnCell.push(document.getElementById(`cell_${proofLimitRow}_${proofLimitCol + 1}`));
+                returnCell.push(document.getElementById(`cell_${proofLimitRow}_${proofLimitCol - 1}`));
+                returnCell.push(document.getElementById(`cell_${proofLimitRow + 1}_${proofLimitCol - 1}`));
+                returnCell.push(document.getElementById(`cell_${proofLimitRow + 1}_${proofLimitCol}`));
+                returnCell.push(document.getElementById(`cell_${proofLimitRow + 1}_${proofLimitCol + 1}`));
+
+            }
+
+        }
+        else if (proofLimitRow == 9) {
+
+        
+            if (proofLimitCol <= 0) {
+              
+                returnCell.push(document.getElementById(`cell_${proofLimitRow -1}_${proofLimitCol }`));
+                returnCell.push(document.getElementById(`cell_${proofLimitRow }_${proofLimitCol + 1}`));
+                returnCell.push(document.getElementById(`cell_${proofLimitRow - 1}_${proofLimitCol + 1}`));
+
+
+            }
+         
+            if (proofLimitCol >= 9) {
+               
+                returnCell.push(document.getElementById(`cell_${proofLimitRow -1}_${proofLimitCol }`));
+                returnCell.push(document.getElementById(`cell_${proofLimitRow }_${proofLimitCol - 1}`));
+                returnCell.push(document.getElementById(`cell_${proofLimitRow - 1}_${proofLimitCol - 1}`));
+
+
+            }else{
+                returnCell.push(document.getElementById(`cell_${proofLimitRow}_${proofLimitCol + 1}`));
+                returnCell.push(document.getElementById(`cell_${proofLimitRow}_${proofLimitCol - 1}`));
+                returnCell.push(document.getElementById(`cell_${proofLimitRow - 1}_${proofLimitCol - 1}`));
+                returnCell.push(document.getElementById(`cell_${proofLimitRow - 1}_${proofLimitCol}`));
+                returnCell.push(document.getElementById(`cell_${proofLimitRow - 1}_${proofLimitCol + 1}`));
+
+            }
+        }
+        else if (proofLimitCol == 0) {
+            
+            
+            if (proofLimitRow <= 0) {
+            
+                returnCell.push(document.getElementById(`cell_${proofLimitRow +1}_${proofLimitCol }`));
+                returnCell.push(document.getElementById(`cell_${proofLimitRow }_${proofLimitCol + 1}`));
+                returnCell.push(document.getElementById(`cell_${proofLimitRow + 1}_${proofLimitCol + 1}`));
+
+
+            }
+            if (proofLimitRow >= 9) {
+               
+                returnCell.push(document.getElementById(`cell_${proofLimitRow }_${proofLimitCol +1}`));
+                returnCell.push(document.getElementById(`cell_${proofLimitRow  -1}_${proofLimitCol + 1}`));
+                returnCell.push(document.getElementById(`cell_${proofLimitRow - 1}_${proofLimitCol }`));
+
+
+            }
+            else{
+                returnCell.push(document.getElementById(`cell_${proofLimitRow + 1}_${proofLimitCol }`));
+                returnCell.push(document.getElementById(`cell_${proofLimitRow - 1}_${proofLimitCol }`));
+                returnCell.push(document.getElementById(`cell_${proofLimitRow - 1}_${proofLimitCol + 1}`));
+                returnCell.push(document.getElementById(`cell_${proofLimitRow }_${proofLimitCol +1}`));
+                returnCell.push(document.getElementById(`cell_${proofLimitRow + 1}_${proofLimitCol + 1}`));
+
+            }
+        }
+        else if (proofLimitCol == 9) {
+            
+            if (proofLimitRow <= 0) {
+            
+                returnCell.push(document.getElementById(`cell_${proofLimitRow }_${proofLimitCol - 1}`));
+                returnCell.push(document.getElementById(`cell_${proofLimitRow + 1}_${proofLimitCol }`));
+                returnCell.push(document.getElementById(`cell_${proofLimitRow + 1}_${proofLimitCol - 1}`));
+
+
+            }
+            if (proofLimitRow >= 9) {
+               
+                returnCell.push(document.getElementById(`cell_${proofLimitRow }_${proofLimitCol -1}`));
+                returnCell.push(document.getElementById(`cell_${proofLimitRow  -1}_${proofLimitCol - 1}`));
+                returnCell.push(document.getElementById(`cell_${proofLimitRow - 1}_${proofLimitCol }`));
+
+
+            }
+            else{
+                returnCell.push(document.getElementById(`cell_${proofLimitRow + 1}_${proofLimitCol }`));
+                returnCell.push(document.getElementById(`cell_${proofLimitRow - 1}_${proofLimitCol }`));
+                returnCell.push(document.getElementById(`cell_${proofLimitRow - 1}_${proofLimitCol - 1}`));
+                returnCell.push(document.getElementById(`cell_${proofLimitRow }_${proofLimitCol - 1}`));
+                returnCell.push(document.getElementById(`cell_${proofLimitRow + 1}_${proofLimitCol - 1}`));
+
+            }
+        }
+    }
+    return returnCell;
+}
+
 function handleAIBoardLogic(cell) {
     if (limitedAmmoMode) {
         AIAmmo--;
