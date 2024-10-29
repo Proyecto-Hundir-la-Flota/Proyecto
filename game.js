@@ -192,6 +192,20 @@ function createAlerts(alert_type, playerType) {
         alert.style.display = 'block';
     }
 
+    // Crear la alerta de "encontrado" con explosivo
+    if (alert_type === 'explosiveFound') {
+        alert = document.createElement('div');
+        alert.id = 'foundAlert';
+        alert.className = `alert ${playerClass}`; // Añadimos la clase del jugador/IA
+        document.body.appendChild(alert);
+        elementI = document.createElement('i');
+        elementI.className = emojis['correct']; // Agregamos el icono usando la clase
+        alert.appendChild(elementI); // Añadimos element i como hijo de alert para agregar el emoji
+        const textNode = document.createTextNode(playerType === 'player' ? " Has trobat osos amb la dinamita!" : " La IA ha trobat un ós!");
+        alert.appendChild(textNode); // Añadimos element textNode como hijo de alert para agregar el texto
+        alert.style.display = 'block';
+    }
+
     // Crear la alerta de "fallo"
     if (alert_type === 'miss') {
         alert = document.createElement('div');
@@ -202,6 +216,19 @@ function createAlerts(alert_type, playerType) {
         elementI.className = emojis['incorrect']; // Agregamos el icono usando la clase
         alert.appendChild(elementI);  // Añadimos element i como hijo de alert para agregar el emoji
         const textNode = document.createTextNode(playerType === 'player' ? " No s'ha trobat res" : " La IA no ha trobat res");
+        alert.appendChild(textNode); // Añadimos element textNode como hijo de alert para agregar el texto
+        alert.style.display = 'block';
+    }
+
+    if (alert_type === 'notEnoughAmmo') {
+        alert = document.createElement('div');
+        alert.id = 'missAlert';
+        alert.className = `alert ${playerClass}`; // Añadimos la clase del jugador/IA
+        document.body.appendChild(alert);
+        elementI = document.createElement('i');
+        elementI.className = emojis['incorrect']; // Agregamos el icono usando la clase
+        alert.appendChild(elementI);  // Añadimos element i como hijo de alert para agregar el emoji
+        const textNode = document.createTextNode(playerType === 'player' ? " No pots utilitzar la dinamita si no tens suficients recursos" : " La IA no ha trobat res");
         alert.appendChild(textNode); // Añadimos element textNode como hijo de alert para agregar el texto
         alert.style.display = 'block';
     }
@@ -313,90 +340,112 @@ function checkStatus(event, boardType) {
 
             if (specialAttackMode && (checkbox1.checked || checkbox2.checked)) {
                 let explosiveCells = [];
+                let explosiveHitStatus = false;
                 explosiveCells = explosiveHit(cell);
 
-                audios['cavar'].play();
-                explosiveCells.forEach(explosiveCell => {
-                    explosiveCell.classList.add("cell-selected");
+                if (limitedAmmoMode && explosiveCells.length > playerAmmo) {
+                    createAlerts('notEnoughAmmo', 'player');
+                    audios['arena'].play();
 
-                    setTimeout(() => {
-                        explosiveCell.classList.remove("cell-selected");
+                    playerCanClick = true;
+                } else {
+                    audios['cavar'].play();
+                    explosiveCells.forEach(explosiveCell => {
+                        explosiveCell.classList.add("cell-selected");
 
-                        if (tankShipsMode) {
-                            if (explosiveCell.classList.contains("covered")) {
-                                explosiveCell.classList.remove("covered");
+                        setTimeout(() => {
+                            explosiveCell.classList.remove("cell-selected");
+
+                            if (tankShipsMode) {
+                                if (explosiveCell.classList.contains("covered")) {
+                                    explosiveCell.classList.remove("covered");
+                                } else {
+                                    explosiveCell.classList.remove("bone2"); // Destapar la celda
+                                }
                             } else {
-                                explosiveCell.classList.remove("bone2"); // Destapar la celda
+                                explosiveCell.classList.remove("covered"); // Destapar la celda
                             }
-                        } else {
-                            explosiveCell.classList.remove("covered"); // Destapar la celda
-                        }
 
-                        if (boardType === 'player') {
+                            if (boardType === 'player') {
 
-                            if (!limitedAmmoMode || (limitedAmmoMode && playerAmmo > 0)) {
-                                // Lógica y sonidos para el tablero del jugador
-                                handlePlayerBoardLogic(explosiveCell);
+                                if (!limitedAmmoMode || (limitedAmmoMode && playerAmmo > 0)) {
+                                    // Lógica y sonidos para el tablero del jugador
+                                    handlePlayerBoardLogic(explosiveCell);
 
-                                // Deshabilitar los clics del jugador después de su turno
-                                playerCanClick = false;
-                                if (limitedAmmoMode) {
-                                    checkLimitedAmmoModeStatus();
+                                    if (repeatTurn) {
+                                        explosiveHitStatus = true;
+                                    }
+                                    // Deshabilitar los clics del jugador después de su turno
+                                    playerCanClick = false;
+                                    if (limitedAmmoMode) {
+                                        checkLimitedAmmoModeStatus();
+                                    }
                                 }
                             }
-                        }
-                    }, 3000);
-                });
+                        }, 3000);
+                    });
 
-                setTimeout(() => {
-                    if (gameMode === 'multiPlayer' || gameMode === 'versus-ia') {
-                        if (!repeatTurn) {
-                            if (!limitedAmmoMode || (limitedAmmoMode && AIAmmo > 0)) {
-                                // Esperar 2.5 segundos antes de que la IA haga su movimiento
-                                setTimeout(() => {
-                                    setIATurn();  // Cambiar el turno a la IA
+                    setTimeout(() => {
+                        if (explosiveHitStatus) {
+                            createAlerts('explosiveFound', 'player');
+                            audios['hueso'].play();
+                        } else {
+                            createAlerts('miss', 'player');
+                            audios['arena'].play();
+                        }
+                    }, 3050);
+
+                    setTimeout(() => {
+                        if (gameMode === 'multiPlayer' || gameMode === 'versus-ia') {
+                            repeatTurn = explosiveHitStatus;
+                            if (!repeatTurn) {
+                                if (!limitedAmmoMode || (limitedAmmoMode && AIAmmo > 0)) {
+                                    // Esperar 2.5 segundos antes de que la IA haga su movimiento
                                     setTimeout(() => {
-                                        iaTurn();  // La IA hace su turno después de 2.5 segundos
+                                        setIATurn();  // Cambiar el turno a la IA
+                                        setTimeout(() => {
+                                            iaTurn();  // La IA hace su turno después de 2.5 segundos
+                                        }, 1200);
                                     }, 1200);
-                                }, 1200);
+                                } else {
+                                    // Si la IA no tiene munición, el turno del jugador se repete, habilitar los clics nuevamente después de su turno
+                                    setTimeout(() => {
+                                        playerCanClick = true;
+                                    }, 2400);
+                                }
                             } else {
-                                // Si la IA no tiene munición, el turno del jugador se repete, habilitar los clics nuevamente después de su turno
-                                setTimeout(() => {
-                                    playerCanClick = true;
-                                }, 2400);
+                                // Si es turno del jugador de repetir, habilitar los clics nuevamente después de su turno
+                                if (!limitedAmmoMode || (limitedAmmoMode && playerAmmo > 0)) { // Si el modo de munición limitada no esta activo o esta activo y el jugador tiene munición
+                                    // Si es turno del jugador de repetir y el jugado tiene munición o no esta habitado el modo de munición limitada, habilitar los clics nuevamente después de su turno
+                                    setTimeout(() => {
+                                        playerCanClick = true;
+                                    }, 2400);
+                                } else { // Si el modo de munición limitada esta activo y el jugador no tiene munición
+                                    // Esperar 2.5 segundos antes de que la IA haga su movimiento
+                                    setTimeout(() => {
+                                        setIATurn();  // Cambiar el turno a la IA
+                                        setTimeout(() => {
+                                            iaTurn();  // La IA hace su turno después de 2.5 segundos
+                                        }, 1200);
+                                    }, 1200);
+                                }
                             }
                         } else {
-                            // Si es turno del jugador de repetir, habilitar los clics nuevamente después de su turno
-                            if (!limitedAmmoMode || (limitedAmmoMode && playerAmmo > 0)) { // Si el modo de munición limitada no esta activo o esta activo y el jugador tiene munición
-                                // Si es turno del jugador de repetir y el jugado tiene munición o no esta habitado el modo de munición limitada, habilitar los clics nuevamente después de su turno
-                                setTimeout(() => {
-                                    playerCanClick = true;
-                                }, 2400);
-                            } else { // Si el modo de munición limitada esta activo y el jugador no tiene munición
-                                // Esperar 2.5 segundos antes de que la IA haga su movimiento
-                                setTimeout(() => {
-                                    setIATurn();  // Cambiar el turno a la IA
-                                    setTimeout(() => {
-                                        iaTurn();  // La IA hace su turno después de 2.5 segundos
-                                    }, 1200);
-                                }, 1200);
-                            }
+                            // En single player, podemos reactivar los clics inmediatamente si no hay IA
+                            playerCanClick = true;
                         }
-                    } else {
-                        // En single player, podemos reactivar los clics inmediatamente si no hay IA
-                        playerCanClick = true;
+                    }, 3500);
+
+
+                    if (checkbox1.checked) {
+                        checkbox1.checked = false;
+                        checkbox1.disabled = true;
                     }
-                }, 3500);
-                
 
-                if (checkbox1.checked) {
-                    checkbox1.checked = false;
-                    checkbox1.disabled = true;
-                }
-
-                if (checkbox2.checked) {
-                    checkbox2.checked = false;
-                    checkbox2.disabled = true;
+                    if (checkbox2.checked) {
+                        checkbox2.checked = false;
+                        checkbox2.disabled = true;
+                    }
                 }
             } else {
                 cell.classList.add("cell-selected");
@@ -475,35 +524,55 @@ function checkStatus(event, boardType) {
 
         } else {
             // Destapar la celda
-            cell.classList.remove("covered");
-
-            if (tankShipsMode) {
-                if (cell.classList.contains("covered")) {
-                    cell.classList.remove("covered");
-                } else {
-                    cell.classList.remove("bone2"); // Destapar la celda
-                }
-            } else {
-                cell.classList.remove("covered"); // Destapar la celda
-            }
-
             if (boardType === 'player') {
                 if (!limitedAmmoMode || (limitedAmmoMode && playerAmmo > 0)) {
                     // Lógica y sonidos para el tablero del jugador
-                    if (specialAttackMode) {
-                        if (checkbox1.checked || checkbox2.checked) {
-                            let explosiveCells = [];
-                            if (limitedAmmoMode && playerAmmo >= 4) {
-                                explosiveCells = explosiveHit(cell);
+                    if (specialAttackMode && (checkbox1.checked || checkbox2.checked)) {
+                        let explosiveCells = [];
+                        let explosiveHitStatus = false;
+                        explosiveCells = explosiveHit(cell);
 
-                                playerAmmo -= explosiveCells.length;
-                            } else {
-                                explosiveCells.push(cell);
-                            }
-
+                        if (limitedAmmoMode && explosiveCells.length > playerAmmo) {
+                            createAlerts('notEnoughAmmo', 'player');
+                            audios['arena'].play();
+                        } else {
                             explosiveCells.forEach(explosiveCell => {
-                                handlePlayerBoardLogic(explosiveCell);
+                                if (tankShipsMode) {
+                                    if (explosiveCell.classList.contains("covered")) {
+                                        explosiveCell.classList.remove("covered");
+                                    } else {
+                                        explosiveCell.classList.remove("bone2"); // Destapar la celda
+                                    }
+                                } else {
+                                    explosiveCell.classList.remove("covered"); // Destapar la celda
+                                }
+
+                                if (boardType === 'player') {
+
+                                    if (!limitedAmmoMode || (limitedAmmoMode && playerAmmo > 0)) {
+                                        // Lógica y sonidos para el tablero del jugador
+                                        handlePlayerBoardLogic(explosiveCell);
+
+                                        if (repeatTurn) {
+                                            explosiveHitStatus = true;
+                                        }
+                                        // Deshabilitar los clics del jugador después de su turno
+                                        if (limitedAmmoMode) {
+                                            checkLimitedAmmoModeStatus();
+                                        }
+                                    }
+                                }
                             });
+
+                            setTimeout(() => {
+                                if (explosiveHitStatus) {
+                                    createAlerts('explosiveFound', 'player');
+                                    audios['hueso'].play();
+                                } else {
+                                    createAlerts('miss', 'player');
+                                    audios['arena'].play();
+                                }
+                            }, 50);
 
                             if (checkbox1.checked) {
                                 checkbox1.checked = false;
@@ -516,6 +585,16 @@ function checkStatus(event, boardType) {
                             }
                         }
                     } else {
+                        if (tankShipsMode) {
+                            if (cell.classList.contains("covered")) {
+                                cell.classList.remove("covered");
+                            } else {
+                                cell.classList.remove("bone2"); // Destapar la celda
+                            }
+                        } else {
+                            cell.classList.remove("covered"); // Destapar la celda
+                        }
+
                         handlePlayerBoardLogic(cell);
                     }
 
@@ -645,27 +724,32 @@ function handlePlayerBoardLogic(cell) {
                 if (!limitedAmmoMode || (limitedAmmoMode && AIAmmo > 0)) {
                     repeatTurn = false;
                 }
-                audios['hueso'].play();
+                if (!specialAttackMode && (specialAttackMode && (!checkbox1.checked || !checkbox2.checked))) {
+                    audios['hueso'].play();
+                }
             } else {
                 if (hitAndSink) {
                     points += 15;
                     // fosil descubierto
-                    if (!audios['dino'].paused) {
-                        audios['dino'].pause(); // Si está reproduciéndose, lo pausamos
-                        audios['dino'].currentTime = 0; // Reiniciamos el audio
+                    if (!specialAttackMode && (specialAttackMode && (!checkbox1.checked || !checkbox2.checked))) {
+                        if (!audios['dino'].paused) {
+                            audios['dino'].pause(); // Si está reproduciéndose, lo pausamos
+                            audios['dino'].currentTime = 0; // Reiniciamos el audio
+                        }
+                        createAlerts('foundAll', 'player');
+                        audios['dino'].play();
                     }
-                    createAlerts('foundAll', 'player');
-                    audios['dino'].play();
-
                 } else {
                     points += 10;
                     // huesso encontrado
-                    if (!audios['hueso'].paused) {
-                        audios['hueso'].pause(); // Si está reproduciéndose, lo pausamos
-                        audios['hueso'].currentTime = 0; // Reiniciamos el audio
+                    if (!specialAttackMode && (specialAttackMode && (!checkbox1.checked || !checkbox2.checked))) {
+                        if (!audios['hueso'].paused) {
+                            audios['hueso'].pause(); // Si está reproduciéndose, lo pausamos
+                            audios['hueso'].currentTime = 0; // Reiniciamos el audio
+                        }
+                        createAlerts('found', 'player');
+                        audios['hueso'].play();
                     }
-                    createAlerts('found', 'player');
-                    audios['hueso'].play();
                 }
             }
 
@@ -680,12 +764,14 @@ function handlePlayerBoardLogic(cell) {
             accumulatedErrors = 0;
         }
         // fallo al buscar
-        if (!audios['arena'].paused) {
-            audios['arena'].pause(); // Si está reproduciéndose, lo pausamos
-            audios['arena'].currentTime = 0; // Reiniciamos el audio
+        if (!specialAttackMode && (specialAttackMode && (!checkbox1.checked || !checkbox2.checked))) {
+            if (!audios['arena'].paused) {
+                audios['arena'].pause(); // Si está reproduciéndose, lo pausamos
+                audios['arena'].currentTime = 0; // Reiniciamos el audio
+            }
+            createAlerts('miss', 'player');
+            audios['arena'].play();
         }
-        createAlerts('miss', 'player');
-        audios['arena'].play();
     }
     updatePointsCounter();
 }
@@ -833,60 +919,66 @@ function explosiveHit(originalCell) {
     newRow = originalRow - 1;
     newCol = originalCol - 1;
     newCell = document.getElementById(`cell_${newRow}_${newCol}`);
-    if (newCell.classList.contains("bone") || newCell.classList.contains("ground")) {
+    if (newCell != null && (newCell.classList.contains("bone") || newCell.classList.contains("ground"))) {
         explosivesCells.push(newCell);
+        newCell = null;
     }
 
     newRow = originalRow - 1;
     newCol = originalCol;
     newCell = document.getElementById(`cell_${newRow}_${newCol}`);
-    if (newCell.classList.contains("bone") || newCell.classList.contains("ground")) {
+    if (newCell != null && (newCell.classList.contains("bone") || newCell.classList.contains("ground"))) {
         explosivesCells.push(newCell);
+        newCell = null;
     }
 
     newRow = originalRow - 1;
     newCol = originalCol + 1;
     newCell = document.getElementById(`cell_${newRow}_${newCol}`);
-    if (newCell.classList.contains("bone") || newCell.classList.contains("ground")) {
+    if (newCell != null && (newCell.classList.contains("bone") || newCell.classList.contains("ground"))) {
         explosivesCells.push(newCell);
+        newCell = null;
     }
 
     newRow = originalRow;
     newCol = originalCol - 1;
     newCell = document.getElementById(`cell_${newRow}_${newCol}`);
-    if (newCell.classList.contains("bone") || newCell.classList.contains("ground")) {
+    if (newCell != null && (newCell.classList.contains("bone") || newCell.classList.contains("ground"))) {
         explosivesCells.push(newCell);
+        newCell = null;
     }
 
     newRow = originalRow;
     newCol = originalCol + 1;
     newCell = document.getElementById(`cell_${newRow}_${newCol}`);
-    if (newCell.classList.contains("bone") || newCell.classList.contains("ground")) {
+    if (newCell != null && (newCell.classList.contains("bone") || newCell.classList.contains("ground"))) {
         explosivesCells.push(newCell);
+        newCell = null;
     }
 
     newRow = originalRow + 1;
     newCol = originalCol - 1;
     newCell = document.getElementById(`cell_${newRow}_${newCol}`);
-    if (newCell.classList.contains("bone") || newCell.classList.contains("ground")) {
+    if (newCell != null && (newCell.classList.contains("bone") || newCell.classList.contains("ground"))) {
         explosivesCells.push(newCell);
+        newCell = null;
     }
 
     newRow = originalRow + 1;
     newCol = originalCol;
     newCell = document.getElementById(`cell_${newRow}_${newCol}`);
-    if (newCell.classList.contains("bone") || newCell.classList.contains("ground")) {
+    if (newCell != null && (newCell.classList.contains("bone") || newCell.classList.contains("ground"))) {
         explosivesCells.push(newCell);
+        newCell = null;
     }
 
     newRow = originalRow + 1;
     newCol = originalCol + 1;
     newCell = document.getElementById(`cell_${newRow}_${newCol}`);
-    if (newCell.classList.contains("bone") || newCell.classList.contains("ground")) {
+    if (newCell != null && (newCell.classList.contains("bone") || newCell.classList.contains("ground"))) {
         explosivesCells.push(newCell);
+        newCell = null;
     }
-
-    explosivesCells.push(newCell);
 
     return explosivesCells;
 }
