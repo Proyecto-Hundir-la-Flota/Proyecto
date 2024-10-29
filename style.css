@@ -467,7 +467,7 @@ html {
     display: none;
 }
 
-#game_page .dinamita_container {
+#game_page #dinamita_container {
     display: flex;
     flex-direction: column;
     position: absolute;
@@ -496,7 +496,7 @@ html {
     accent-color: #ed161f;
 }
 
-#game_page .dinamita_container.hidden {
+#game_page #dinamita_container.hidden {
     transform: translateX(-100%); /* Oculta el contenedor desplazándolo a la izquierda */
 }
 
@@ -584,12 +584,10 @@ html {
 @keyframes slideInFromTop {
     0% {
         transform: translateY(-100%);
-        opacity: 0;
     }
 
     100% {
         transform: translateY(0);
-        opacity: 1;
     }
 }
 
@@ -1018,6 +1016,7 @@ html {
 
 .player-alert#waitAlert {
     background-color: rgb(0, 0, 0);
+    top: 170px;
 }
 
 
@@ -1403,3 +1402,4 @@ input[type="checkbox"]:checked{
         background-color: red;
     }
 }
+

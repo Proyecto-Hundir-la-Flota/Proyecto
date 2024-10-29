@@ -61,13 +61,13 @@
 $file = 'ranking.txt';
 $records_per_page = 25;
 
-// Declara $holder y $timestamp como nulos por defecto
+// Inicializa $holder y $timestamp como nulos por defecto
 $holder = null;
 $timestamp = null;
 
 // Si el archivo no existe, crearlo vacío
 if (!file_exists($file)) {
-    file_put_contents('ranking.txt', '');
+    file_put_contents($file, '');
 }
 
 // Verifica si los datos han sido enviados por POST
@@ -90,6 +90,12 @@ $filtered_lines = array_filter($lines, 'trim');  // Limpiar las líneas de espac
 if (empty($filtered_lines)) {
     echo "<p class='empty-txt'>No hi ha cap paleontòleg registrat</p>";
 } else {
+    // Si no hay un holder definido, usamos el último registro
+    if ($holder === null || $timestamp === null) {
+        $last_record = end($filtered_lines);
+        list($holder, , $timestamp) = explode('/', trim($last_record));
+    }
+
     // Ordenar registros
     usort($filtered_lines, function ($a, $b) {
         list(, $pointsA) = explode('/', $a);
@@ -97,24 +103,18 @@ if (empty($filtered_lines)) {
         return $pointsB - $pointsA;
     });
 
-    // Encontrar la posición del usuario en la lista ordenada
+    // Calcular la posición del usuario
     $user_position = null;
     foreach ($filtered_lines as $index => $line) {
         list($nameLine, , $dateTimeLine) = explode('/', $line);
-        if ($holder && $timestamp && trim($nameLine) === $holder && trim($dateTimeLine) === $timestamp) {
+        if (trim($nameLine) === $holder && trim($dateTimeLine) === $timestamp) {
             $user_position = $index + 1; // +1 para que la posición empiece en 1
             break;
         }
     }
 
-    // Si encontramos la posición del usuario, calcular la página correspondiente
-    if ($user_position !== null) {
-        $current_page = ceil($user_position / $records_per_page); // Calcula la página donde está el usuario
-    } else {
-        // Predeterminado a la primera página si no se encuentra el registro
-        $current_page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
-    }
-
+    // Determina la página actual desde la URL o el índice del usuario
+    $current_page = isset($_GET['page']) ? (int) $_GET['page'] : ($user_position !== null ? ceil($user_position / $records_per_page) : 1);
     $total_records = count($filtered_lines);
     $total_pages = ceil($total_records / $records_per_page);
 
@@ -135,7 +135,6 @@ if (empty($filtered_lines)) {
     $start_index = ($current_page - 1) * $records_per_page;
     $end_index = min($start_index + $records_per_page, $total_records);
 
-    // Dentro del bucle donde generas cada fila de la tabla
     for ($i = $start_index; $i < $end_index; $i++) {
         if (!empty(trim($filtered_lines[$i]))) {
             list($name, $points, $dateTime) = explode('/', $filtered_lines[$i]);
@@ -144,11 +143,9 @@ if (empty($filtered_lines)) {
 
             // Clase podium para los primeros tres registros
             $class = ($i < 3) ? ' class="podium"' : '';
+            // Clase para el registro del usuario que acaba de jugar (último en el archivo)
+            $class2 = ($name === $holder && $dateTime === $timestamp) ? ' id="player"' : '';
 
-            // Clase para el registro del usuario que acaba de jugar
-            $class2 = ($holder && $timestamp && $name === $holder && $dateTime === $timestamp) ? ' id="player"' : '';
-
-            // Aquí se agrega el valor de --index como estilo en línea
             echo "<tr{$class}{$class2} style='--index: " . ($i - $start_index + 1) . "'>
                 <td>$row_index</td>
                 <td>$name</td>
@@ -165,11 +162,9 @@ if (empty($filtered_lines)) {
     echo '<a href="index.php" class="nav-button home-button"><i class="fa-solid fa-chevron-left icon"></i>Inici</a>';
     if ($total_pages > 1) {
         echo '<div class="pagination">';
-
         if ($current_page > 1) {
             echo '<a href="?page=' . ($current_page - 1) . '" class="fa-solid fa-chevron-left"></a>';
         }
-
         for ($page = 1; $page <= $total_pages; $page++) {
             if ($page == $current_page) {
                 echo '<span class="current-page">' . $page . '</span>';
@@ -177,10 +172,10 @@ if (empty($filtered_lines)) {
                 echo '<a class="page" href="?page=' . $page . '">' . $page . '</a>';
             }
         }
-
         if ($current_page < $total_pages) {
             echo '<a href="?page=' . ($current_page + 1) . '" class="fa-solid fa-chevron-right"></a>';
         }
     }
 }
 ?>
+
