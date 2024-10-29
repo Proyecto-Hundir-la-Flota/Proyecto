@@ -467,7 +467,7 @@ html {
     display: none;
 }
 
-#game_page .torpedo_container {
+#game_page .dinamita_container {
     display: flex;
     flex-direction: column;
     position: absolute;
@@ -478,33 +478,43 @@ html {
     font-family: var(--secondary_title_font);
     font-size: 1.6em;
     transition: transform 0.4s ease; /* Animación de deslizamiento */
+    gap: 10px;
 }
 
-#game_page .torpedo {
+#game_page .dinamita {
     font-family: var(--text_font);
     font-size: 18.4px;
+    background: url(./images/dinamita.png);
+    color: white;
+    background-size: contain;
+    background-repeat: no-repeat;
+    padding: 5px;
+}
+#game_page [type="checkbox"] {
+    margin-left: 10px;
+    margin-right: 6px;
+    accent-color: #ed161f;
 }
 
-.torpedo_container.hidden {
+#game_page .dinamita_container.hidden {
     transform: translateX(-100%); /* Oculta el contenedor desplazándolo a la izquierda */
 }
 
 /* Estilos del botón */
-.toggle-button {
+#game_page .toggle-button {
     cursor: pointer;
-    padding: 5px 10px;
-    margin-left: 10px;
-    background-color: #007bff;
     color: white;
+    color: var(--button);
+    background-color: var(--primary_div);
+    position: absolute;
+    top: 50%;
+    padding: 10px;
+    right: -30px;
+    transform: translateY(-50%); /* Centra verticalmente */
     border: none;
-    border-radius: 5px;
+    border-radius: 0 10px 10px 0;
     transition: background-color 0.2s ease;
 }
-
-.toggle-button:hover {
-    background-color: #0056b3;
-}
-
 
 /* RESULT PAGE (WIN AND LOSE) */
 
