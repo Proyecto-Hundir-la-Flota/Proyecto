@@ -807,6 +807,10 @@ function handleAIBoardLogic(cell) {
         let hitAndSink = false;
         let victory = true;
         IArepeatTurn = true;
+        let halfFound = false;
+        if (tankShipsMode) {
+            halfFound = true;
+        }
 
         // Obtener la posición de la celda IA
         let cellPosition = cell.id.replace("ia_cell_", "").split("_");
@@ -864,25 +868,31 @@ function handleAIBoardLogic(cell) {
             scoreForm.action = "lose.php";
             scoreForm.submit();
         } else {
-
-
-
-            if (hitAndSink) {
-                // Mostrar alerta de fósil completo
-                createAlerts('foundAll', 'ia');
-                audios['dino'].play();
-                iaLastCorrectPosition = null;
-                iaOriginalCorrectPosition = null;
-                iaCheckPositions = [[false, false], [false, false]];
-                iaLastTriedDirection = null;
-                iaLastTriedMovement = null;
+            if (halfFound) {
+                if (!limitedAmmoMode || (limitedAmmoMode && AIAmmo > 0)) {
+                    IArepeatTurn = false;
+                }
+                if (!specialAttackMode || (specialAttackMode && (!checkbox1.checked || !checkbox2.checked))) {
+                    audios['hueso'].play();
+                }
             } else {
-                // Mostrar alerta de fósil encontrado
-                createAlerts('found', 'ia');
-                audios['hueso'].play();
-                iaAccert = true;
-                searchDirection = true;
+                if (hitAndSink) {
+                    // Mostrar alerta de fósil completo
+                    createAlerts('foundAll', 'ia');
+                    audios['dino'].play();
+                    iaLastCorrectPosition = null;
+                    iaOriginalCorrectPosition = null;
+                    iaCheckPositions = [[false, false], [false, false]];
+                    iaLastTriedDirection = null;
+                    iaLastTriedMovement = null;
+                } else {
+                    // Mostrar alerta de fósil encontrado
+                    createAlerts('found', 'ia');
+                    audios['hueso'].play();
+                    iaAccert = true;
+                    searchDirection = true;
 
+                }
             }
         }
     } else {
