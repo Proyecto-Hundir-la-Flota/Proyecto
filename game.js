@@ -151,7 +151,11 @@ function stopClock() {
 
 function createAlerts(alert_type, playerType) {
     // forzamos a limpiar la alerta para no repetir una alarma existente
-    document.querySelectorAll('.alert').forEach(alert => alert.remove());
+    if (gameMode !== 'multiPlayer') {
+        document.querySelectorAll('.alert').forEach(alert => alert.remove());
+    }
+    
+    document.querySelectorAll('#waitAlert').forEach(alert => alert.remove());
     let alert;
     let elementI;
 
@@ -271,7 +275,7 @@ function createAlerts(alert_type, playerType) {
                 alert.remove();
             }, 500); // Duración de la animación de salida
         }
-    }, 2000);
+    }, 4000);
 }
 
 
@@ -724,14 +728,14 @@ function handlePlayerBoardLogic(cell) {
                 if (!limitedAmmoMode || (limitedAmmoMode && AIAmmo > 0)) {
                     repeatTurn = false;
                 }
-                if (!specialAttackMode && (specialAttackMode && (!checkbox1.checked || !checkbox2.checked))) {
+                if (!specialAttackMode || (specialAttackMode && (!checkbox1.checked || !checkbox2.checked))) {
                     audios['hueso'].play();
                 }
             } else {
                 if (hitAndSink) {
                     points += 15;
                     // fosil descubierto
-                    if (!specialAttackMode && (specialAttackMode && (!checkbox1.checked || !checkbox2.checked))) {
+                    if (!specialAttackMode || (specialAttackMode && (!checkbox1.checked || !checkbox2.checked))) {
                         if (!audios['dino'].paused) {
                             audios['dino'].pause(); // Si está reproduciéndose, lo pausamos
                             audios['dino'].currentTime = 0; // Reiniciamos el audio
@@ -742,7 +746,7 @@ function handlePlayerBoardLogic(cell) {
                 } else {
                     points += 10;
                     // huesso encontrado
-                    if (!specialAttackMode && (specialAttackMode && (!checkbox1.checked || !checkbox2.checked))) {
+                    if (!specialAttackMode || (specialAttackMode && (!checkbox1.checked || !checkbox2.checked))) {
                         if (!audios['hueso'].paused) {
                             audios['hueso'].pause(); // Si está reproduciéndose, lo pausamos
                             audios['hueso'].currentTime = 0; // Reiniciamos el audio
@@ -764,7 +768,7 @@ function handlePlayerBoardLogic(cell) {
             accumulatedErrors = 0;
         }
         // fallo al buscar
-        if (!specialAttackMode && (specialAttackMode && (!checkbox1.checked || !checkbox2.checked))) {
+        if (!specialAttackMode || (specialAttackMode && (!checkbox1.checked || !checkbox2.checked))) {
             if (!audios['arena'].paused) {
                 audios['arena'].pause(); // Si está reproduciéndose, lo pausamos
                 audios['arena'].currentTime = 0; // Reiniciamos el audio
@@ -1186,6 +1190,10 @@ document.addEventListener("DOMContentLoaded", function () {
     if (limitedAmmoMode) {
         document.getElementById("player-ammo").innerText = playerAmmo;
         document.getElementById("ai-ammo").innerText = AIAmmo;
+    }
+
+    if (!specialAttackMode) {
+        document.getElementById("dinamita_container").style.display = "none";
     }
 });
 

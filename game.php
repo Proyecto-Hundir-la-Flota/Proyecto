@@ -115,7 +115,7 @@ if (isset($_POST['gamemode'])) {
         <i class='fa-solid fa-hourglass-end'></i>Temps: <span id='gameClock'>00:00</span>
     </div>
     <div class="container">
-        <div class="dinamita_container">
+        <div id="dinamita_container">
             Cartutxos de dinamita
             <div class="dinamita">
                 <input type="checkbox" id="dinamita1" class="exclusive-checkbox">
@@ -458,7 +458,7 @@ if (isset($_POST['gamemode'])) {
         let bomba2 = false;
 
         function toggleContainer() {
-            const dinamitaContainer = document.querySelector('.dinamita_container');
+            const dinamitaContainer = document.querySelector('#dinamita_container');
             const icon = document.querySelector('.toggle-button');
 
             // Cambiamos la clase 'hidden' del contenedor
