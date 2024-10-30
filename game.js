@@ -878,7 +878,7 @@ function handleAIBoardLogic(cell) {
             scoreForm.submit();
         } else {
             if (halfFound) {
-                if (!limitedAmmoMode || (limitedAmmoMode && AIAmmo > 0)) {
+                if (!limitedAmmoMode || (limitedAmmoMode && playerAmmo > 0)) {
                     IArepeatTurn = false;
                 }
                 if (!specialAttackMode || (specialAttackMode && (!checkbox1.checked || !checkbox2.checked))) {
