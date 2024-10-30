@@ -476,7 +476,7 @@ if (isset($_POST['gamemode'])) {
     </script>
 
 
-    <script type="text/javascript" src="game.js"></script>
+    <script type="text/javascript" src="game.js?t<?php echo time(); ?>"></script>
 </body>
 
 </html>
