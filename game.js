@@ -438,18 +438,17 @@ function checkStatus(event, boardType) {
                             // En single player, podemos reactivar los clics inmediatamente si no hay IA
                             playerCanClick = true;
                         }
+
+                        if (checkbox1.checked) {
+                            checkbox1.checked = false;
+                            checkbox1.disabled = true;
+                        }
+    
+                        if (checkbox2.checked) {
+                            checkbox2.checked = false;
+                            checkbox2.disabled = true;
+                        }
                     }, 3500);
-
-
-                    if (checkbox1.checked) {
-                        checkbox1.checked = false;
-                        checkbox1.disabled = true;
-                    }
-
-                    if (checkbox2.checked) {
-                        checkbox2.checked = false;
-                        checkbox2.disabled = true;
-                    }
                 }
             } else {
                 cell.classList.add("cell-selected");
@@ -576,17 +575,19 @@ function checkStatus(event, boardType) {
                                     createAlerts('miss', 'player');
                                     audios['arena'].play();
                                 }
-                            }, 50);
 
-                            if (checkbox1.checked) {
-                                checkbox1.checked = false;
-                                checkbox1.disabled = true;
-                            }
+                                if (checkbox1.checked) {
+                                    checkbox1.checked = false;
+                                    checkbox1.disabled = true;
+                                }
+    
+                                if (checkbox2.checked) {
+                                    checkbox2.checked = false;
+                                    checkbox2.disabled = true;
+                                }
+                            }, 100);
 
-                            if (checkbox2.checked) {
-                                checkbox2.checked = false;
-                                checkbox2.disabled = true;
-                            }
+                            
                         }
                     } else {
                         if (tankShipsMode) {
@@ -728,14 +729,14 @@ function handlePlayerBoardLogic(cell) {
                 if (!limitedAmmoMode || (limitedAmmoMode && AIAmmo > 0)) {
                     repeatTurn = false;
                 }
-                if (!specialAttackMode || (specialAttackMode && (!checkbox1.checked || !checkbox2.checked))) {
+                if (!specialAttackMode || (specialAttackMode && !(checkbox1.checked || checkbox2.checked))) {
                     audios['hueso'].play();
                 }
             } else {
                 if (hitAndSink) {
                     points += 15;
                     // fosil descubierto
-                    if (!specialAttackMode || (specialAttackMode && (!checkbox1.checked || !checkbox2.checked))) {
+                    if (!specialAttackMode || (specialAttackMode && !(checkbox1.checked || checkbox2.checked))) {
                         if (!audios['dino'].paused) {
                             audios['dino'].pause(); // Si está reproduciéndose, lo pausamos
                             audios['dino'].currentTime = 0; // Reiniciamos el audio
@@ -746,7 +747,7 @@ function handlePlayerBoardLogic(cell) {
                 } else {
                     points += 10;
                     // huesso encontrado
-                    if (!specialAttackMode || (specialAttackMode && (!checkbox1.checked || !checkbox2.checked))) {
+                    if (!specialAttackMode || (specialAttackMode && !(checkbox1.checked || checkbox2.checked))) {
                         if (!audios['hueso'].paused) {
                             audios['hueso'].pause(); // Si está reproduciéndose, lo pausamos
                             audios['hueso'].currentTime = 0; // Reiniciamos el audio
@@ -768,7 +769,7 @@ function handlePlayerBoardLogic(cell) {
             accumulatedErrors = 0;
         }
         // fallo al buscar
-        if (!specialAttackMode || (specialAttackMode && (!checkbox1.checked || !checkbox2.checked))) {
+        if (!specialAttackMode || (specialAttackMode && !(checkbox1.checked || checkbox2.checked))) {
             if (!audios['arena'].paused) {
                 audios['arena'].pause(); // Si está reproduciéndose, lo pausamos
                 audios['arena'].currentTime = 0; // Reiniciamos el audio
@@ -881,7 +882,7 @@ function handleAIBoardLogic(cell) {
                 if (!limitedAmmoMode || (limitedAmmoMode && playerAmmo > 0)) {
                     IArepeatTurn = false;
                 }
-                if (!specialAttackMode || (specialAttackMode && (!checkbox1.checked || !checkbox2.checked))) {
+                if (!specialAttackMode || (specialAttackMode && !(checkbox1.checked || checkbox2.checked))) {
                     audios['hueso'].play();
                 }
             } else {
@@ -921,7 +922,7 @@ function handleAIBoardLogic(cell) {
         createAlerts('miss', 'ia');
         audios['arena'].play();
         searchDirection = false;
-        console.log('falla');
+        //console.log('falla');
     }
 }
 
@@ -1007,7 +1008,7 @@ function explosiveHit(originalCell) {
 }
 
 function iaTurn() {
-    console.log("Turno de la IA");
+    //console.log("Turno de la IA");
 
     // Función que intenta hacer un movimiento válido
     function attemptMove() {
