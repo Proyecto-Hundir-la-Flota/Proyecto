@@ -44,7 +44,7 @@ if (isset($_POST['score'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?t<?php echo time(); ?>">
     <script src="https://kit.fontawesome.com/9c44094610.js" crossorigin="anonymous"></script>
     <title>Excavació Juràssica</title>
 </head>
