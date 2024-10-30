@@ -413,7 +413,7 @@ if (isset($_POST['gamemode'])) {
         <?php if (isset($_POST["limitedAmmo"])) {
             if ($_POST["limitedAmmo"] == "limitedAmmo") { ?>
                 limitedAmmoMode = true;
-                playerAmmo = 1;
+                playerAmmo = 40;
                 AIAmmo = 40;
             <?php }
         }
