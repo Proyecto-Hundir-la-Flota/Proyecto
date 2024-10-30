@@ -310,45 +310,42 @@ function checkStatus(event, boardType) {
     if (cell.classList.contains("covered") || cell.classList.contains("bone2")) {
         if (gameMode === 'multiPlayer' || gameMode === 'versus-ia') {
             playerCanClick = false;
+            cell.classList.add("cell-selected");
 
-            if (specialAttackMode && (checkbox1.checked || checkbox2.checked)) {
-                let explosiveCells = [];
-                explosiveCells = explosiveHit(cell);
+            audios['cavar'].play();
+            setTimeout(() => {
+                cell.classList.remove("cell-selected");
 
-                audios['cavar'].play();
-                explosiveCells.forEach(explosiveCell => {
-                    explosiveCell.classList.add("cell-selected");
+               
+            
 
-                    setTimeout(() => {
-                        explosiveCell.classList.remove("cell-selected");
+                if (tankShipsMode) {
+                    if (cell.classList.contains("covered")) {
+                        cell.classList.remove("covered");
+                    } else {
+                        cell.classList.remove("bone2"); // Destapar la celda
+                    }
+                } else {
+                    cell.classList.remove("covered"); // Destapar la celda
+                }
+              
+                if (boardType === 'player') {
 
-                        if (tankShipsMode) {
-                            if (explosiveCell.classList.contains("covered")) {
-                                explosiveCell.classList.remove("covered");
-                            } else {
-                                explosiveCell.classList.remove("bone2"); // Destapar la celda
-                            }
-                        } else {
-                            explosiveCell.classList.remove("covered"); // Destapar la celda
+
+                    if (!limitedAmmoMode || (limitedAmmoMode && playerAmmo > 0)) {
+                        // Lógica y sonidos para el tablero del jugador
+
+                        handlePlayerBoardLogic(cell);
+
+                        // Deshabilitar los clics del jugador después de su turno
+                        playerCanClick = false;
+                        if (limitedAmmoMode) {
+                            checkLimitedAmmoModeStatus();
                         }
+                    }
 
-                        if (boardType === 'player') {
 
-                            if (!limitedAmmoMode || (limitedAmmoMode && playerAmmo > 0)) {
-                                // Lógica y sonidos para el tablero del jugador
-                                handlePlayerBoardLogic(explosiveCell);
-
-                                // Deshabilitar los clics del jugador después de su turno
-                                playerCanClick = false;
-                                if (limitedAmmoMode) {
-                                    checkLimitedAmmoModeStatus();
-                                }
-                            }
-                        }
-                    }, 3000);
-                });
-
-                setTimeout(() => {
+                    // Solo ejecutar iaTurn si estamos en modo multiPlayer o versus-ia
                     if (gameMode === 'multiPlayer' || gameMode === 'versus-ia') {
                         if (!repeatTurn) {
                             if (!limitedAmmoMode || (limitedAmmoMode && AIAmmo > 0)) {
@@ -386,93 +383,8 @@ function checkStatus(event, boardType) {
                         // En single player, podemos reactivar los clics inmediatamente si no hay IA
                         playerCanClick = true;
                     }
-                }, 3500);
-                
-
-                if (checkbox1.checked) {
-                    checkbox1.checked = false;
-                    checkbox1.disabled = true;
                 }
-
-                if (checkbox2.checked) {
-                    checkbox2.checked = false;
-                    checkbox2.disabled = true;
-                }
-            } else {
-                cell.classList.add("cell-selected");
-
-                audios['cavar'].play();
-
-                setTimeout(() => {
-                    cell.classList.remove("cell-selected");
-
-                    if (tankShipsMode) {
-                        if (cell.classList.contains("covered")) {
-                            cell.classList.remove("covered");
-                        } else {
-                            cell.classList.remove("bone2"); // Destapar la celda
-                        }
-                    } else {
-                        cell.classList.remove("covered"); // Destapar la celda
-                    }
-
-                    if (boardType === 'player') {
-
-                        if (!limitedAmmoMode || (limitedAmmoMode && playerAmmo > 0)) {
-                            // Lógica y sonidos para el tablero del jugador
-                            handlePlayerBoardLogic(cell);
-
-                            // Deshabilitar los clics del jugador después de su turno
-                            playerCanClick = false;
-                            if (limitedAmmoMode) {
-                                checkLimitedAmmoModeStatus();
-                            }
-                        }
-
-
-                        // Solo ejecutar iaTurn si estamos en modo multiPlayer o versus-ia
-                        if (gameMode === 'multiPlayer' || gameMode === 'versus-ia') {
-                            if (!repeatTurn) {
-                                if (!limitedAmmoMode || (limitedAmmoMode && AIAmmo > 0)) {
-                                    // Esperar 2.5 segundos antes de que la IA haga su movimiento
-                                    setTimeout(() => {
-                                        setIATurn();  // Cambiar el turno a la IA
-                                        setTimeout(() => {
-                                            iaTurn();  // La IA hace su turno después de 2.5 segundos
-                                        }, 1200);
-                                    }, 1200);
-                                } else {
-                                    // Si la IA no tiene munición, el turno del jugador se repete, habilitar los clics nuevamente después de su turno
-                                    setTimeout(() => {
-                                        playerCanClick = true;
-                                    }, 2400);
-                                }
-                            } else {
-                                // Si es turno del jugador de repetir, habilitar los clics nuevamente después de su turno
-                                if (!limitedAmmoMode || (limitedAmmoMode && playerAmmo > 0)) { // Si el modo de munición limitada no esta activo o esta activo y el jugador tiene munición
-                                    // Si es turno del jugador de repetir y el jugado tiene munición o no esta habitado el modo de munición limitada, habilitar los clics nuevamente después de su turno
-                                    setTimeout(() => {
-                                        playerCanClick = true;
-                                    }, 2400);
-                                } else { // Si el modo de munición limitada esta activo y el jugador no tiene munición
-                                    // Esperar 2.5 segundos antes de que la IA haga su movimiento
-                                    setTimeout(() => {
-                                        setIATurn();  // Cambiar el turno a la IA
-                                        setTimeout(() => {
-                                            iaTurn();  // La IA hace su turno después de 2.5 segundos
-                                        }, 1200);
-                                    }, 1200);
-                                }
-                            }
-                        } else {
-                            // En single player, podemos reactivar los clics inmediatamente si no hay IA
-                            playerCanClick = true;
-                        }
-                    }
-                }, 3000);
-            }
-
-
+            }, 3000);
         } else {
             // Destapar la celda
             cell.classList.remove("covered");
@@ -490,35 +402,8 @@ function checkStatus(event, boardType) {
             if (boardType === 'player') {
                 if (!limitedAmmoMode || (limitedAmmoMode && playerAmmo > 0)) {
                     // Lógica y sonidos para el tablero del jugador
-                    if (specialAttackMode) {
-                        if (checkbox1.checked || checkbox2.checked) {
-                            let explosiveCells = [];
-                            if (limitedAmmoMode && playerAmmo >= 4) {
-                                explosiveCells = explosiveHit(cell);
 
-                                playerAmmo -= explosiveCells.length;
-                            } else {
-                                explosiveCells.push(cell);
-                            }
-
-                            explosiveCells.forEach(explosiveCell => {
-                                handlePlayerBoardLogic(explosiveCell);
-                            });
-
-                            if (checkbox1.checked) {
-                                checkbox1.checked = false;
-                                checkbox1.disabled = true;
-                            }
-
-                            if (checkbox2.checked) {
-                                checkbox2.checked = false;
-                                checkbox2.disabled = true;
-                            }
-                        }
-                    } else {
-                        handlePlayerBoardLogic(cell);
-                    }
-
+                    handlePlayerBoardLogic(cell);
                     if (limitedAmmoMode) {
                         checkLimitedAmmoModeStatus();
                     }
@@ -954,81 +839,6 @@ function handleAIBoardLogic(cell) {
     }
 }
 
-function explosiveHit(originalCell) {
-    let explosivesCells = [];
-    explosivesCells.push(originalCell);
-
-    let originalRow = originalCell.id.replace("cell_", "").split("_")[0];
-    let originalCol = originalCell.id.replace("cell_", "").split("_")[1];
-    let newCell;
-    let newRow = 0;
-    let newCol = 0;
-    if (!isNaN(originalRow - 1) && !isNaN(originalCol - 1)) {
-        originalRow = parseInt(originalRow);
-        originalCol = parseInt(originalCol);
-    }
-
-    newRow = originalRow - 1;
-    newCol = originalCol - 1;
-    newCell = document.getElementById(`cell_${newRow}_${newCol}`);
-    if (newCell.classList.contains("bone") || newCell.classList.contains("ground")) {
-        explosivesCells.push(newCell);
-    }
-
-    newRow = originalRow - 1;
-    newCol = originalCol;
-    newCell = document.getElementById(`cell_${newRow}_${newCol}`);
-    if (newCell.classList.contains("bone") || newCell.classList.contains("ground")) {
-        explosivesCells.push(newCell);
-    }
-
-    newRow = originalRow - 1;
-    newCol = originalCol + 1;
-    newCell = document.getElementById(`cell_${newRow}_${newCol}`);
-    if (newCell.classList.contains("bone") || newCell.classList.contains("ground")) {
-        explosivesCells.push(newCell);
-    }
-
-    newRow = originalRow;
-    newCol = originalCol - 1;
-    newCell = document.getElementById(`cell_${newRow}_${newCol}`);
-    if (newCell.classList.contains("bone") || newCell.classList.contains("ground")) {
-        explosivesCells.push(newCell);
-    }
-
-    newRow = originalRow;
-    newCol = originalCol + 1;
-    newCell = document.getElementById(`cell_${newRow}_${newCol}`);
-    if (newCell.classList.contains("bone") || newCell.classList.contains("ground")) {
-        explosivesCells.push(newCell);
-    }
-
-    newRow = originalRow + 1;
-    newCol = originalCol - 1;
-    newCell = document.getElementById(`cell_${newRow}_${newCol}`);
-    if (newCell.classList.contains("bone") || newCell.classList.contains("ground")) {
-        explosivesCells.push(newCell);
-    }
-
-    newRow = originalRow + 1;
-    newCol = originalCol;
-    newCell = document.getElementById(`cell_${newRow}_${newCol}`);
-    if (newCell.classList.contains("bone") || newCell.classList.contains("ground")) {
-        explosivesCells.push(newCell);
-    }
-
-    newRow = originalRow + 1;
-    newCol = originalCol + 1;
-    newCell = document.getElementById(`cell_${newRow}_${newCol}`);
-    if (newCell.classList.contains("bone") || newCell.classList.contains("ground")) {
-        explosivesCells.push(newCell);
-    }
-
-    explosivesCells.push(newCell);
-
-    return explosivesCells;
-}
-
 function iaTurn() {
     console.log("Turno de la IA");
 
@@ -1158,7 +968,6 @@ function iaTurn() {
                 } else {
                     cell.classList.remove("covered"); // Destapar la celda
                 }
-
                 handleAIBoardLogic(cell); // Lógica para manejar el clic de la IA
                 if (limitedAmmoMode) {
                     checkLimitedAmmoModeStatus();
